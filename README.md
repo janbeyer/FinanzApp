@@ -1,2 +1,2 @@
 # FinanzApp
-Projectarbeit Android Finanz Application 
+Projektarbeit Android Finanz Application 
