@@ -12,23 +12,23 @@ import java.util.List;
 
 import wbh.finanzapp.business.ProfileBean;
 
-public class FinanceDataSource {
+public class ProfilesDataSource {
 
-    private static final String LOG_TAG = FinanceDataSource.class.getSimpleName();
+    private static final String LOG_TAG = ProfilesDataSource.class.getSimpleName();
 
     private SQLiteDatabase database;
-    private FinanceDBHelper dbHelper;
+    private DBHelper dbHelper;
 
     private String[] columns = {
-        FinanceDBHelper.COLUMN_ID,
-        FinanceDBHelper.COLUMN_NAME,
-        FinanceDBHelper.COLUMN_DESCRIPTION,
-        FinanceDBHelper.COLUMN_LASTUSE
+        ProfilesHelper.COLUMN_ID,
+        ProfilesHelper.COLUMN_NAME,
+        ProfilesHelper.COLUMN_DESCRIPTION,
+        ProfilesHelper.COLUMN_LASTUSE
     };
 
-    public FinanceDataSource(Context context) {
+    public ProfilesDataSource(Context context) {
         Log.d(LOG_TAG, "Unsere DataSource erzeugt jetzt den dbHelper.");
-        dbHelper = new FinanceDBHelper(context);
+        dbHelper = new DBHelper(context);
     }
 
     public void open() {
@@ -44,13 +44,13 @@ public class FinanceDataSource {
 
     public ProfileBean createProfileBean(String name, String description) {
         ContentValues values = new ContentValues();
-        values.put(FinanceDBHelper.COLUMN_NAME, name);
-        values.put(FinanceDBHelper.COLUMN_DESCRIPTION, description);
-        values.put(FinanceDBHelper.COLUMN_LASTUSE, new Date().getTime()); // set the current date.
+        values.put(ProfilesHelper.COLUMN_NAME, name);
+        values.put(ProfilesHelper.COLUMN_DESCRIPTION, description);
+        values.put(ProfilesHelper.COLUMN_LASTUSE, new Date().getTime()); // set the current date.
 
-        long insertId = database.insert(FinanceDBHelper.TABLE_PROFILES, null, values);
+        long insertId = database.insert(ProfilesHelper.TABLE_NAME, null, values);
 
-        Cursor cursor = database.query(FinanceDBHelper.TABLE_PROFILES, columns, FinanceDBHelper.COLUMN_ID + "=" + insertId,
+        Cursor cursor = database.query(ProfilesHelper.TABLE_NAME, columns, ProfilesHelper.COLUMN_ID + "=" + insertId,
             null, null, null, null);
 
         cursor.moveToFirst();
@@ -61,10 +61,10 @@ public class FinanceDataSource {
     }
 
     private ProfileBean cursorToProfileBean(Cursor cursor) {
-        int idIndex = cursor.getColumnIndex(FinanceDBHelper.COLUMN_ID);
-        int idName = cursor.getColumnIndex(FinanceDBHelper.COLUMN_NAME);
-        int idDescription = cursor.getColumnIndex(FinanceDBHelper.COLUMN_DESCRIPTION);
-        int idLastUse = cursor.getColumnIndex(FinanceDBHelper.COLUMN_LASTUSE);
+        int idIndex = cursor.getColumnIndex(ProfilesHelper.COLUMN_ID);
+        int idName = cursor.getColumnIndex(ProfilesHelper.COLUMN_NAME);
+        int idDescription = cursor.getColumnIndex(ProfilesHelper.COLUMN_DESCRIPTION);
+        int idLastUse = cursor.getColumnIndex(ProfilesHelper.COLUMN_LASTUSE);
 
         long id = cursor.getInt(idIndex);
         String name = cursor.getString(idName);
@@ -79,7 +79,7 @@ public class FinanceDataSource {
     public List<ProfileBean> getAllProfileBeans() {
         List<ProfileBean> profileList = new ArrayList<>();
 
-        Cursor cursor = database.query(FinanceDBHelper.TABLE_PROFILES, columns,
+        Cursor cursor = database.query(ProfilesHelper.TABLE_NAME, columns,
             null, null, null, null, null);
 
         cursor.moveToFirst();

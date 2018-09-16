@@ -8,25 +8,24 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.util.Date;
 import java.util.List;
 
 import wbh.finanzapp.R;
-import wbh.finanzapp.access.FinanceDataSource;
+import wbh.finanzapp.access.ProfilesDataSource;
 import wbh.finanzapp.business.ProfileBean;
 
 public class ProfilesActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = ProfilesActivity.class.getSimpleName();
 
-    private FinanceDataSource dataSource;
+    private ProfilesDataSource dataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profiles);
 
-        dataSource = new FinanceDataSource(this);
+        dataSource = new ProfilesDataSource(this);
 
         Log.d(LOG_TAG, "Die Datenquelle wird geöffnet.");
         dataSource.open();
