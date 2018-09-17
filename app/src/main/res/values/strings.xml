@@ -2,6 +2,7 @@
     <string name="app_name">FinanzApp</string>
 
     <string name="hello_world">Hallo Welt!</string>
+
     <string name="action_settings">Einstellungen</string>
 
 </resources>
