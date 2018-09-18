@@ -42,7 +42,7 @@ public class ProfilesDataSource {
         Log.d(LOG_TAG, "Datenbank mit Hilfe des DBHelpers geschlossen.");
     }
 
-    public ProfileBean createProfileBean(String name, String description) {
+    public ProfileBean insertProfile(String name, String description) {
         ContentValues values = new ContentValues();
         values.put(ProfilesHelper.COLUMN_NAME, name);
         values.put(ProfilesHelper.COLUMN_DESCRIPTION, description);
@@ -54,13 +54,13 @@ public class ProfilesDataSource {
             null, null, null, null);
 
         cursor.moveToFirst();
-        ProfileBean profile = cursorToProfileBean(cursor);
+        ProfileBean profile = cursorToProfile(cursor);
         cursor.close();
 
         return profile;
     }
 
-    private ProfileBean cursorToProfileBean(Cursor cursor) {
+    private ProfileBean cursorToProfile(Cursor cursor) {
         int idIndex = cursor.getColumnIndex(ProfilesHelper.COLUMN_ID);
         int idName = cursor.getColumnIndex(ProfilesHelper.COLUMN_NAME);
         int idDescription = cursor.getColumnIndex(ProfilesHelper.COLUMN_DESCRIPTION);
@@ -76,17 +76,17 @@ public class ProfilesDataSource {
         return profileBean;
     }
 
-    public List<ProfileBean> getAllProfileBeans() {
+    public List<ProfileBean> getAllProfiles() {
         List<ProfileBean> profileList = new ArrayList<>();
 
         Cursor cursor = database.query(ProfilesHelper.TABLE_NAME, columns,
-            null, null, null, null, null);
+            null, null, null, null, ProfilesHelper.COLUMN_LASTUSE + " DESC");
 
         cursor.moveToFirst();
         ProfileBean profile;
 
         while(!cursor.isAfterLast()) {
-            profile = cursorToProfileBean(cursor);
+            profile = cursorToProfile(cursor);
             profileList.add(profile);
             Log.d(LOG_TAG, profile.toString());
             cursor.moveToNext();

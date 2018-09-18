@@ -1,8 +1,13 @@
 <resources>
     <string name="app_name">FinanzApp</string>
 
-    <string name="hello_world">Hallo Welt!</string>
+    <string name="action_add">Hinzufügen</string>
 
-    <string name="action_settings">Einstellungen</string>
+    <string name="dialog_button_positive">Speichern</string>
+    <string name="dialog_button_negative">Abbrechen</string>
 
+    <string name="profile_add_title">Neues Profil hinzufügen</string>
+    <string name="profile_name">Name</string>
+    <string name="profile_name_error">Der Name darf nicht leer sein.</string>
+    <string name="profile_description">Beschreibung</string>
 </resources>
