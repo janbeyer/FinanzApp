@@ -7,13 +7,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 import java.util.List;
-
 import wbh.finanzapp.R;
 import wbh.finanzapp.access.ProfilesDataSource;
 import wbh.finanzapp.business.ProfileBean;
 
+/**
+ * Die ProfilesActivity wird beim Programmstart erzeugt und steuert das Profilehandling.
+ */
 public class ProfilesActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = ProfilesActivity.class.getSimpleName();
@@ -27,17 +28,17 @@ public class ProfilesActivity extends AppCompatActivity {
 
         dataSource = new ProfilesDataSource(this);
 
-        Log.d(LOG_TAG, "Die Datenquelle wird geöffnet.");
+        Log.d(LOG_TAG, "--> Die Datenquelle wird geöffnet.");
         dataSource.open();
 
         ProfileBean profileBean = dataSource.createProfileBean("testName1", "testDescr1");
-        Log.d(LOG_TAG, "Es wurde der folgende Eintrag in die Datenbank geschrieben:");
-        Log.d(LOG_TAG, profileBean.toString());
+        Log.d(LOG_TAG, "--> Es wurde der folgende Eintrag in die Datenbank geschrieben:");
+        Log.d(LOG_TAG, "--> " + profileBean.toString());
 
-        Log.d(LOG_TAG, "Es sind folgende Einträge in der Datenbank vorhanden:");
+        Log.d(LOG_TAG, "--> Es sind folgende Einträge in der Datenbank vorhanden:");
         showAllListEntries();
 
-        Log.d(LOG_TAG, "Die Datenquelle wird geschlossen.");
+        Log.d(LOG_TAG, "--> Die Datenquelle wird geschlossen.");
         dataSource.close();
     }
 
@@ -49,7 +50,7 @@ public class ProfilesActivity extends AppCompatActivity {
             android.R.layout.simple_list_item_single_choice,
             profiles);
 
-        ListView profilesListView = (ListView) findViewById(R.id.listview_profiles);
+        ListView profilesListView = findViewById(R.id.list_view_profiles);
         profilesListView.setAdapter(profileArrayAdapter);
     }
 

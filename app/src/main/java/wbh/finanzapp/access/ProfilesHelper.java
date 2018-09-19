@@ -8,6 +8,7 @@ public class ProfilesHelper {
     private static final String LOG_TAG = ProfilesHelper.class.getSimpleName();
 
     public static final String TABLE_NAME ="profiles";
+
     public static final int TABLE_VERSION = 1;
 
     public static final String COLUMN_ID = "_id";
@@ -15,7 +16,7 @@ public class ProfilesHelper {
     public static final String COLUMN_DESCRIPTION = "description";
     public static final String COLUMN_LASTUSE = "last_use";
 
-    public static final String SQL_CREATE =
+    private static final String SQL_CREATE =
         "CREATE TABLE " + TABLE_NAME + "(" +
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_NAME + " TEXT NOT NULL, " +
@@ -25,10 +26,10 @@ public class ProfilesHelper {
 
     public static void createTable(SQLiteDatabase db) {
         try {
-            Log.d(LOG_TAG, "Die Tabelle wird mit dem SQL-Befehl: " + SQL_CREATE + " angelegt.");
+            Log.d(LOG_TAG, "--> Die Tabelle wird mit dem SQL-Befehl: " + SQL_CREATE + " angelegt.");
             db.execSQL(SQL_CREATE);
         } catch (Exception e) {
-            Log.e(LOG_TAG, "Fehler beim Anlegen der Tabelle: " + e.getMessage());
+            Log.e(LOG_TAG, "--> Fehler beim Anlegen der Tabelle: " + e.getMessage());
         }
     }
 }

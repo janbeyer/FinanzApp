@@ -17,6 +17,7 @@ public class ProfilesDataSource {
     private static final String LOG_TAG = ProfilesDataSource.class.getSimpleName();
 
     private SQLiteDatabase database;
+
     private DBHelper dbHelper;
 
     private String[] columns = {
@@ -27,19 +28,19 @@ public class ProfilesDataSource {
     };
 
     public ProfilesDataSource(Context context) {
-        Log.d(LOG_TAG, "Unsere DataSource erzeugt jetzt den dbHelper.");
+        Log.d(LOG_TAG, "--> Unsere DataSource erzeugt jetzt den dbHelper.");
         dbHelper = new DBHelper(context);
     }
 
     public void open() {
-        Log.d(LOG_TAG, "Eine Referenz auf die Datenbank wird jetzt angefragt.");
+        Log.d(LOG_TAG, "--> Eine Referenz auf die Datenbank wird jetzt angefragt.");
         database = dbHelper.getWritableDatabase();
-        Log.d(LOG_TAG, "Datenbank-Referenz erhalten. Pfad zur Datenbank: " + database.getPath());
+        Log.d(LOG_TAG, "--> Datenbank-Referenz erhalten. Pfad zur Datenbank: " + database.getPath());
     }
 
     public void close() {
         dbHelper.close();
-        Log.d(LOG_TAG, "Datenbank mit Hilfe des DBHelpers geschlossen.");
+        Log.d(LOG_TAG, "--> Datenbank mit Hilfe des DBHelpers geschlossen.");
     }
 
     public ProfileBean createProfileBean(String name, String description) {
@@ -71,9 +72,7 @@ public class ProfilesDataSource {
         String desciption = cursor.getString(idDescription);
         long lastUse = cursor.getInt(idLastUse);
 
-        ProfileBean profileBean = new ProfileBean(id, name, desciption, lastUse);
-
-        return profileBean;
+        return new ProfileBean(id, name, desciption, lastUse);
     }
 
     public List<ProfileBean> getAllProfileBeans() {
@@ -88,7 +87,7 @@ public class ProfilesDataSource {
         while(!cursor.isAfterLast()) {
             profile = cursorToProfileBean(cursor);
             profileList.add(profile);
-            Log.d(LOG_TAG, profile.toString());
+            Log.d(LOG_TAG, "--> " + profile.toString());
             cursor.moveToNext();
         }
 
