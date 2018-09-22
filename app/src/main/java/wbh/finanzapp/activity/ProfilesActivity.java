@@ -43,7 +43,7 @@ public class ProfilesActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        Log.d(LOG_TAG, "Die Datenquelle wird geöffnet.");
+        Log.d(LOG_TAG, "--> Die Datenquelle wird geöffnet.");
         dataSource.open();
 
         showAllListEntries();
@@ -53,7 +53,7 @@ public class ProfilesActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        Log.d(LOG_TAG, "Die Datenquelle wird geschlossen.");
+        Log.d(LOG_TAG, "--> Die Datenquelle wird geschlossen.");
         dataSource.close();
     }
 
@@ -107,7 +107,7 @@ public class ProfilesActivity extends AppCompatActivity {
                     }
 
                     ProfileBean newProfile = dataSource.insertProfile(name, description);
-                    Log.d(LOG_TAG, "Neuer Eintrag: " + newProfile.toString());
+                    Log.d(LOG_TAG, "--> Neuer Eintrag: " + newProfile.toString());
 
                     showAllListEntries();
                     dialog.dismiss();
