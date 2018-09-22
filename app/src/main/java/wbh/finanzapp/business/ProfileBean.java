@@ -1,5 +1,11 @@
 package wbh.finanzapp.business;
 
+import android.annotation.SuppressLint;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class ProfileBean {
 
     private long id;
@@ -46,13 +52,28 @@ public class ProfileBean {
         this.lastUse = lastUse;
     }
 
+
+    /**
+     * Convert the integer stored in the data base to a readable date format.
+     * @param i the integer value.
+     * @return the converted date or null.
+     */
+    private Date integerToDate(long i) {
+        Long value = i;
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat originalFormat = new SimpleDateFormat("yyyyMMdd");
+        Date date = null;
+        try {
+            date = originalFormat.parse(value.toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
     @Override
     public String toString() {
-        return "ProfileBean{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", lastUse=" + lastUse +
-                '}';
+        return "ProfileBean " + name +
+                "\n " + description + ", " + integerToDate(lastUse);
     }
 }
