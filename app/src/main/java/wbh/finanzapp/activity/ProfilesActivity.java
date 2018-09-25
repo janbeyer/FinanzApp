@@ -106,7 +106,7 @@ public class ProfilesActivity extends AppCompatActivity {
                         return;
                     }
 
-                    ProfileBean newProfile = dataSource.insertProfile(name, description);
+                    ProfileBean newProfile = dataSource.insertProfile(name, description, null);
                     Log.d(LOG_TAG, "--> Neuer Eintrag: " + newProfile.toString());
 
                     showAllListEntries();

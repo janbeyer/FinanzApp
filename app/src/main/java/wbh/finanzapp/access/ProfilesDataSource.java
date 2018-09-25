@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -44,29 +45,11 @@ public class ProfilesDataSource {
         Log.d(LOG_TAG, "--> Datenbank mit Hilfe des DBHelpers geschlossen.");
     }
 
-    public ProfileBean insertProfile(String name, String description) {
-        ContentValues values = new ContentValues();
-        values.put(ProfilesHelper.COLUMN_NAME, name);
-        values.put(ProfilesHelper.COLUMN_DESCRIPTION, description);
-        values.put(ProfilesHelper.COLUMN_LASTUSE, System.currentTimeMillis()); // set the current date.
-
-        long insertId = database.insert(ProfilesHelper.TABLE_NAME, null, values);
-
-        Cursor cursor = database.query(ProfilesHelper.TABLE_NAME, columns, ProfilesHelper.COLUMN_ID + "=" + insertId,
-            null, null, null, null);
-
-        cursor.moveToFirst();
-        ProfileBean profile = cursorToProfile(cursor);
-        cursor.close();
-
-        return profile;
-    }
-
     public List<ProfileBean> getAllProfiles() {
         List<ProfileBean> profileList = new ArrayList<>();
 
         Cursor cursor = database.query(ProfilesHelper.TABLE_NAME, columns,
-            null, null, null, null, ProfilesHelper.COLUMN_LASTUSE + " DESC");
+                null, null, null, null, ProfilesHelper.COLUMN_LASTUSE + " DESC");
 
         cursor.moveToFirst();
         ProfileBean profile;
@@ -83,6 +66,36 @@ public class ProfilesDataSource {
         return profileList;
     }
 
+    public ProfileBean insertProfile(String name, String description, Integer startValue) {
+        ContentValues values = createProfileValues(null, name, description, startValue);
+        long insertId = database.insert(ProfilesHelper.TABLE_NAME, null, values);
+        Cursor cursor = database.query(ProfilesHelper.TABLE_NAME, columns, ProfilesHelper.COLUMN_ID + "=" + insertId,
+            null, null, null, null);
+        cursor.moveToFirst();
+        ProfileBean profile = cursorToProfile(cursor);
+        cursor.close();
+        Log.d(LOG_TAG, "--> Eintrag eingefügt! Profile: " + profile.toString());
+        return profile;
+    }
+
+    public ProfileBean updateProfile(Long id, String newName, String newDescription, Integer startValue) {
+        ContentValues values = createProfileValues(id, newName, newDescription, startValue);
+        database.update(ProfilesHelper.TABLE_NAME, values, ProfilesHelper.COLUMN_ID + "=" + id, null);
+        Cursor cursor = database.query(ProfilesHelper.TABLE_NAME, columns, ProfilesHelper.COLUMN_ID + "=" + id,
+            null, null, null, null);
+        cursor.moveToFirst();
+        ProfileBean profile = cursorToProfile(cursor);
+        cursor.close();
+        Log.d(LOG_TAG, "--> Eintrag geänder! Profile: " + profile.toString());
+        return profile;
+    }
+
+    public void deleteProfile(ProfileBean profile) {
+        long id = profile.getId();
+        database.delete(ProfilesHelper.TABLE_NAME, ProfilesHelper.COLUMN_ID + "=" + id, null);
+        Log.d(LOG_TAG, "--> Eintrag gelöscht! Profile: " + profile.toString());
+    }
+
     private ProfileBean cursorToProfile(Cursor cursor) {
         int idIndex = cursor.getColumnIndex(ProfilesHelper.COLUMN_ID);
         int idName = cursor.getColumnIndex(ProfilesHelper.COLUMN_NAME);
@@ -97,5 +110,15 @@ public class ProfilesDataSource {
         int startValue = cursor.getInt(idStartValue);
 
         return new ProfileBean(id, name, desciption, lastUse, startValue);
+    }
+
+    private ContentValues createProfileValues(Long id, String name, String description, Integer startValue) {
+        ContentValues values = new ContentValues();
+        if(id != null) values.put(ProfilesHelper.COLUMN_ID, id.longValue());
+        if(name != null) values.put(ProfilesHelper.COLUMN_NAME, name);
+        if(description != null) values.put(ProfilesHelper.COLUMN_DESCRIPTION, description);
+        values.put(ProfilesHelper.COLUMN_LASTUSE, System.currentTimeMillis()); // set the current date.
+        if(startValue != null) values.put(ProfilesHelper.COLUMN_STARTVALUE, startValue.intValue());
+        return values;
     }
 }
