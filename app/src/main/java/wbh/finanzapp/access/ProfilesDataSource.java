@@ -48,7 +48,7 @@ public class ProfilesDataSource {
         ContentValues values = new ContentValues();
         values.put(ProfilesHelper.COLUMN_NAME, name);
         values.put(ProfilesHelper.COLUMN_DESCRIPTION, description);
-        values.put(ProfilesHelper.COLUMN_LASTUSE, new Date().getTime()); // set the current date.
+        values.put(ProfilesHelper.COLUMN_LASTUSE, System.currentTimeMillis()); // set the current date.
 
         long insertId = database.insert(ProfilesHelper.TABLE_NAME, null, values);
 
@@ -90,10 +90,10 @@ public class ProfilesDataSource {
         int idLastUse = cursor.getColumnIndex(ProfilesHelper.COLUMN_LASTUSE);
         int idStartValue = cursor.getColumnIndex(ProfilesHelper.COLUMN_STARTVALUE);
 
-        long id = cursor.getInt(idIndex);
+        long id = cursor.getLong(idIndex);
         String name = cursor.getString(idName);
         String desciption = cursor.getString(idDescription);
-        long lastUse = cursor.getInt(idLastUse);
+        long lastUse = cursor.getLong(idLastUse);
         int startValue = cursor.getInt(idStartValue);
 
         return new ProfileBean(id, name, desciption, lastUse, startValue);

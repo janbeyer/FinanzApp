@@ -2,6 +2,7 @@ package wbh.finanzapp.business;
 
 import android.annotation.SuppressLint;
 
+import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -60,12 +61,12 @@ public class ProfileBean {
 
     @Override
     public String toString() {
-        return "ProfileBean{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", lastUse=" + lastUse +
-                ", startValue=" + startValue +
-                '}';
+        return "Name: " + name + "\nBeschreibung: " + description + "\nLetzte Verwendung: " + convertTime(lastUse);
+    }
+
+    private String convertTime(long time){
+        Date date = new Date(time);
+        Format format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+        return format.format(date);
     }
 }
