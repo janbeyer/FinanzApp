@@ -61,7 +61,7 @@ public class ProfileBean {
 
     @Override
     public String toString() {
-        return "Name: " + name + "\nBeschreibung: " + description + "\nLetzte Verwendung: " + convertTime(lastUse);
+        return "Name: " + name + "\nBeschreibung: " + description + "\nLetzte Verwendung: " + convertTime(lastUse) + "\nStartbetrag: " + startValue;
     }
 
     private String convertTime(long time){
