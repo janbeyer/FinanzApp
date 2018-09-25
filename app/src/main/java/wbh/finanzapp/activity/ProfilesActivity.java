@@ -65,7 +65,7 @@ public class ProfilesActivity extends AppCompatActivity {
             android.R.layout.simple_list_item_1,
             profiles);
 
-        ListView profilesListView = (ListView) findViewById(R.id.listview_profiles);
+        ListView profilesListView = (ListView) findViewById(R.id.list_view_profiles);
         profilesListView.setAdapter(profileArrayAdapter);
     }
 
