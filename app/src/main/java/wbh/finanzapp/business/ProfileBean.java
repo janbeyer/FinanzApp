@@ -12,12 +12,14 @@ public class ProfileBean {
     private String name;
     private String description;
     private long lastUse;
+    private int startValue;
 
-    public ProfileBean(long id, String name, String description, long lastUse) {
+    public ProfileBean(long id, String name, String description, long lastUse, int startValue) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.lastUse = lastUse;
+        this.startValue = startValue;
     }
 
     public long getId() {
@@ -52,6 +54,10 @@ public class ProfileBean {
         this.lastUse = lastUse;
     }
 
+    public int getStartValue() { return startValue; }
+
+    public void setStartValue(int startValue) { this.startValue = startValue; }
+
     @Override
     public String toString() {
         return "ProfileBean{" +
@@ -59,6 +65,7 @@ public class ProfileBean {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", lastUse=" + lastUse +
+                ", startValue=" + startValue +
                 '}';
     }
 }

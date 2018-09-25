@@ -24,7 +24,8 @@ public class ProfilesDataSource {
         ProfilesHelper.COLUMN_ID,
         ProfilesHelper.COLUMN_NAME,
         ProfilesHelper.COLUMN_DESCRIPTION,
-        ProfilesHelper.COLUMN_LASTUSE
+        ProfilesHelper.COLUMN_LASTUSE,
+        ProfilesHelper.COLUMN_STARTVALUE
     };
 
     public ProfilesDataSource(Context context) {
@@ -61,20 +62,6 @@ public class ProfilesDataSource {
         return profile;
     }
 
-    private ProfileBean cursorToProfile(Cursor cursor) {
-        int idIndex = cursor.getColumnIndex(ProfilesHelper.COLUMN_ID);
-        int idName = cursor.getColumnIndex(ProfilesHelper.COLUMN_NAME);
-        int idDescription = cursor.getColumnIndex(ProfilesHelper.COLUMN_DESCRIPTION);
-        int idLastUse = cursor.getColumnIndex(ProfilesHelper.COLUMN_LASTUSE);
-
-        long id = cursor.getInt(idIndex);
-        String name = cursor.getString(idName);
-        String desciption = cursor.getString(idDescription);
-        long lastUse = cursor.getInt(idLastUse);
-
-        return new ProfileBean(id, name, desciption, lastUse);
-    }
-
     public List<ProfileBean> getAllProfiles() {
         List<ProfileBean> profileList = new ArrayList<>();
 
@@ -94,5 +81,21 @@ public class ProfilesDataSource {
         cursor.close();
 
         return profileList;
+    }
+
+    private ProfileBean cursorToProfile(Cursor cursor) {
+        int idIndex = cursor.getColumnIndex(ProfilesHelper.COLUMN_ID);
+        int idName = cursor.getColumnIndex(ProfilesHelper.COLUMN_NAME);
+        int idDescription = cursor.getColumnIndex(ProfilesHelper.COLUMN_DESCRIPTION);
+        int idLastUse = cursor.getColumnIndex(ProfilesHelper.COLUMN_LASTUSE);
+        int idStartValue = cursor.getColumnIndex(ProfilesHelper.COLUMN_STARTVALUE);
+
+        long id = cursor.getInt(idIndex);
+        String name = cursor.getString(idName);
+        String desciption = cursor.getString(idDescription);
+        long lastUse = cursor.getInt(idLastUse);
+        int startValue = cursor.getInt(idStartValue);
+
+        return new ProfileBean(id, name, desciption, lastUse, startValue);
     }
 }
