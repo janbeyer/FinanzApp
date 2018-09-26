@@ -15,13 +15,15 @@ public class ProfilesHelper {
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_DESCRIPTION = "description";
     public static final String COLUMN_LASTUSE = "last_use";
+    public static final String COLUMN_STARTVALUE = "start_value";
 
     private static final String SQL_CREATE =
         "CREATE TABLE " + TABLE_NAME + "(" +
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_NAME + " TEXT NOT NULL, " +
-            COLUMN_DESCRIPTION + " TEXT, " +
-            COLUMN_LASTUSE + " INTEGER NOT NULL" +
+            COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
+            COLUMN_LASTUSE + " INTEGER NOT NULL, " +
+            COLUMN_STARTVALUE + " INTEGER NOT NULL DEFAULT 0" +
             ");";
 
     public static void createTable(SQLiteDatabase db) {
