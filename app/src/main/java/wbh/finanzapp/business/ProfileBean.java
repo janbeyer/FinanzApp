@@ -7,6 +7,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import wbh.finanzapp.R;
+
 public class ProfileBean {
 
     private long id;
@@ -61,7 +63,11 @@ public class ProfileBean {
 
     @Override
     public String toString() {
-        return "Name: " + name + "\nBeschreibung: " + description + "\nLetzte Verwendung: " + convertTime(lastUse) + "\nStartbetrag: " + startValue;
+        // TODO: Replace the descrptions here with the property param.
+        return "Name: " + name +
+            "\nBeschreibung: " + description +
+            "\nLetzte Verwendung: " + convertTime(lastUse) +
+            "\nStartbetrag: " + startValue;
     }
 
     private String convertTime(long time){
