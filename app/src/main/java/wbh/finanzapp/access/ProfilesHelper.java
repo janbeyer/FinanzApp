@@ -21,7 +21,7 @@ public class ProfilesHelper {
         "CREATE TABLE " + TABLE_NAME + "(" +
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_NAME + " TEXT NOT NULL, " +
-            COLUMN_DESCRIPTION + " TEXT, " +
+            COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
             COLUMN_LASTUSE + " INTEGER NOT NULL, " +
             COLUMN_STARTVALUE + " INTEGER NOT NULL DEFAULT 0" +
             ");";
