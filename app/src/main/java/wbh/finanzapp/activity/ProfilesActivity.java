@@ -6,6 +6,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,6 +38,7 @@ public class ProfilesActivity extends AppCompatActivity {
         dataSource = new ProfilesDataSource(this);
 
         activateAddButton();
+        initializeContextualActionBar();
     }
 
     @Override
@@ -61,9 +63,7 @@ public class ProfilesActivity extends AppCompatActivity {
         List<ProfileBean> profiles = dataSource.getAllProfiles();
 
         ArrayAdapter<ProfileBean> profileArrayAdapter = new ArrayAdapter<>(
-            this,
-            android.R.layout.simple_list_item_1,
-            profiles);
+            this, android.R.layout.simple_list_item_activated_1, profiles);
 
         ListView profilesListView = (ListView) findViewById(R.id.list_view_profiles);
         profilesListView.setAdapter(profileArrayAdapter);
@@ -77,6 +77,66 @@ public class ProfilesActivity extends AppCompatActivity {
             public void onClick(View view) {
                 AlertDialog addProfileDialog = createAddProfileDialog();
                 addProfileDialog.show();
+            }
+        });
+    }
+
+    private void initializeContextualActionBar() {
+        final ListView profilesListView = (ListView) findViewById(R.id.list_view_profiles);
+        profilesListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+
+        profilesListView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+            int selCount = 0;
+
+            @Override
+            public void onItemCheckedStateChanged(ActionMode actionMode, int position, long id, boolean checked) {
+                if(checked) selCount++;
+                else selCount--;
+                String cabTitle = selCount + " " + getString(R.string.cab_checked_string);
+                actionMode.setTitle(cabTitle);
+                actionMode.invalidate();
+            }
+
+            @Override
+            public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+                getMenuInflater().inflate(R.menu.profile_contextual_action_bar, menu);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+                return true;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+                boolean returnValue = true;
+                SparseBooleanArray touchedProfilePositions = profilesListView.getCheckedItemPositions();
+
+                switch(menuItem.getItemId()) {
+                    case R.id.button_delete_profile:
+                        for(int i = 0; i < touchedProfilePositions.size(); i++) {
+                            boolean isChecked = touchedProfilePositions.valueAt(i);
+                            if(isChecked) {
+                                int positionInListView = touchedProfilePositions.keyAt(i);
+                                ProfileBean profile = (ProfileBean) profilesListView.getItemAtPosition(positionInListView);
+                                Log.d(LOG_TAG, "--> Position im ListView: " + positionInListView + " Inhalt: " + profile.toString());
+                                dataSource.deleteProfile(profile);
+                            }
+                        }
+                        showAllListEntries();
+                        actionMode.finish();
+                        break;
+                    default:
+                        returnValue = false;
+                        break;
+                }
+                return returnValue;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode actionMode) {
+                selCount = 0;
             }
         });
     }

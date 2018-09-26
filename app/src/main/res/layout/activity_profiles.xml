@@ -15,7 +15,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="@string/action_add" />
+        android:text="@string/profile_add_title" />
 
     <ListView
         android:layout_width="match_parent"
