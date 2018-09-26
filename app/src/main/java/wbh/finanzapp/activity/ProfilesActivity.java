@@ -105,6 +105,9 @@ public class ProfilesActivity extends AppCompatActivity {
 
             @Override
             public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+                MenuItem item = menu.findItem(R.id.button_edit_profile);
+                if(selCount == 1) item.setVisible(true);
+                else item.setVisible(false);
                 return true;
             }
 
@@ -122,6 +125,20 @@ public class ProfilesActivity extends AppCompatActivity {
                                 ProfileBean profile = (ProfileBean) profilesListView.getItemAtPosition(positionInListView);
                                 Log.d(LOG_TAG, "--> Position im ListView: " + positionInListView + " Inhalt: " + profile.toString());
                                 dataSource.deleteProfile(profile);
+                            }
+                        }
+                        showAllListEntries();
+                        actionMode.finish();
+                        break;
+                    case R.id.button_edit_profile:
+                        for(int i = 0; i < touchedProfilePositions.size(); i++) {
+                            boolean isChecked = touchedProfilePositions.valueAt(i);
+                            if(isChecked) {
+                                int positionInListView = touchedProfilePositions.keyAt(i);
+                                ProfileBean profile = (ProfileBean) profilesListView.getItemAtPosition(positionInListView);
+                                Log.d(LOG_TAG, "--> Position im ListView: " + positionInListView + " Inhalt: " + profile.toString());
+                                AlertDialog editProfileDialog = createEditProfileDialog(profile);
+                                editProfileDialog.show();
                             }
                         }
                         showAllListEntries();
@@ -179,6 +196,50 @@ public class ProfilesActivity extends AppCompatActivity {
                     dialog.cancel();
                 }
             });
+
+        return builder.create();
+    }
+
+    private AlertDialog createEditProfileDialog(final ProfileBean profile) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+
+        View dialogsView = inflater.inflate(R.layout.dialog_edit_profile, null);
+
+        final EditText editTextNewName = (EditText) dialogsView.findViewById(R.id.profile_new_name);
+        editTextNewName.setText(profile.getName());
+
+        final EditText editTextNewDescription = (EditText) dialogsView.findViewById(R.id.profile_new_description);
+        editTextNewDescription.setText(profile.getDescription());
+
+        builder.setView(dialogsView)
+                .setTitle(R.string.profile_edit_title)
+                .setPositiveButton(R.string.dialog_button_positive, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        String name = editTextNewName.getText().toString();
+                        String description = editTextNewDescription.getText().toString();
+
+                        if((TextUtils.isEmpty(name))) {
+                            editTextNewName.setError(getString(R.string.profile_name_error));
+                            return;
+                        }
+
+                        ProfileBean updatedProfile = dataSource.updateProfile(profile.getId(), name, description, null);
+
+                        Log.d(LOG_TAG, "--> Alter Eintrag: " + profile.toString());
+                        Log.d(LOG_TAG, "--> Neuer Eintrag: " + updatedProfile.toString());
+
+                        showAllListEntries();
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(R.string.dialog_button_negative, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
 
         return builder.create();
     }

@@ -78,8 +78,8 @@ public class ProfilesDataSource {
         return profile;
     }
 
-    public ProfileBean updateProfile(Long id, String newName, String newDescription, Integer startValue) {
-        ContentValues values = createProfileValues(id, newName, newDescription, startValue);
+    public ProfileBean updateProfile(long id, String newName, String newDescription, Integer newStartValue) {
+        ContentValues values = createProfileValues(id, newName, newDescription, newStartValue);
         database.update(ProfilesHelper.TABLE_NAME, values, ProfilesHelper.COLUMN_ID + "=" + id, null);
         Cursor cursor = database.query(ProfilesHelper.TABLE_NAME, columns, ProfilesHelper.COLUMN_ID + "=" + id,
             null, null, null, null);
