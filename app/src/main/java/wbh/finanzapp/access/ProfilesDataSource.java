@@ -66,8 +66,8 @@ public class ProfilesDataSource {
         return profileList;
     }
 
-    public ProfileBean insertProfile(String name, String description, Integer startValue) {
-        ContentValues values = createProfileValues(null, name, description, startValue);
+    public ProfileBean insertProfile(String name, String description) {
+        ContentValues values = createProfileValues(null, name, description, null);
         long insertId = database.insert(ProfilesHelper.TABLE_NAME, null, values);
         Cursor cursor = database.query(ProfilesHelper.TABLE_NAME, columns, ProfilesHelper.COLUMN_ID + "=" + insertId,
             null, null, null, null);
