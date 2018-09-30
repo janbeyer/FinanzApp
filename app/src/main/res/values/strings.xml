@@ -17,7 +17,9 @@
 
     <string name="profile_name_error">Der Name darf nicht leer sein.</string>
 
-    <!-- ... -->
-
+    <!-- Menu properties -->
+    <string name="menu_button_transaction">Transaktionen</string>
+    <string name="menu_button_analyze">Analyse</string>
+    <string name="menu_button_groups">Gruppen</string>
 
 </resources>

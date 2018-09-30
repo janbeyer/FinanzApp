@@ -30,9 +30,10 @@ public class ProfilesDataSource {
     public ProfilesDataSource(Context context) {
         Log.d(LOG_TAG, "--> Now the data source createss the dbHelper.");
         dbHelper = new DBHelper(context);
+        open();
     }
 
-    public void open() {
+    private void open() {
         Log.d(LOG_TAG, "--> Start getting a reference of the db.");
         database = dbHelper.getWritableDatabase();
         Log.d(LOG_TAG, "--> Finish getting the db reference. Path of the db: " + database.getPath());
@@ -41,6 +42,23 @@ public class ProfilesDataSource {
     public void close() {
         dbHelper.close();
         Log.d(LOG_TAG, "--> Close the db with the help of the DBHelper.");
+    }
+
+    public ProfileBean getProfile(long id) {
+        Cursor cursor = null;
+        ProfileBean profile = null;
+
+        try {
+            cursor = database.query(ProfilesDBHelper.TABLE_NAME, columns, ProfilesDBHelper.COLUMN_ID + "=?",
+                new String[] { String.valueOf(id) },null, null, null);
+            if(cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                profile = cursorToProfile(cursor);
+            }
+            return profile;
+        } finally {
+            cursor.close();
+        }
     }
 
     public List<ProfileBean> getAllProfiles() {

@@ -2,6 +2,7 @@ package wbh.finanzapp.activity;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,22 +30,20 @@ import wbh.finanzapp.business.ProfileBean;
 public class ProfilesActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = ProfilesActivity.class.getSimpleName();
-    private static Context mContext;
 
-    private ProfilesDataSource dataSource;
+    private static Context mContext;
     public static Context getContext() {
         return mContext;
     }
+
+    private ProfilesDataSource profileDataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
-
         setContentView(R.layout.activity_profiles);
-
-        dataSource = new ProfilesDataSource(this);
-
+        profileDataSource = new ProfilesDataSource(this);
         activateAddButton();
         initializeContextualActionBar();
     }
@@ -51,29 +51,36 @@ public class ProfilesActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         Log.d(LOG_TAG, "--> Open the data source.");
-        dataSource.open();
-
         showAllListEntries();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
         Log.d(LOG_TAG, "--> Close the data source.");
-        dataSource.close();
+        profileDataSource.close();
     }
 
     private void showAllListEntries() {
-        List<ProfileBean> profiles = dataSource.getAllProfiles();
+        List<ProfileBean> profiles = profileDataSource.getAllProfiles();
 
         ArrayAdapter<ProfileBean> profileArrayAdapter = new ArrayAdapter<>(
             this, android.R.layout.simple_list_item_activated_1, profiles);
 
         ListView profilesListView = (ListView) findViewById(R.id.list_view_profiles);
         profilesListView.setAdapter(profileArrayAdapter);
+
+        profilesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                ProfileBean profile = (ProfileBean) adapterView.getItemAtPosition(position);
+                Intent myIntent = new Intent(ProfilesActivity.this, MenuActivity.class);
+                myIntent.putExtra(MenuActivity.PARAM_PROFILE_ID, profile.getId());
+                Log.d(LOG_TAG, "--> Start the menu activity for the profile: " + profile.toString());
+                ProfilesActivity.this.startActivity(myIntent);
+            }
+        });
     }
 
     private void activateAddButton() {
@@ -131,7 +138,7 @@ public class ProfilesActivity extends AppCompatActivity {
                                 int positionInListView = touchedProfilePositions.keyAt(i);
                                 ProfileBean profile = (ProfileBean) profilesListView.getItemAtPosition(positionInListView);
                                 Log.d(LOG_TAG, "--> Position in ListView: " + positionInListView + " Content: " + profile.toString());
-                                dataSource.deleteProfile(profile);
+                                profileDataSource.deleteProfile(profile);
                                 Log.d(LOG_TAG, "--> Delete old entry: " + profile.toString());
                             }
                         }
@@ -191,7 +198,7 @@ public class ProfilesActivity extends AppCompatActivity {
                         return;
                     }
 
-                    ProfileBean newProfile = dataSource.insertProfile(name, description);
+                    ProfileBean newProfile = profileDataSource.insertProfile(name, description);
 
                     Log.d(LOG_TAG, "--> Insert new entry: " + newProfile.toString());
 
@@ -234,7 +241,7 @@ public class ProfilesActivity extends AppCompatActivity {
                             return;
                         }
 
-                        ProfileBean updatedProfile = dataSource.updateProfile(profile.getId(), name, description, null);
+                        ProfileBean updatedProfile = profileDataSource.updateProfile(profile.getId(), name, description, null);
 
                         Log.d(LOG_TAG, "--> Update old entry: " + profile.toString());
                         Log.d(LOG_TAG, "--> Update new entry: " + updatedProfile.toString());
