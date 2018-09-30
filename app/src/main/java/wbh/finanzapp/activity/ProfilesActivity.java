@@ -76,6 +76,7 @@ public class ProfilesActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 ProfileBean profile = (ProfileBean) adapterView.getItemAtPosition(position);
+                profileDataSource.updateProfile(profile.getId(),null, null, null);
                 Intent myIntent = new Intent(ProfilesActivity.this, MenuActivity.class);
                 myIntent.putExtra(MenuActivity.PARAM_PROFILE_ID, profile.getId());
                 Log.d(LOG_TAG, "--> Start the menu activity for the profile: " + profile.toString());
