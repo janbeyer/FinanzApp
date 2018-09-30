@@ -1,6 +1,8 @@
 package wbh.finanzapp.business;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.res.Resources;
 
 import java.text.Format;
 import java.text.ParseException;
@@ -8,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import wbh.finanzapp.R;
+import wbh.finanzapp.activity.ProfilesActivity;
 
 public class ProfileBean {
 
@@ -63,11 +66,11 @@ public class ProfileBean {
 
     @Override
     public String toString() {
-        // TODO: Replace the descrptions here with the property param.
-        return "Name: " + name +
-            "\nBeschreibung: " + description +
-            "\nLetzte Verwendung: " + convertTime(lastUse) +
-            "\nStartbetrag: " + startValue;
+        Resources resources = ProfilesActivity.getContext().getResources();
+        return resources.getString(R.string.profile_name) + ": " + name +
+            "\n" + resources.getString(R.string.profile_description) + ": " + description +
+            "\n" + resources.getString(R.string.profile_lastUse) + ": " + convertTime(lastUse) +
+            "\n" + resources.getString(R.string.profile_startValue) + ": " + startValue;
     }
 
     private String convertTime(long time){

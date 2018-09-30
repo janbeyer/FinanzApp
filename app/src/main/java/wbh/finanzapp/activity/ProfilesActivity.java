@@ -1,5 +1,6 @@
 package wbh.finanzapp.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -27,12 +28,18 @@ import wbh.finanzapp.business.ProfileBean;
 public class ProfilesActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = ProfilesActivity.class.getSimpleName();
+    private static Context mContext;
 
     private ProfilesDataSource dataSource;
+    public static Context getContext() {
+        return mContext;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = this;
+
         setContentView(R.layout.activity_profiles);
 
         dataSource = new ProfilesDataSource(this);
