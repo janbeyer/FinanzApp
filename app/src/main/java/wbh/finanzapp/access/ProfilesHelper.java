@@ -28,10 +28,10 @@ public class ProfilesHelper {
 
     public static void createTable(SQLiteDatabase db) {
         try {
-            Log.d(LOG_TAG, "--> Die Tabelle wird mit dem SQL-Befehl: " + SQL_CREATE + " angelegt.");
+            Log.d(LOG_TAG, "--> Create the profile table with the statement: " + SQL_CREATE);
             db.execSQL(SQL_CREATE);
         } catch (Exception e) {
-            Log.e(LOG_TAG, "--> Fehler beim Anlegen der Tabelle: " + e.getMessage());
+            Log.e(LOG_TAG, "--> Error by creating the profile table: " + e.getMessage());
         }
     }
 }

@@ -45,7 +45,7 @@ public class ProfilesActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        Log.d(LOG_TAG, "--> Die Datenquelle wird geöffnet.");
+        Log.d(LOG_TAG, "--> Open the data source.");
         dataSource.open();
 
         showAllListEntries();
@@ -55,7 +55,7 @@ public class ProfilesActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        Log.d(LOG_TAG, "--> Die Datenquelle wird geschlossen.");
+        Log.d(LOG_TAG, "--> Close the data source.");
         dataSource.close();
     }
 
@@ -123,7 +123,7 @@ public class ProfilesActivity extends AppCompatActivity {
                             if(isChecked) {
                                 int positionInListView = touchedProfilePositions.keyAt(i);
                                 ProfileBean profile = (ProfileBean) profilesListView.getItemAtPosition(positionInListView);
-                                Log.d(LOG_TAG, "--> Position im ListView: " + positionInListView + " Inhalt: " + profile.toString());
+                                Log.d(LOG_TAG, "--> Position in ListView: " + positionInListView + " Content: " + profile.toString());
                                 dataSource.deleteProfile(profile);
                             }
                         }
@@ -136,7 +136,7 @@ public class ProfilesActivity extends AppCompatActivity {
                             if(isChecked) {
                                 int positionInListView = touchedProfilePositions.keyAt(i);
                                 ProfileBean profile = (ProfileBean) profilesListView.getItemAtPosition(positionInListView);
-                                Log.d(LOG_TAG, "--> Position im ListView: " + positionInListView + " Inhalt: " + profile.toString());
+                                Log.d(LOG_TAG, "--> Position in ListView: " + positionInListView + " Content: " + profile.toString());
                                 AlertDialog editProfileDialog = createEditProfileDialog(profile);
                                 editProfileDialog.show();
                             }
@@ -184,7 +184,7 @@ public class ProfilesActivity extends AppCompatActivity {
                     }
 
                     ProfileBean newProfile = dataSource.insertProfile(name, description);
-                    Log.d(LOG_TAG, "--> Neuer Eintrag: " + newProfile.toString());
+                    Log.d(LOG_TAG, "--> New entry: " + newProfile.toString());
 
                     showAllListEntries();
                     dialog.dismiss();
@@ -227,8 +227,8 @@ public class ProfilesActivity extends AppCompatActivity {
 
                         ProfileBean updatedProfile = dataSource.updateProfile(profile.getId(), name, description, null);
 
-                        Log.d(LOG_TAG, "--> Alter Eintrag: " + profile.toString());
-                        Log.d(LOG_TAG, "--> Neuer Eintrag: " + updatedProfile.toString());
+                        Log.d(LOG_TAG, "--> Old entry: " + profile.toString());
+                        Log.d(LOG_TAG, "--> New entry: " + updatedProfile.toString());
 
                         showAllListEntries();
                         dialog.dismiss();

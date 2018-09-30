@@ -30,19 +30,19 @@ public class ProfilesDataSource {
     };
 
     public ProfilesDataSource(Context context) {
-        Log.d(LOG_TAG, "--> Unsere DataSource erzeugt jetzt den dbHelper.");
+        Log.d(LOG_TAG, "--> Now the data source createss the dbHelper.");
         dbHelper = new DBHelper(context);
     }
 
     public void open() {
-        Log.d(LOG_TAG, "--> Eine Referenz auf die Datenbank wird jetzt angefragt.");
+        Log.d(LOG_TAG, "--> Start getting a reference of the db.");
         database = dbHelper.getWritableDatabase();
-        Log.d(LOG_TAG, "--> Datenbank-Referenz erhalten. Pfad zur Datenbank: " + database.getPath());
+        Log.d(LOG_TAG, "--> Finish getting the db reference. Path of the db: " + database.getPath());
     }
 
     public void close() {
         dbHelper.close();
-        Log.d(LOG_TAG, "--> Datenbank mit Hilfe des DBHelpers geschlossen.");
+        Log.d(LOG_TAG, "--> Close the db with the help of the DBHelper.");
     }
 
     public List<ProfileBean> getAllProfiles() {
@@ -74,7 +74,7 @@ public class ProfilesDataSource {
         cursor.moveToFirst();
         ProfileBean profile = cursorToProfile(cursor);
         cursor.close();
-        Log.d(LOG_TAG, "--> Eintrag eingefügt! Profile: " + profile.toString());
+        Log.d(LOG_TAG, "--> Add new entry! Profile: " + profile.toString());
         return profile;
     }
 
@@ -86,14 +86,14 @@ public class ProfilesDataSource {
         cursor.moveToFirst();
         ProfileBean profile = cursorToProfile(cursor);
         cursor.close();
-        Log.d(LOG_TAG, "--> Eintrag geänder! Profile: " + profile.toString());
+        Log.d(LOG_TAG, "--> Update entry! Profile: " + profile.toString());
         return profile;
     }
 
     public void deleteProfile(ProfileBean profile) {
         long id = profile.getId();
         database.delete(ProfilesHelper.TABLE_NAME, ProfilesHelper.COLUMN_ID + "=" + id, null);
-        Log.d(LOG_TAG, "--> Eintrag gelöscht! Profile: " + profile.toString());
+        Log.d(LOG_TAG, "--> Delete entry! Profile: " + profile.toString());
     }
 
     private ProfileBean cursorToProfile(Cursor cursor) {
