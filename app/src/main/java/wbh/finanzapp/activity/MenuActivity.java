@@ -40,6 +40,7 @@ public class MenuActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d(LOG_TAG, "--> Open the data source.");
+        profileDataSource.open();
     }
 
     @Override
@@ -60,21 +61,21 @@ public class MenuActivity extends AppCompatActivity {
         buttonTransaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "TODO: Transaktion Dialog.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "TODO: Open Transaktion Activity.", Toast.LENGTH_SHORT).show();
             }
         });
         Button buttonAnalyze = (Button) findViewById(R.id.menu_button_analyze);
         buttonAnalyze.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "TODO: Analyze Dialog.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "TODO: Open Analyze Activity.", Toast.LENGTH_SHORT).show();
             }
         });
         Button buttonGroups = (Button) findViewById(R.id.menu_button_groups);
         buttonGroups.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "TODO: Groups Dialog.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "TODO: Open Groups Activity.", Toast.LENGTH_SHORT).show();
             }
         });
     }

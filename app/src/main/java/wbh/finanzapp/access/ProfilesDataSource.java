@@ -33,7 +33,7 @@ public class ProfilesDataSource {
         open();
     }
 
-    private void open() {
+    public void open() {
         Log.d(LOG_TAG, "--> Start getting a reference of the db.");
         database = dbHelper.getWritableDatabase();
         Log.d(LOG_TAG, "--> Finish getting the db reference. Path of the db: " + database.getPath());

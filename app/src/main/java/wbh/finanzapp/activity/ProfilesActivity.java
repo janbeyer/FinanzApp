@@ -52,6 +52,7 @@ public class ProfilesActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d(LOG_TAG, "--> Open the data source.");
+        profileDataSource.open();
         showAllListEntries();
     }
 
