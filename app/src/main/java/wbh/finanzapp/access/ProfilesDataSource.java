@@ -57,7 +57,6 @@ public class ProfilesDataSource {
         while(!cursor.isAfterLast()) {
             profile = cursorToProfile(cursor);
             profileList.add(profile);
-            Log.d(LOG_TAG, "--> " + profile.toString());
             cursor.moveToNext();
         }
 
@@ -74,7 +73,6 @@ public class ProfilesDataSource {
         cursor.moveToFirst();
         ProfileBean profile = cursorToProfile(cursor);
         cursor.close();
-        Log.d(LOG_TAG, "--> Add new entry! Profile: " + profile.toString());
         return profile;
     }
 
@@ -86,14 +84,12 @@ public class ProfilesDataSource {
         cursor.moveToFirst();
         ProfileBean profile = cursorToProfile(cursor);
         cursor.close();
-        Log.d(LOG_TAG, "--> Update entry! Profile: " + profile.toString());
         return profile;
     }
 
     public void deleteProfile(ProfileBean profile) {
         long id = profile.getId();
         database.delete(ProfilesHelper.TABLE_NAME, ProfilesHelper.COLUMN_ID + "=" + id, null);
-        Log.d(LOG_TAG, "--> Delete entry! Profile: " + profile.toString());
     }
 
     private ProfileBean cursorToProfile(Cursor cursor) {
@@ -105,11 +101,11 @@ public class ProfilesDataSource {
 
         long id = cursor.getLong(idIndex);
         String name = cursor.getString(idName);
-        String desciption = cursor.getString(idDescription);
+        String description = cursor.getString(idDescription);
         long lastUse = cursor.getLong(idLastUse);
         int startValue = cursor.getInt(idStartValue);
 
-        return new ProfileBean(id, name, desciption, lastUse, startValue);
+        return new ProfileBean(id, name, description, lastUse, startValue);
     }
 
     private ContentValues createProfileValues(Long id, String name, String description, Integer startValue) {

@@ -132,6 +132,7 @@ public class ProfilesActivity extends AppCompatActivity {
                                 ProfileBean profile = (ProfileBean) profilesListView.getItemAtPosition(positionInListView);
                                 Log.d(LOG_TAG, "--> Position in ListView: " + positionInListView + " Content: " + profile.toString());
                                 dataSource.deleteProfile(profile);
+                                Log.d(LOG_TAG, "--> Delete old entry: " + profile.toString());
                             }
                         }
                         showAllListEntries();
@@ -191,7 +192,8 @@ public class ProfilesActivity extends AppCompatActivity {
                     }
 
                     ProfileBean newProfile = dataSource.insertProfile(name, description);
-                    Log.d(LOG_TAG, "--> New entry: " + newProfile.toString());
+
+                    Log.d(LOG_TAG, "--> Insert new entry: " + newProfile.toString());
 
                     showAllListEntries();
                     dialog.dismiss();
@@ -234,8 +236,8 @@ public class ProfilesActivity extends AppCompatActivity {
 
                         ProfileBean updatedProfile = dataSource.updateProfile(profile.getId(), name, description, null);
 
-                        Log.d(LOG_TAG, "--> Old entry: " + profile.toString());
-                        Log.d(LOG_TAG, "--> New entry: " + updatedProfile.toString());
+                        Log.d(LOG_TAG, "--> Update old entry: " + profile.toString());
+                        Log.d(LOG_TAG, "--> Update new entry: " + updatedProfile.toString());
 
                         showAllListEntries();
                         dialog.dismiss();
