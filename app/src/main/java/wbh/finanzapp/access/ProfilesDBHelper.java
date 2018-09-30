@@ -3,9 +3,9 @@ package wbh.finanzapp.access;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-public class ProfilesHelper {
+public class ProfilesDBHelper {
 
-    private static final String LOG_TAG = ProfilesHelper.class.getSimpleName();
+    private static final String LOG_TAG = ProfilesDBHelper.class.getSimpleName();
 
     public static final String TABLE_NAME ="profiles";
 
