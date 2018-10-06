@@ -69,7 +69,7 @@ public class ProfilesActivity extends AppCompatActivity {
         ArrayAdapter<ProfileBean> profileArrayAdapter = new ArrayAdapter<>(
             this, android.R.layout.simple_list_item_activated_1, profiles);
 
-        ListView profilesListView = (ListView) findViewById(R.id.list_view_groups);
+        ListView profilesListView = (ListView) findViewById(R.id.list_view_profiles);
         profilesListView.setAdapter(profileArrayAdapter);
 
         profilesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -98,7 +98,7 @@ public class ProfilesActivity extends AppCompatActivity {
     }
 
     private void initializeContextualActionBar() {
-        final ListView profilesListView = (ListView) findViewById(R.id.list_view_groups);
+        final ListView profilesListView = (ListView) findViewById(R.id.list_view_profiles);
         profilesListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 
         profilesListView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
