@@ -7,13 +7,38 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import wbh.finanzapp.business.GroupBean;
 
 public class GroupsDataSource {
 
     private static final String LOG_TAG = GroupsDataSource.class.getSimpleName();
+
+    private static boolean BASICS_AVAILABLE_IN_DB = false;
+    private static final Map<String, String> BASIC_GROUPS;
+    static {
+        Map<String, String> tmpMap = new HashMap<>();
+        tmpMap.put("Haushalt", "Transaktionen die den Haushalt betreffen");
+        tmpMap.put("Lebensmittel", "Transaktionen zur Lebensmittelvorsorge");
+        tmpMap.put("Restaurant", "Restaurantbesuche");
+        tmpMap.put("Verkehrsmittel", "Kosten für Pkw, Bahn oder ähnliches");
+        tmpMap.put("Unterhaltung", "Unterhaltung wie z.B. Spiele");
+        tmpMap.put("Persönlich", "Persönliche Transaktionen");
+        tmpMap.put("Gesundheit", "Arztkosten, Medikamente o.ä.");
+        tmpMap.put("Versicherung", "Versicherung für Haus, Pkw o.ä.");
+        tmpMap.put("Wohnen", "Miete, Heizung, Strom u.ä.");
+        tmpMap.put("Kleidung", "Mode und Accessoires");
+        tmpMap.put("Bildung", "Kosten für Bildung wie z.B. Schule oder Studium");
+        tmpMap.put("Urlaub", "Urlaubskosten");
+        tmpMap.put("Freizeit", "Kosten die in der Frezeit entstehen");
+        tmpMap.put("Gehalt", "Monatliches Grundeinkommen");
+        BASIC_GROUPS = Collections.unmodifiableMap(tmpMap);
+    };
 
     private SQLiteDatabase database;
 
@@ -34,6 +59,7 @@ public class GroupsDataSource {
     public void open() {
         Log.d(LOG_TAG, "--> Start getting a reference of the db.");
         database = dbHelper.getWritableDatabase();
+        if(!BASICS_AVAILABLE_IN_DB) insertBasics();
         Log.d(LOG_TAG, "--> Finish getting the db reference. Path of the db: " + database.getPath());
     }
 
@@ -59,11 +85,23 @@ public class GroupsDataSource {
         }
     }
 
+    public boolean existGroup(String name) {
+        Cursor cursor = null;
+        GroupBean group = null;
+        try {
+            cursor = database.query(GroupsDBHelper.TABLE_NAME, columns, GroupsDBHelper.COLUMN_NAME + "=?",
+                    new String[] { name },null, null, null);
+            return cursor.getCount() > 0;
+        } finally {
+            cursor.close();
+        }
+    }
+
     public List<GroupBean> getAllGroups() {
         List<GroupBean> groupList = new ArrayList<>();
 
         Cursor cursor = database.query(GroupsDBHelper.TABLE_NAME, columns,
-                null, null, null, null, null);
+                null, null, null, null, GroupsDBHelper.COLUMN_NAME + " ASC");
 
         cursor.moveToFirst();
         GroupBean group;
@@ -77,6 +115,13 @@ public class GroupsDataSource {
         cursor.close();
 
         return groupList;
+    }
+
+    private void insertBasics() {
+        BASIC_GROUPS.forEach((name, descr) -> {
+            if(!existGroup(name)) insertGroup(name, descr);
+        });
+        BASICS_AVAILABLE_IN_DB = true;
     }
 
     public GroupBean insertGroup(String name, String description) {
