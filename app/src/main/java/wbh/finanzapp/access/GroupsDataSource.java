@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -45,9 +44,10 @@ public class GroupsDataSource {
     private DBHelper dbHelper;
 
     private String[] columns = {
-        ProfilesDBHelper.COLUMN_ID,
-        ProfilesDBHelper.COLUMN_NAME,
-        ProfilesDBHelper.COLUMN_DESCRIPTION
+        GroupsDBHelper.COLUMN_ID,
+        GroupsDBHelper.COLUMN_NAME,
+        GroupsDBHelper.COLUMN_DESCRIPTION,
+        GroupsDBHelper.COLUMN_WRITEABLE
     };
 
     public GroupsDataSource(Context context) {
@@ -119,13 +119,13 @@ public class GroupsDataSource {
 
     private void insertBasics() {
         BASIC_GROUPS.forEach((name, descr) -> {
-            if(!existGroup(name)) insertGroup(name, descr);
+            if(!existGroup(name)) insertGroup(name, descr, false);
         });
         BASICS_AVAILABLE_IN_DB = true;
     }
 
-    public GroupBean insertGroup(String name, String description) {
-        ContentValues values = createGroupValues(null, name, description);
+    public GroupBean insertGroup(String name, String description, Boolean writable) {
+        ContentValues values = createGroupValues(null, name, description, writable);
         long insertId = database.insert(GroupsDBHelper.TABLE_NAME, null, values);
         Cursor cursor = database.query(GroupsDBHelper.TABLE_NAME, columns, GroupsDBHelper.COLUMN_ID + "=" + insertId,
             null, null, null, null);
@@ -136,7 +136,7 @@ public class GroupsDataSource {
     }
 
     public GroupBean updateGroup(long id, String newName, String newDescription) {
-        ContentValues values = createGroupValues(id, newName, newDescription);
+        ContentValues values = createGroupValues(id, newName, newDescription, true);
         database.update(GroupsDBHelper.TABLE_NAME, values, GroupsDBHelper.COLUMN_ID + "=" + id, null);
         Cursor cursor = database.query(GroupsDBHelper.TABLE_NAME, columns, GroupsDBHelper.COLUMN_ID + "=" + id,
             null, null, null, null);
@@ -155,19 +155,22 @@ public class GroupsDataSource {
         int idIndex = cursor.getColumnIndex(GroupsDBHelper.COLUMN_ID);
         int idName = cursor.getColumnIndex(GroupsDBHelper.COLUMN_NAME);
         int idDescription = cursor.getColumnIndex(GroupsDBHelper.COLUMN_DESCRIPTION);
+        int idWritable = cursor.getColumnIndex(GroupsDBHelper.COLUMN_WRITEABLE);
 
         long id = cursor.getLong(idIndex);
         String name = cursor.getString(idName);
         String description = cursor.getString(idDescription);
+        Boolean writeable = (cursor.getInt(idWritable) == 1) ? true : false;
 
-        return new GroupBean(id, name, description);
+        return new GroupBean(id, name, description, writeable);
     }
 
-    private ContentValues createGroupValues(Long id, String name, String description) {
+    private ContentValues createGroupValues(Long id, String name, String description, Boolean writable) {
         ContentValues values = new ContentValues();
         if(id != null) values.put(GroupsDBHelper.COLUMN_ID, id.longValue());
         if(name != null) values.put(GroupsDBHelper.COLUMN_NAME, name);
         if(description != null) values.put(GroupsDBHelper.COLUMN_DESCRIPTION, description);
+        if(writable != null) values.put(GroupsDBHelper.COLUMN_WRITEABLE, writable);
         return values;
     }
 }

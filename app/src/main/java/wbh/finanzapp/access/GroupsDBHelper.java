@@ -14,12 +14,14 @@ public class GroupsDBHelper {
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_DESCRIPTION = "description";
+    public static final String COLUMN_WRITEABLE = "writeable";
 
     private static final String SQL_CREATE =
         "CREATE TABLE " + TABLE_NAME + "(" +
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_NAME + " TEXT NOT NULL, " +
-            COLUMN_DESCRIPTION + " TEXT NOT NULL" +
+            COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
+            COLUMN_WRITEABLE + " INTEGER NOT NULL" +
             ");";
 
     public static void createTable(SQLiteDatabase db) {

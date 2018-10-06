@@ -14,11 +14,13 @@ public class GroupBean {
     private long id;
     private String name;
     private String description;
+    private Boolean writable;
 
-    public GroupBean(long id, String name, String description) {
+    public GroupBean(long id, String name, String description, Boolean writable) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.writable = writable;
     }
 
     public long getId() {
@@ -43,6 +45,14 @@ public class GroupBean {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getWritable() {
+        return writable;
+    }
+
+    public void setWritable(Boolean writable) {
+        this.writable = writable;
     }
 
     @Override
