@@ -21,5 +21,6 @@
     <string name="menu_button_transaction">Transaktionen</string>
     <string name="menu_button_analyze">Analyse</string>
     <string name="menu_button_groups">Gruppen</string>
+    <string name="menu_button_help">Hilfe</string>
 
 </resources>

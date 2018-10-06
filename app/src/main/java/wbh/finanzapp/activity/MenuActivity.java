@@ -78,5 +78,12 @@ public class MenuActivity extends AppCompatActivity {
                 Toast.makeText(getContext(), "TODO: Open Groups Activity.", Toast.LENGTH_SHORT).show();
             }
         });
+        Button buttonHelp = (Button) findViewById(R.id.menu_button_help);
+        buttonHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "TODO: Open Help Activity.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

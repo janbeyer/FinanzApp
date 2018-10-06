@@ -29,4 +29,10 @@
         android:layout_alignParentBottom="true"
         android:text="@string/menu_button_groups" />
 
+    <Button android:id="@+id/menu_button_help"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/menu_button_help" />
+
 </LinearLayout>
