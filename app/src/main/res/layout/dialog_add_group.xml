@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:layout_weight="3"
-            android:id="@+id/profile_new_name" />
+            android:id="@+id/group_new_name" />
     </LinearLayout>
 
     <LinearLayout
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:layout_weight="3"
-            android:id="@+id/profile_new_description" />
+            android:id="@+id/group_new_description" />
     </LinearLayout>
 
 

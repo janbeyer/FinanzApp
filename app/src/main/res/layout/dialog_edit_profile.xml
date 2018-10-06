@@ -14,7 +14,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/profile_name"
+            android:text="@string/field_name"
             android:layout_weight="1"
             android:gravity="end"
             android:layout_marginRight="5sp"
@@ -35,7 +35,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/profile_description"
+            android:text="@string/field_description"
             android:layout_weight="1"
             android:gravity="end"
             android:layout_marginRight="5sp"

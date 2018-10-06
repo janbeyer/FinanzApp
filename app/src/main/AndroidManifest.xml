@@ -24,6 +24,15 @@
                 android:value=".activity.ProfilesActivity" />
         </activity>
 
+        <activity
+            android:name=".activity.GroupsActivity"
+            android:parentActivityName=".activity.MenuActivity"
+            android:label="@string/group_title" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MenuActivity" />
+        </activity>
+
     </application>
 
 </manifest>

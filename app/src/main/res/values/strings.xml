@@ -5,22 +5,30 @@
     <string name="dialog_button_positive">Speichern</string>
     <string name="dialog_button_negative">Abbrechen</string>
 
+    <string name="field_name">Name</string>
+    <string name="field_description">Beschreibung</string>
+
+    <string name="field_name_error_required">Der Name darf nicht leer sein</string>
+
     <!-- Profile properties -->
     <string name="profile_add_title">Neues Profil hinzufügen</string>
     <string name="profile_edit_title">Profil bearbeiten</string>
     <string name="profile_delete_title">Profil löschen</string>
 
-    <string name="profile_name">Name</string>
-    <string name="profile_description">Beschreibung</string>
     <string name="profile_lastUse">Letzte Verwendung</string>
     <string name="profile_startValue">Startbetrag</string>
-
-    <string name="profile_name_error">Der Name darf nicht leer sein.</string>
 
     <!-- Menu properties -->
     <string name="menu_button_transaction">Transaktionen</string>
     <string name="menu_button_analyze">Analyse</string>
     <string name="menu_button_groups">Gruppen</string>
     <string name="menu_button_help">Hilfe</string>
+
+    <!-- Groups properties -->
+    <string name="group_title">Gruppen</string>
+
+    <string name="group_add_title">Neue Gruppe hinzufügen</string>
+    <string name="group_edit_title">Gruppe bearbeiten</string>
+    <string name="group_delete_title">Gruppe löschen</string>
 
 </resources>

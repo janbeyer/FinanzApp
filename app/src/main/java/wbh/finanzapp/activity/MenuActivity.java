@@ -1,6 +1,7 @@
 package wbh.finanzapp.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -75,7 +76,9 @@ public class MenuActivity extends AppCompatActivity {
         buttonGroups.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "TODO: Open Groups Activity.", Toast.LENGTH_SHORT).show();
+                Intent myIntent = new Intent(MenuActivity.this, GroupsActivity.class);
+                Log.d(LOG_TAG, "--> Start the groups activity.");
+                MenuActivity.this.startActivity(myIntent);
             }
         });
         Button buttonHelp = (Button) findViewById(R.id.menu_button_help);
