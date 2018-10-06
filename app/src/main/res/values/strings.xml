@@ -6,7 +6,7 @@
     <string name="dialog_button_negative">Abbrechen</string>
 
     <string name="field_name">Name</string>
-    <string name="field_description">Beschreibung</string>
+    <string name="field_description">Beschr.</string>
 
     <string name="field_name_error_required">Der Name darf nicht leer sein</string>
 
