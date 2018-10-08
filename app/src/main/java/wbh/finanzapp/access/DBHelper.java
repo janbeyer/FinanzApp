@@ -33,6 +33,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         ProfilesDBHelper.createTable(db);
         GroupsDBHelper.createTable(db);
+        // TODO: Insert Default Groups here ...
     }
 
     @Override
