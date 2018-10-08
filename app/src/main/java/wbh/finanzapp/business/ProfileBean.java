@@ -66,11 +66,13 @@ public class ProfileBean {
 
     @Override
     public String toString() {
-        Resources resources = ProfilesActivity.getContext().getResources();
-        return resources.getString(R.string.field_name) + ": " + name +
-                "\n" + resources.getString(R.string.field_description) + ": " + description +
-                "\n" + resources.getString(R.string.profile_lastUse) + ": " + convertTime(lastUse) +
-                "\n" + resources.getString(R.string.profile_startValue) + ": " + startValue;
+        return "ProfileBean{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", lastUse=" + lastUse +
+                ", startValue=" + startValue +
+                '}';
     }
 
     private String convertTime(long time){

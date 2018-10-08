@@ -1,5 +1,6 @@
 package wbh.finanzapp.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,18 +20,12 @@ public class MenuActivity extends AppCompatActivity {
 
     public static final String PARAM_PROFILE_ID = "profileId";
 
-    private static Context mContext;
-    public static Context getContext() {
-        return mContext;
-    }
-
     private ProfilesDataSource profileDataSource;
     private ProfileBean profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = this;
         setContentView(R.layout.activity_menu);
         profileDataSource = new ProfilesDataSource(this);
         init();
@@ -59,34 +54,22 @@ public class MenuActivity extends AppCompatActivity {
 
     private void activateButtons() {
         Button buttonTransaction = (Button) findViewById(R.id.menu_button_transaction);
-        buttonTransaction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getContext(), "TODO: Open Transaktion Activity.", Toast.LENGTH_SHORT).show();
-            }
+        buttonTransaction.setOnClickListener(view -> {
+            Toast.makeText(this, "TODO: Open Transaktion Activity.", Toast.LENGTH_SHORT).show();
         });
         Button buttonAnalyze = (Button) findViewById(R.id.menu_button_analyze);
-        buttonAnalyze.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getContext(), "TODO: Open Analyze Activity.", Toast.LENGTH_SHORT).show();
-            }
+        buttonAnalyze.setOnClickListener(view -> {
+            Toast.makeText(this, "TODO: Open Analyze Activity.", Toast.LENGTH_SHORT).show();
         });
         Button buttonGroups = (Button) findViewById(R.id.menu_button_groups);
-        buttonGroups.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent myIntent = new Intent(MenuActivity.this, GroupsActivity.class);
-                Log.d(LOG_TAG, "--> Start the groups activity.");
-                MenuActivity.this.startActivity(myIntent);
-            }
+        buttonGroups.setOnClickListener(view -> {
+            Intent myIntent = new Intent(MenuActivity.this, GroupsActivity.class);
+            Log.d(LOG_TAG, "--> Start the groups activity.");
+            MenuActivity.this.startActivity(myIntent);
         });
         Button buttonHelp = (Button) findViewById(R.id.menu_button_help);
-        buttonHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getContext(), "TODO: Open Help Activity.", Toast.LENGTH_SHORT).show();
-            }
+        buttonHelp.setOnClickListener(view -> {
+            Toast.makeText(this, "TODO: Open Help Activity.", Toast.LENGTH_SHORT).show();
         });
     }
 }

@@ -29,17 +29,11 @@ public class GroupsActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = GroupsActivity.class.getSimpleName();
 
-    private static Context mContext;
-    public static Context getContext() {
-        return mContext;
-    }
-
     private GroupsDataSource groupDataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = this;
         setContentView(R.layout.activity_groups);
         groupDataSource = new GroupsDataSource(this);
         activateAddButton();

@@ -31,17 +31,11 @@ public class ProfilesActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = ProfilesActivity.class.getSimpleName();
 
-    private static Context mContext;
-    public static Context getContext() {
-        return mContext;
-    }
-
     private ProfilesDataSource profileDataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = this;
         setContentView(R.layout.activity_profiles);
         profileDataSource = new ProfilesDataSource(this);
         activateAddButton();

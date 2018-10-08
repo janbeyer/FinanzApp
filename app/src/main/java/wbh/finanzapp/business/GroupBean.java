@@ -57,8 +57,11 @@ public class GroupBean {
 
     @Override
     public String toString() {
-        Resources resources = ProfilesActivity.getContext().getResources();
-        return resources.getString(R.string.field_name) + ": " + name +
-            "\n" + resources.getString(R.string.field_description) + ": " + description;
+        return "GroupBean{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", writable=" + writable +
+                '}';
     }
 }
