@@ -1,6 +1,5 @@
 package wbh.finanzapp.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -15,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -66,28 +64,22 @@ public class ProfilesActivity extends AppCompatActivity {
         ListView profilesListView = findViewById(R.id.list_view_profiles);
         profilesListView.setAdapter(profileArrayAdapter);
 
-        profilesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                ProfileBean profile = (ProfileBean) adapterView.getItemAtPosition(position);
-                profileDataSource.updateProfile(profile.getId(),null, null, null);
-                Intent myIntent = new Intent(ProfilesActivity.this, MenuActivity.class);
-                myIntent.putExtra(MenuActivity.PARAM_PROFILE_ID, profile.getId());
-                Log.d(LOG_TAG, "--> Start the menu activity for the profile: " + profile.toString());
-                ProfilesActivity.this.startActivity(myIntent);
-            }
+        profilesListView.setOnItemClickListener((adapterView, view, position, id) -> {
+            ProfileBean profile = (ProfileBean) adapterView.getItemAtPosition(position);
+            profileDataSource.updateProfile(profile.getId(),null, null, null);
+            Intent myIntent = new Intent(ProfilesActivity.this, MenuActivity.class);
+            myIntent.putExtra(MenuActivity.PARAM_PROFILE_ID, profile.getId());
+            Log.d(LOG_TAG, "--> Start the menu activity for the profile: " + profile.toString());
+            ProfilesActivity.this.startActivity(myIntent);
         });
     }
 
     private void activateAddButton() {
         Button buttonAddProfile = findViewById(R.id.button_add_profile);
 
-        buttonAddProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog addProfileDialog = createAddProfileDialog();
-                addProfileDialog.show();
-            }
+        buttonAddProfile.setOnClickListener(view -> {
+            AlertDialog addProfileDialog = createAddProfileDialog();
+            addProfileDialog.show();
         });
     }
 
@@ -184,31 +176,23 @@ public class ProfilesActivity extends AppCompatActivity {
 
         builder.setView(dialogsView)
             .setTitle(R.string.profile_add_title)
-            .setPositiveButton(R.string.dialog_button_positive, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int id) {
-                    String name = editTextNewName.getText().toString();
-                    String description = editTextNewDescription.getText().toString();
+            .setPositiveButton(R.string.dialog_button_positive, (dialog, id) -> {
+                String name = editTextNewName.getText().toString();
+                String description = editTextNewDescription.getText().toString();
 
-                    if((TextUtils.isEmpty(name))) {
-                        editTextNewName.setError(getString(R.string.field_name_error_required));
-                        return;
-                    }
-
-                    ProfileBean newProfile = profileDataSource.insertProfile(name, description);
-
-                    Log.d(LOG_TAG, "--> Insert new entry: " + newProfile.toString());
-
-                    showAllListEntries();
-                    dialog.dismiss();
+                if((TextUtils.isEmpty(name))) {
+                    editTextNewName.setError(getString(R.string.field_name_error_required));
+                    return;
                 }
+
+                ProfileBean newProfile = profileDataSource.insertProfile(name, description);
+
+                Log.d(LOG_TAG, "--> Insert new entry: " + newProfile.toString());
+
+                showAllListEntries();
+                dialog.dismiss();
             })
-            .setNegativeButton(R.string.dialog_button_negative, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.cancel();
-                }
-            });
+            .setNegativeButton(R.string.dialog_button_negative, (dialog, id) -> dialog.cancel());
 
         return builder.create();
     }
@@ -228,32 +212,24 @@ public class ProfilesActivity extends AppCompatActivity {
 
         builder.setView(dialogsView)
                 .setTitle(R.string.profile_edit_title)
-                .setPositiveButton(R.string.dialog_button_positive, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        String name = editTextNewName.getText().toString();
-                        String description = editTextNewDescription.getText().toString();
+                .setPositiveButton(R.string.dialog_button_positive, (dialog, id) -> {
+                    String name = editTextNewName.getText().toString();
+                    String description = editTextNewDescription.getText().toString();
 
-                        if((TextUtils.isEmpty(name))) {
-                            editTextNewName.setError(getString(R.string.field_name_error_required));
-                            return;
-                        }
-
-                        ProfileBean updatedProfile = profileDataSource.updateProfile(profile.getId(), name, description, null);
-
-                        Log.d(LOG_TAG, "--> Update old entry: " + profile.toString());
-                        Log.d(LOG_TAG, "--> Update new entry: " + updatedProfile.toString());
-
-                        showAllListEntries();
-                        dialog.dismiss();
+                    if((TextUtils.isEmpty(name))) {
+                        editTextNewName.setError(getString(R.string.field_name_error_required));
+                        return;
                     }
+
+                    ProfileBean updatedProfile = profileDataSource.updateProfile(profile.getId(), name, description, null);
+
+                    Log.d(LOG_TAG, "--> Update old entry: " + profile.toString());
+                    Log.d(LOG_TAG, "--> Update new entry: " + updatedProfile.toString());
+
+                    showAllListEntries();
+                    dialog.dismiss();
                 })
-                .setNegativeButton(R.string.dialog_button_negative, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
+                .setNegativeButton(R.string.dialog_button_negative, (dialog, id) -> dialog.cancel());
 
         return builder.create();
     }

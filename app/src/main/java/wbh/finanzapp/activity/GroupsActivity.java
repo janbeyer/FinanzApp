@@ -1,6 +1,5 @@
 package wbh.finanzapp.activity;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -68,12 +67,9 @@ public class GroupsActivity extends AppCompatActivity {
     private void activateAddButton() {
         Button buttonAddGroup = findViewById(R.id.button_add_group);
 
-        buttonAddGroup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog addGroupDialog = createAddGroupDialog();
-                addGroupDialog.show();
-            }
+        buttonAddGroup.setOnClickListener(view -> {
+            AlertDialog addGroupDialog = createAddGroupDialog();
+            addGroupDialog.show();
         });
     }
 
@@ -170,31 +166,23 @@ public class GroupsActivity extends AppCompatActivity {
 
         builder.setView(dialogsView)
             .setTitle(R.string.group_add_title)
-            .setPositiveButton(R.string.dialog_button_positive, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int id) {
-                    String name = editTextNewName.getText().toString();
-                    String description = editTextNewDescription.getText().toString();
+            .setPositiveButton(R.string.dialog_button_positive, (dialog, id) -> {
+                String name = editTextNewName.getText().toString();
+                String description = editTextNewDescription.getText().toString();
 
-                    if((TextUtils.isEmpty(name))) {
-                        editTextNewName.setError(getString(R.string.field_name_error_required));
-                        return;
-                    }
-
-                    GroupBean newGroup = groupDataSource.insertGroup(name, description, true);
-
-                    Log.d(LOG_TAG, "--> Insert new entry: " + newGroup.toString());
-
-                    showAllListEntries();
-                    dialog.dismiss();
+                if((TextUtils.isEmpty(name))) {
+                    editTextNewName.setError(getString(R.string.field_name_error_required));
+                    return;
                 }
+
+                GroupBean newGroup = groupDataSource.insertGroup(name, description, true);
+
+                Log.d(LOG_TAG, "--> Insert new entry: " + newGroup.toString());
+
+                showAllListEntries();
+                dialog.dismiss();
             })
-            .setNegativeButton(R.string.dialog_button_negative, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.cancel();
-                }
-            });
+            .setNegativeButton(R.string.dialog_button_negative, (dialog, id) -> dialog.cancel());
 
         return builder.create();
     }
@@ -203,7 +191,8 @@ public class GroupsActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
 
-        View dialogsView = inflater.inflate(R.layout.dialog_edit_group, null);
+        ViewGroup viewGroup = findViewById(R.id.select_dialog_list_root_view);
+        View dialogsView = inflater.inflate(R.layout.dialog_edit_group, viewGroup);
 
         final EditText editTextNewName = dialogsView.findViewById(R.id.group_new_name);
         editTextNewName.setText(group.getName());
@@ -213,32 +202,24 @@ public class GroupsActivity extends AppCompatActivity {
 
         builder.setView(dialogsView)
                 .setTitle(R.string.group_edit_title)
-                .setPositiveButton(R.string.dialog_button_positive, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        String name = editTextNewName.getText().toString();
-                        String description = editTextNewDescription.getText().toString();
+                .setPositiveButton(R.string.dialog_button_positive, (dialog, id) -> {
+                    String name = editTextNewName.getText().toString();
+                    String description = editTextNewDescription.getText().toString();
 
-                        if((TextUtils.isEmpty(name))) {
-                            editTextNewName.setError(getString(R.string.field_name_error_required));
-                            return;
-                        }
-
-                        GroupBean updatedGroup = groupDataSource.updateGroup(group.getId(), name, description);
-
-                        Log.d(LOG_TAG, "--> Update old entry: " + group.toString());
-                        Log.d(LOG_TAG, "--> Update new entry: " + updatedGroup.toString());
-
-                        showAllListEntries();
-                        dialog.dismiss();
+                    if((TextUtils.isEmpty(name))) {
+                        editTextNewName.setError(getString(R.string.field_name_error_required));
+                        return;
                     }
+
+                    GroupBean updatedGroup = groupDataSource.updateGroup(group.getId(), name, description);
+
+                    Log.d(LOG_TAG, "--> Update old entry: " + group.toString());
+                    Log.d(LOG_TAG, "--> Update new entry: " + updatedGroup.toString());
+
+                    showAllListEntries();
+                    dialog.dismiss();
                 })
-                .setNegativeButton(R.string.dialog_button_negative, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
+                .setNegativeButton(R.string.dialog_button_negative, (dialog, id) -> dialog.cancel());
 
         return builder.create();
     }

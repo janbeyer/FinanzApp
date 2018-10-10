@@ -54,10 +54,12 @@ public class MenuActivity extends AppCompatActivity {
 
     private void activateButtons() {
         Button buttonTransaction = findViewById(R.id.menu_button_transaction);
+        //noinspection CodeBlock2Expr
         buttonTransaction.setOnClickListener(view -> {
             Toast.makeText(this, "TODO: Open Transaktion Activity.", Toast.LENGTH_SHORT).show();
         });
         Button buttonAnalyze = findViewById(R.id.menu_button_analyze);
+        //noinspection CodeBlock2Expr
         buttonAnalyze.setOnClickListener(view -> {
             Toast.makeText(this, "TODO: Open Analyze Activity.", Toast.LENGTH_SHORT).show();
         });
@@ -68,6 +70,7 @@ public class MenuActivity extends AppCompatActivity {
             MenuActivity.this.startActivity(myIntent);
         });
         Button buttonHelp = findViewById(R.id.menu_button_help);
+        //noinspection CodeBlock2Expr
         buttonHelp.setOnClickListener(view -> {
             Toast.makeText(this, "TODO: Open Help Activity.", Toast.LENGTH_SHORT).show();
         });
