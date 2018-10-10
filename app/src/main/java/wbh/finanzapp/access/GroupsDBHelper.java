@@ -3,6 +3,7 @@ package wbh.finanzapp.access;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+@SuppressWarnings("WeakerAccess")
 public class GroupsDBHelper {
 
     private static final String LOG_TAG = GroupsDBHelper.class.getSimpleName();

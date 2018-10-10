@@ -37,7 +37,7 @@ public class GroupsDataSource {
         tmpMap.put("Freizeit", "Kosten die in der Frezeit entstehen");
         tmpMap.put("Gehalt", "Monatliches Grundeinkommen");
         BASIC_GROUPS = Collections.unmodifiableMap(tmpMap);
-    };
+    }
 
     private SQLiteDatabase database;
 
@@ -68,10 +68,12 @@ public class GroupsDataSource {
         Log.d(LOG_TAG, "--> Close the db with the help of the DBHelper.");
     }
 
+    @SuppressWarnings("unused")
     public GroupBean getGroup(long id) {
         Cursor cursor = null;
         GroupBean group = null;
 
+        //noinspection TryFinallyCanBeTryWithResources
         try {
             cursor = database.query(GroupsDBHelper.TABLE_NAME, columns, GroupsDBHelper.COLUMN_ID + "=?",
                 new String[] { String.valueOf(id) },null, null, GroupsDBHelper.COLUMN_NAME + " ASC");
@@ -81,19 +83,25 @@ public class GroupsDataSource {
             }
             return group;
         } finally {
-            cursor.close();
+            if (cursor != null) {
+                cursor.close();
+            }
         }
     }
 
+    @SuppressWarnings("WeakerAccess")
     public boolean existGroup(String name) {
         Cursor cursor = null;
-        GroupBean group = null;
+        //GroupBean group = null;
+        //noinspection TryFinallyCanBeTryWithResources
         try {
             cursor = database.query(GroupsDBHelper.TABLE_NAME, columns, GroupsDBHelper.COLUMN_NAME + "=?",
                     new String[] { name },null, null, null);
             return cursor.getCount() > 0;
         } finally {
-            cursor.close();
+            if (cursor != null) {
+                cursor.close();
+            }
         }
     }
 
@@ -160,14 +168,16 @@ public class GroupsDataSource {
         long id = cursor.getLong(idIndex);
         String name = cursor.getString(idName);
         String description = cursor.getString(idDescription);
-        Boolean writeable = (cursor.getInt(idWritable) == 1) ? true : false;
+        // TODO: check logic
+        @SuppressWarnings("RedundantConditionalExpression")
+        Boolean writable = (cursor.getInt(idWritable) == 1) ? true : false;
 
-        return new GroupBean(id, name, description, writeable);
+        return new GroupBean(id, name, description, writable);
     }
 
     private ContentValues createGroupValues(Long id, String name, String description, Boolean writable) {
         ContentValues values = new ContentValues();
-        if(id != null) values.put(GroupsDBHelper.COLUMN_ID, id.longValue());
+        if(id != null) values.put(GroupsDBHelper.COLUMN_ID, id);
         if(name != null) values.put(GroupsDBHelper.COLUMN_NAME, name);
         if(description != null) values.put(GroupsDBHelper.COLUMN_DESCRIPTION, description);
         if(writable != null) values.put(GroupsDBHelper.COLUMN_WRITEABLE, writable);

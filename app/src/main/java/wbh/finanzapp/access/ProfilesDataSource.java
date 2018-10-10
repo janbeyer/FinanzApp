@@ -48,6 +48,7 @@ public class ProfilesDataSource {
         Cursor cursor = null;
         ProfileBean profile = null;
 
+        //noinspection TryFinallyCanBeTryWithResources
         try {
             cursor = database.query(ProfilesDBHelper.TABLE_NAME, columns, ProfilesDBHelper.COLUMN_ID + "=?",
                 new String[] { String.valueOf(id) },null, null, null);
@@ -57,7 +58,9 @@ public class ProfilesDataSource {
             }
             return profile;
         } finally {
-            cursor.close();
+            if (cursor != null) {
+                cursor.close();
+            }
         }
     }
 
@@ -126,11 +129,11 @@ public class ProfilesDataSource {
 
     private ContentValues createProfileValues(Long id, String name, String description, Integer startValue) {
         ContentValues values = new ContentValues();
-        if(id != null) values.put(ProfilesDBHelper.COLUMN_ID, id.longValue());
+        if(id != null) values.put(ProfilesDBHelper.COLUMN_ID, id);
         if(name != null) values.put(ProfilesDBHelper.COLUMN_NAME, name);
         if(description != null) values.put(ProfilesDBHelper.COLUMN_DESCRIPTION, description);
         values.put(ProfilesDBHelper.COLUMN_LASTUSE, System.currentTimeMillis()); // set the current date.
-        if(startValue != null) values.put(ProfilesDBHelper.COLUMN_STARTVALUE, startValue.intValue());
+        if(startValue != null) values.put(ProfilesDBHelper.COLUMN_STARTVALUE, startValue);
         return values;
     }
 }

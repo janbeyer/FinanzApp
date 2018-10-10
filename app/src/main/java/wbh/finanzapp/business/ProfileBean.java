@@ -1,17 +1,12 @@
 package wbh.finanzapp.business;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.res.Resources;
 
 import java.text.Format;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import wbh.finanzapp.R;
-import wbh.finanzapp.activity.ProfilesActivity;
-
+@SuppressWarnings("unused")
 public class ProfileBean {
 
     private long id;
@@ -77,6 +72,8 @@ public class ProfileBean {
 
     private String convertTime(long time){
         Date date = new Date(time);
+        // TODO
+        @SuppressLint("SimpleDateFormat")
         Format format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
         return format.format(date);
     }

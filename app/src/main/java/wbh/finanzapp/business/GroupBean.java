@@ -1,14 +1,5 @@
 package wbh.finanzapp.business;
 
-import android.content.res.Resources;
-
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import wbh.finanzapp.R;
-import wbh.finanzapp.activity.ProfilesActivity;
-
 public class GroupBean {
 
     private long id;
@@ -47,10 +38,12 @@ public class GroupBean {
         this.description = description;
     }
 
+    @SuppressWarnings("unused")
     public Boolean getWritable() {
         return writable;
     }
 
+    @SuppressWarnings("unused")
     public void setWritable(Boolean writable) {
         this.writable = writable;
     }
