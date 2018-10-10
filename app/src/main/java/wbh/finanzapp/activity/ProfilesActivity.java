@@ -1,6 +1,5 @@
 package wbh.finanzapp.activity;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -63,7 +63,7 @@ public class ProfilesActivity extends AppCompatActivity {
         ArrayAdapter<ProfileBean> profileArrayAdapter = new ArrayAdapter<>(
             this, android.R.layout.simple_list_item_activated_1, profiles);
 
-        ListView profilesListView = (ListView) findViewById(R.id.list_view_profiles);
+        ListView profilesListView = findViewById(R.id.list_view_profiles);
         profilesListView.setAdapter(profileArrayAdapter);
 
         profilesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -80,7 +80,7 @@ public class ProfilesActivity extends AppCompatActivity {
     }
 
     private void activateAddButton() {
-        Button buttonAddProfile = (Button) findViewById(R.id.button_add_profile);
+        Button buttonAddProfile = findViewById(R.id.button_add_profile);
 
         buttonAddProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +92,7 @@ public class ProfilesActivity extends AppCompatActivity {
     }
 
     private void initializeContextualActionBar() {
-        final ListView profilesListView = (ListView) findViewById(R.id.list_view_profiles);
+        final ListView profilesListView = findViewById(R.id.list_view_profiles);
         profilesListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 
         profilesListView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
@@ -173,12 +173,13 @@ public class ProfilesActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
 
-        View dialogsView = inflater.inflate(R.layout.dialog_add_profile, null);
+        ViewGroup viewGroup = findViewById(R.id.dialog_add_profile_root_view);
+        View dialogsView = inflater.inflate(R.layout.dialog_add_profile, viewGroup);
 
-        final EditText editTextNewName = (EditText) dialogsView.findViewById(R.id.profile_new_name);
+        final EditText editTextNewName = dialogsView.findViewById(R.id.profile_new_name);
         editTextNewName.setText("");
 
-        final EditText editTextNewDescription = (EditText) dialogsView.findViewById(R.id.profile_new_description);
+        final EditText editTextNewDescription = dialogsView.findViewById(R.id.profile_new_description);
         editTextNewDescription.setText("");
 
         builder.setView(dialogsView)
@@ -216,12 +217,13 @@ public class ProfilesActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
 
-        View dialogsView = inflater.inflate(R.layout.dialog_edit_profile, null);
+        ViewGroup viewGroup = findViewById(R.id.dialog_edit_profile_root_view);
+        View dialogsView = inflater.inflate(R.layout.dialog_edit_profile, viewGroup);
 
-        final EditText editTextNewName = (EditText) dialogsView.findViewById(R.id.profile_new_name);
+        final EditText editTextNewName = dialogsView.findViewById(R.id.profile_new_name);
         editTextNewName.setText(profile.getName());
 
-        final EditText editTextNewDescription = (EditText) dialogsView.findViewById(R.id.profile_new_description);
+        final EditText editTextNewDescription = dialogsView.findViewById(R.id.profile_new_description);
         editTextNewDescription.setText(profile.getDescription());
 
         builder.setView(dialogsView)

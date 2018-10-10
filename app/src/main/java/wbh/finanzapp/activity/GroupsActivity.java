@@ -1,6 +1,5 @@
 package wbh.finanzapp.activity;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -13,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -61,12 +61,12 @@ public class GroupsActivity extends AppCompatActivity {
         ArrayAdapter<GroupBean> groupArrayAdapter = new ArrayAdapter<>(
             this, android.R.layout.simple_list_item_activated_1, groups);
 
-        ListView groupsListView = (ListView) findViewById(R.id.list_view_groups);
+        ListView groupsListView = findViewById(R.id.list_view_groups);
         groupsListView.setAdapter(groupArrayAdapter);
     }
 
     private void activateAddButton() {
-        Button buttonAddGroup = (Button) findViewById(R.id.button_add_group);
+        Button buttonAddGroup = findViewById(R.id.button_add_group);
 
         buttonAddGroup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +78,7 @@ public class GroupsActivity extends AppCompatActivity {
     }
 
     private void initializeContextualActionBar() {
-        final ListView groupsListView = (ListView) findViewById(R.id.list_view_groups);
+        final ListView groupsListView = findViewById(R.id.list_view_groups);
         groupsListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 
         groupsListView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
@@ -159,12 +159,13 @@ public class GroupsActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
 
-        View dialogsView = inflater.inflate(R.layout.dialog_add_group, null);
+        ViewGroup viewGroup = findViewById(R.id.dialog_add_profile_root_view);
+        View dialogsView = inflater.inflate(R.layout.dialog_add_group, viewGroup);
 
-        final EditText editTextNewName = (EditText) dialogsView.findViewById(R.id.group_new_name);
+        final EditText editTextNewName = dialogsView.findViewById(R.id.group_new_name);
         editTextNewName.setText("");
 
-        final EditText editTextNewDescription = (EditText) dialogsView.findViewById(R.id.group_new_description);
+        final EditText editTextNewDescription = dialogsView.findViewById(R.id.group_new_description);
         editTextNewDescription.setText("");
 
         builder.setView(dialogsView)
@@ -204,10 +205,10 @@ public class GroupsActivity extends AppCompatActivity {
 
         View dialogsView = inflater.inflate(R.layout.dialog_edit_group, null);
 
-        final EditText editTextNewName = (EditText) dialogsView.findViewById(R.id.group_new_name);
+        final EditText editTextNewName = dialogsView.findViewById(R.id.group_new_name);
         editTextNewName.setText(group.getName());
 
-        final EditText editTextNewDescription = (EditText) dialogsView.findViewById(R.id.group_new_description);
+        final EditText editTextNewDescription = dialogsView.findViewById(R.id.group_new_description);
         editTextNewDescription.setText(group.getDescription());
 
         builder.setView(dialogsView)

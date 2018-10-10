@@ -30,5 +30,6 @@
     <string name="group_add_title">Neue Gruppe hinzufügen</string>
     <string name="group_edit_title">Gruppe bearbeiten</string>
     <string name="group_delete_title">Gruppe löschen</string>
+    <string name="group">Group</string>
 
 </resources>
