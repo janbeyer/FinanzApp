@@ -19,6 +19,11 @@ public class ProfilesDataSource {
 
     private DBHelper dbHelper;
 
+    /**
+     * Indicate if this data bas is open.
+     */
+    boolean isDbOpen = false;
+
     private String[] columns = {
         ProfilesDBHelper.COLUMN_ID,
         ProfilesDBHelper.COLUMN_NAME,
@@ -28,20 +33,24 @@ public class ProfilesDataSource {
     };
 
     public ProfilesDataSource(Context context) {
-        Log.d(LOG_TAG, "--> Now the data source createss the dbHelper.");
+        Log.d(LOG_TAG, "--> Create ProfilesDataSource.");
         dbHelper = new DBHelper(context);
         open();
     }
 
     public void open() {
-        Log.d(LOG_TAG, "--> Start getting a reference of the db.");
+        // id the data base is already open, nothing to do
+        if(isDbOpen) return;
+        Log.d(LOG_TAG, "--> Open the db.");
         database = dbHelper.getWritableDatabase();
-        Log.d(LOG_TAG, "--> Finish getting the db reference. Path of the db: " + database.getPath());
+        Log.d(LOG_TAG, "--> Path of the db is: " + database.getPath());
+        isDbOpen = true;
     }
 
     public void close() {
         dbHelper.close();
-        Log.d(LOG_TAG, "--> Close the db with the help of the DBHelper.");
+        Log.d(LOG_TAG, "--> Close the db.");
+        isDbOpen = false;
     }
 
     public ProfileBean getProfile(long id) {

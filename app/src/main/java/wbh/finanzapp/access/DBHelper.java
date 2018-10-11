@@ -26,7 +26,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
-        Log.d(LOG_TAG, "--> DBHelper creates the db: " + getDatabaseName());
+        Log.d(LOG_TAG, "--> Create DBHelper.");
+        Log.d(LOG_TAG, "--> Create db with name: " + getDatabaseName());
     }
 
     @Override

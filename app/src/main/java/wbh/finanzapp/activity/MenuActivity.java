@@ -24,7 +24,13 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         profileDataSource = new ProfilesDataSource(this);
-        init();
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null) {
+            // TODO use Shared preferences
+            long profileId = (Long) bundle.get(PARAM_PROFILE_ID);
+            ProfileBean profile = profileDataSource.getProfile(profileId);
+            this.setTitle(profile.getName());
+        }
         activateButtons();
     }
 
@@ -42,16 +48,6 @@ public class MenuActivity extends AppCompatActivity {
         profileDataSource.close();
     }
 
-    private void init() {
-        Bundle bundle = getIntent().getExtras();
-        if(bundle != null) {
-            // TODO use Shared preferences
-            long profileId = (Long) bundle.get(PARAM_PROFILE_ID);
-            ProfileBean profile = profileDataSource.getProfile(profileId);
-            this.setTitle(profile.getName());
-        }
-    }
-
     private void activateButtons() {
         Button buttonTransaction = findViewById(R.id.menu_button_transaction);
         //noinspection CodeBlock2Expr
@@ -65,9 +61,10 @@ public class MenuActivity extends AppCompatActivity {
         });
         Button buttonGroups = findViewById(R.id.menu_button_groups);
         buttonGroups.setOnClickListener(view -> {
-            Intent myIntent = new Intent(MenuActivity.this, GroupsActivity.class);
+            Intent myIntent = new Intent(this, GroupsActivity.class);
             Log.d(LOG_TAG, "--> Start the groups activity.");
-            MenuActivity.this.startActivity(myIntent);
+            myIntent.putExtra(MenuActivity.PARAM_PROFILE_ID, 0);
+            startActivity(myIntent);
         });
         Button buttonHelp = findViewById(R.id.menu_button_help);
         //noinspection CodeBlock2Expr

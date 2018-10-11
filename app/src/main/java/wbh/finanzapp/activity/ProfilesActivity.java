@@ -33,57 +33,63 @@ public class ProfilesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(LOG_TAG, "--> Create ProfilesActivity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profiles);
         profileDataSource = new ProfilesDataSource(this);
-        activateAddButton();
-        initializeContextualActionBar();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(LOG_TAG, "--> Open the data source.");
-        profileDataSource.open();
-        showAllListEntries();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(LOG_TAG, "--> Close the data source.");
-        profileDataSource.close();
-    }
-
-    private void showAllListEntries() {
-        List<ProfileBean> profiles = profileDataSource.getAllProfiles();
-
-        ArrayAdapter<ProfileBean> profileArrayAdapter = new ArrayAdapter<>(
-            this, android.R.layout.simple_list_item_activated_1, profiles);
-
-        ListView profilesListView = findViewById(R.id.list_view_profiles);
-        profilesListView.setAdapter(profileArrayAdapter);
-
-        profilesListView.setOnItemClickListener((adapterView, view, position, id) -> {
-            ProfileBean profile = (ProfileBean) adapterView.getItemAtPosition(position);
-            profileDataSource.updateProfile(profile.getId(),null, null, null);
-            Intent myIntent = new Intent(ProfilesActivity.this, MenuActivity.class);
-            myIntent.putExtra(MenuActivity.PARAM_PROFILE_ID, profile.getId());
-            Log.d(LOG_TAG, "--> Start the menu activity for the profile: " + profile.toString());
-            ProfilesActivity.this.startActivity(myIntent);
-        });
-    }
-
-    private void activateAddButton() {
         Button buttonAddProfile = findViewById(R.id.button_add_profile);
 
         buttonAddProfile.setOnClickListener(view -> {
             AlertDialog addProfileDialog = createAddProfileDialog();
             addProfileDialog.show();
         });
+
+        initializeContextualActionBar();
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d(LOG_TAG, "--> Resume ProfilesActivity");
+        super.onResume();
+        Log.d(LOG_TAG, "--> Open the data source.");
+        // profileDataSource.open();
+        showAllListEntries();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d(LOG_TAG, "--> Pause ProfilesActivity");
+        super.onPause();
+        Log.d(LOG_TAG, "--> Close the data source.");
+        profileDataSource.close();
+    }
+
+    /**
+     * Show all profile list entries in the ProfileActivity.
+     */
+    private void showAllListEntries() {
+        Log.d(LOG_TAG, "--> Show all list entries.");
+        List<ProfileBean> profiles = profileDataSource.getAllProfiles();
+
+        ArrayAdapter<ProfileBean> profileArrayAdapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_list_item_activated_1, profiles);
+
+        ListView profilesListView = findViewById(R.id.list_view_profiles);
+        profilesListView.setAdapter(profileArrayAdapter);
+
+        profilesListView.setOnItemClickListener((adapterView, view, position, id) -> {
+            ProfileBean profile = (ProfileBean) adapterView.getItemAtPosition(position);
+            profileDataSource.updateProfile(profile.getId(), null, null, null);
+
+            Intent myIntent = new Intent(this, MenuActivity.class);
+            myIntent.putExtra(MenuActivity.PARAM_PROFILE_ID, profile.getId());
+            Log.d(LOG_TAG, "--> Start the menu activity for the profile: " + profile.toString());
+            startActivity(myIntent);
+        });
     }
 
     private void initializeContextualActionBar() {
+        Log.d(LOG_TAG, "--> initialize contextual ActionBar.");
         final ListView profilesListView = findViewById(R.id.list_view_profiles);
         profilesListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 
@@ -92,7 +98,7 @@ public class ProfilesActivity extends AppCompatActivity {
 
             @Override
             public void onItemCheckedStateChanged(ActionMode actionMode, int position, long id, boolean checked) {
-                if(checked) selCount++;
+                if (checked) selCount++;
                 else selCount--;
                 String cabTitle = selCount + " " + getString(R.string.cab_checked_string);
                 actionMode.setTitle(cabTitle);
@@ -108,21 +114,20 @@ public class ProfilesActivity extends AppCompatActivity {
             @Override
             public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
                 MenuItem item = menu.findItem(R.id.button_edit_profile);
-                if(selCount == 1) item.setVisible(true);
+                if (selCount == 1) item.setVisible(true);
                 else item.setVisible(false);
                 return true;
             }
 
             @Override
             public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-                boolean returnValue = true;
                 SparseBooleanArray touchedProfilePositions = profilesListView.getCheckedItemPositions();
 
-                switch(menuItem.getItemId()) {
+                switch (menuItem.getItemId()) {
                     case R.id.button_delete_profile:
-                        for(int i = 0; i < touchedProfilePositions.size(); i++) {
+                        for (int i = 0; i < touchedProfilePositions.size(); i++) {
                             boolean isChecked = touchedProfilePositions.valueAt(i);
-                            if(isChecked) {
+                            if (isChecked) {
                                 int positionInListView = touchedProfilePositions.keyAt(i);
                                 ProfileBean profile = (ProfileBean) profilesListView.getItemAtPosition(positionInListView);
                                 Log.d(LOG_TAG, "--> Position in ListView: " + positionInListView + " Content: " + profile.toString());
@@ -134,9 +139,9 @@ public class ProfilesActivity extends AppCompatActivity {
                         actionMode.finish();
                         break;
                     case R.id.button_edit_profile:
-                        for(int i = 0; i < touchedProfilePositions.size(); i++) {
+                        for (int i = 0; i < touchedProfilePositions.size(); i++) {
                             boolean isChecked = touchedProfilePositions.valueAt(i);
-                            if(isChecked) {
+                            if (isChecked) {
                                 int positionInListView = touchedProfilePositions.keyAt(i);
                                 ProfileBean profile = (ProfileBean) profilesListView.getItemAtPosition(positionInListView);
                                 Log.d(LOG_TAG, "--> Position in ListView: " + positionInListView + " Content: " + profile.toString());
@@ -148,10 +153,9 @@ public class ProfilesActivity extends AppCompatActivity {
                         actionMode.finish();
                         break;
                     default:
-                        returnValue = false;
-                        break;
+                        return false;
                 }
-                return returnValue;
+                return true;
             }
 
             @Override
@@ -162,6 +166,7 @@ public class ProfilesActivity extends AppCompatActivity {
     }
 
     private AlertDialog createAddProfileDialog() {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
 
@@ -175,24 +180,24 @@ public class ProfilesActivity extends AppCompatActivity {
         editTextNewDescription.setText("");
 
         builder.setView(dialogsView)
-            .setTitle(R.string.profile_add_title)
-            .setPositiveButton(R.string.dialog_button_positive, (dialog, id) -> {
-                String name = editTextNewName.getText().toString();
-                String description = editTextNewDescription.getText().toString();
+                .setTitle(R.string.profile_add_title)
+                .setPositiveButton(R.string.dialog_button_positive, (dialog, id) -> {
+                    String name = editTextNewName.getText().toString();
+                    String description = editTextNewDescription.getText().toString();
 
-                if((TextUtils.isEmpty(name))) {
-                    editTextNewName.setError(getString(R.string.field_name_error_required));
-                    return;
-                }
+                    if ((TextUtils.isEmpty(name))) {
+                        editTextNewName.setError(getString(R.string.field_name_error_required));
+                        return;
+                    }
 
-                ProfileBean newProfile = profileDataSource.insertProfile(name, description);
+                    ProfileBean newProfile = profileDataSource.insertProfile(name, description);
 
-                Log.d(LOG_TAG, "--> Insert new entry: " + newProfile.toString());
+                    Log.d(LOG_TAG, "--> Insert new entry: " + newProfile.toString());
 
-                showAllListEntries();
-                dialog.dismiss();
-            })
-            .setNegativeButton(R.string.dialog_button_negative, (dialog, id) -> dialog.cancel());
+                    showAllListEntries();
+                    dialog.dismiss();
+                })
+                .setNegativeButton(R.string.dialog_button_negative, (dialog, id) -> dialog.cancel());
 
         return builder.create();
     }
@@ -216,7 +221,7 @@ public class ProfilesActivity extends AppCompatActivity {
                     String name = editTextNewName.getText().toString();
                     String description = editTextNewDescription.getText().toString();
 
-                    if((TextUtils.isEmpty(name))) {
+                    if ((TextUtils.isEmpty(name))) {
                         editTextNewName.setError(getString(R.string.field_name_error_required));
                         return;
                     }

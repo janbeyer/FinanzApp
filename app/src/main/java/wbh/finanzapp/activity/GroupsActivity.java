@@ -35,7 +35,12 @@ public class GroupsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_groups);
         groupDataSource = new GroupsDataSource(this);
-        activateAddButton();
+        Button buttonAddGroup = findViewById(R.id.button_add_group);
+
+        buttonAddGroup.setOnClickListener(view -> {
+            AlertDialog addGroupDialog = createAddGroupDialog();
+            addGroupDialog.show();
+        });
         initializeContextualActionBar();
     }
 
@@ -62,15 +67,6 @@ public class GroupsActivity extends AppCompatActivity {
 
         ListView groupsListView = findViewById(R.id.list_view_groups);
         groupsListView.setAdapter(groupArrayAdapter);
-    }
-
-    private void activateAddButton() {
-        Button buttonAddGroup = findViewById(R.id.button_add_group);
-
-        buttonAddGroup.setOnClickListener(view -> {
-            AlertDialog addGroupDialog = createAddGroupDialog();
-            addGroupDialog.show();
-        });
     }
 
     private void initializeContextualActionBar() {
