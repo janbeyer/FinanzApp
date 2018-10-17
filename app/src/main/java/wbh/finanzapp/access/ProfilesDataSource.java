@@ -22,7 +22,15 @@ public class ProfilesDataSource {
     /**
      * Indicate if this data bas is open.
      */
-    boolean isDbOpen = false;
+    private boolean isDbOpen = false;
+
+    /**
+     * Check if this DB is already open.
+     * @return true if the DB is open, else false.
+     */
+    public boolean isDbOpen() {
+        return isDbOpen;
+    }
 
     private String[] columns = {
         ProfilesDBHelper.COLUMN_ID,
