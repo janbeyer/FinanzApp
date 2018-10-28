@@ -43,6 +43,11 @@ public class GroupsDataSource {
 
     private DBHelper dbHelper;
 
+    /**
+     * Indicate if this data bas is open.
+     */
+    private boolean isDbOpen = false;
+
     private String[] columns = {
         GroupsDBHelper.COLUMN_ID,
         GroupsDBHelper.COLUMN_NAME,
@@ -57,15 +62,19 @@ public class GroupsDataSource {
     }
 
     public void open() {
+        // id the data base is already open, nothing to do
+        if(isDbOpen) return;
         Log.d(LOG_TAG, "--> Start getting a reference of the db.");
         database = dbHelper.getWritableDatabase();
         if(!BASICS_AVAILABLE_IN_DB) insertBasics();
         Log.d(LOG_TAG, "--> Finish getting the db reference. Path of the db: " + database.getPath());
+        isDbOpen = true;
     }
 
     public void close() {
         dbHelper.close();
         Log.d(LOG_TAG, "--> Close the db with the help of the DBHelper.");
+        isDbOpen = false;
     }
 
     @SuppressWarnings("unused")
