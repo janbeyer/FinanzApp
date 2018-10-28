@@ -63,7 +63,7 @@ public class GroupsActivity extends AppCompatActivity {
         List<GroupBean> groups = groupDataSource.getAllGroups();
 
         ArrayAdapter<GroupBean> groupArrayAdapter = new ArrayAdapter<>(
-            this, android.R.layout.simple_list_item_activated_1, groups);
+                this, android.R.layout.simple_list_item_activated_1, groups);
 
         ListView groupsListView = findViewById(R.id.list_view_groups);
         groupsListView.setAdapter(groupArrayAdapter);
@@ -78,7 +78,7 @@ public class GroupsActivity extends AppCompatActivity {
 
             @Override
             public void onItemCheckedStateChanged(ActionMode actionMode, int position, long id, boolean checked) {
-                if(checked) selCount++;
+                if (checked) selCount++;
                 else selCount--;
                 String cabTitle = selCount + " " + getString(R.string.cab_checked_string);
                 actionMode.setTitle(cabTitle);
@@ -94,7 +94,7 @@ public class GroupsActivity extends AppCompatActivity {
             @Override
             public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
                 MenuItem item = menu.findItem(R.id.button_edit_group);
-                if(selCount == 1) item.setVisible(true);
+                if (selCount == 1) item.setVisible(true);
                 else item.setVisible(false);
                 return true;
             }
@@ -104,11 +104,11 @@ public class GroupsActivity extends AppCompatActivity {
                 boolean returnValue = true;
                 SparseBooleanArray touchedGroupPositions = groupsListView.getCheckedItemPositions();
 
-                switch(menuItem.getItemId()) {
+                switch (menuItem.getItemId()) {
                     case R.id.button_delete_group:
-                        for(int i = 0; i < touchedGroupPositions.size(); i++) {
+                        for (int i = 0; i < touchedGroupPositions.size(); i++) {
                             boolean isChecked = touchedGroupPositions.valueAt(i);
-                            if(isChecked) {
+                            if (isChecked) {
                                 int positionInListView = touchedGroupPositions.keyAt(i);
                                 GroupBean group = (GroupBean) groupsListView.getItemAtPosition(positionInListView);
                                 Log.d(LOG_TAG, "--> Position in ListView: " + positionInListView + " Content: " + group.toString());
@@ -120,9 +120,9 @@ public class GroupsActivity extends AppCompatActivity {
                         actionMode.finish();
                         break;
                     case R.id.button_edit_group:
-                        for(int i = 0; i < touchedGroupPositions.size(); i++) {
+                        for (int i = 0; i < touchedGroupPositions.size(); i++) {
                             boolean isChecked = touchedGroupPositions.valueAt(i);
-                            if(isChecked) {
+                            if (isChecked) {
                                 int positionInListView = touchedGroupPositions.keyAt(i);
                                 GroupBean group = (GroupBean) groupsListView.getItemAtPosition(positionInListView);
                                 Log.d(LOG_TAG, "--> Position in ListView: " + positionInListView + " Content: " + group.toString());
@@ -161,24 +161,24 @@ public class GroupsActivity extends AppCompatActivity {
         editTextNewDescription.setText("");
 
         builder.setView(dialogsView)
-            .setTitle(R.string.group_add_title)
-            .setPositiveButton(R.string.dialog_button_positive, (dialog, id) -> {
-                String name = editTextNewName.getText().toString();
-                String description = editTextNewDescription.getText().toString();
+                .setTitle(R.string.group_add_title)
+                .setPositiveButton(R.string.dialog_button_positive, (dialog, id) -> {
+                    String name = editTextNewName.getText().toString();
+                    String description = editTextNewDescription.getText().toString();
 
-                if((TextUtils.isEmpty(name))) {
-                    editTextNewName.setError(getString(R.string.field_name_error_required));
-                    return;
-                }
+                    if ((TextUtils.isEmpty(name))) {
+                        editTextNewName.setError(getString(R.string.field_name_error_required));
+                        return;
+                    }
 
-                GroupBean newGroup = groupDataSource.insertGroup(name, description, true);
+                    GroupBean newGroup = groupDataSource.insertGroup(name, description, true);
 
-                Log.d(LOG_TAG, "--> Insert new entry: " + newGroup.toString());
+                    Log.d(LOG_TAG, "--> Insert new entry: " + newGroup.toString());
 
-                showAllListEntries();
-                dialog.dismiss();
-            })
-            .setNegativeButton(R.string.dialog_button_negative, (dialog, id) -> dialog.cancel());
+                    showAllListEntries();
+                    dialog.dismiss();
+                })
+                .setNegativeButton(R.string.dialog_button_negative, (dialog, id) -> dialog.cancel());
 
         return builder.create();
     }
@@ -202,7 +202,7 @@ public class GroupsActivity extends AppCompatActivity {
                     String name = editTextNewName.getText().toString();
                     String description = editTextNewDescription.getText().toString();
 
-                    if((TextUtils.isEmpty(name))) {
+                    if ((TextUtils.isEmpty(name))) {
                         editTextNewName.setError(getString(R.string.field_name_error_required));
                         return;
                     }

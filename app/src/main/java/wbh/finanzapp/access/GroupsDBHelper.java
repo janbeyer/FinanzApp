@@ -7,7 +7,7 @@ class GroupsDBHelper {
 
     private static final String LOG_TAG = GroupsDBHelper.class.getSimpleName();
 
-    public static final String TABLE_NAME ="groups";
+    public static final String TABLE_NAME = "groups";
 
     public static final int TABLE_VERSION = 1;
 
@@ -17,12 +17,12 @@ class GroupsDBHelper {
     public static final String COLUMN_WRITEABLE = "writeable";
 
     private static final String SQL_CREATE =
-        "CREATE TABLE " + TABLE_NAME + "(" +
-            COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            COLUMN_NAME + " TEXT NOT NULL, " +
-            COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
-            COLUMN_WRITEABLE + " INTEGER NOT NULL" +
-            ");";
+            "CREATE TABLE " + TABLE_NAME + "(" +
+                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_NAME + " TEXT NOT NULL, " +
+                    COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
+                    COLUMN_WRITEABLE + " INTEGER NOT NULL" +
+                    ");";
 
     public static void createTable(SQLiteDatabase db) {
         try {

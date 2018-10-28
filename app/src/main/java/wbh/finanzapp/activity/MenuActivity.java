@@ -25,9 +25,9 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
         profileDataSource = new ProfilesDataSource(this);
         Bundle bundle = getIntent().getExtras();
-        if(bundle != null) {
+        if (bundle != null) {
             Long profileId = (Long) bundle.get(PARAM_PROFILE_ID);
-            if(profileId != null) {
+            if (profileId != null) {
                 ProfileBean profile = profileDataSource.getProfile(profileId);
                 this.setTitle(profile.getName());
             }

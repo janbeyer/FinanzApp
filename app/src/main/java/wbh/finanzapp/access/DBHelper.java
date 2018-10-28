@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +16,7 @@ class DBHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "financeApp.db";
 
     private static final Map<String, Integer> DB_VERSION_MODULES;
+
     static {
         Map<String, Integer> tmpMap = new HashMap<>();
         tmpMap.put(ProfilesDBHelper.TABLE_NAME, ProfilesDBHelper.TABLE_VERSION);

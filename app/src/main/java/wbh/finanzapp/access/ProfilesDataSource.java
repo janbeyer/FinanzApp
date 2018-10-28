@@ -25,11 +25,11 @@ public class ProfilesDataSource {
     private boolean isDbOpen = false;
 
     private final String[] columns = {
-        ProfilesDBHelper.COLUMN_ID,
-        ProfilesDBHelper.COLUMN_NAME,
-        ProfilesDBHelper.COLUMN_DESCRIPTION,
-        ProfilesDBHelper.COLUMN_LAST_USE,
-        ProfilesDBHelper.COLUMN_START_VALUE
+            ProfilesDBHelper.COLUMN_ID,
+            ProfilesDBHelper.COLUMN_NAME,
+            ProfilesDBHelper.COLUMN_DESCRIPTION,
+            ProfilesDBHelper.COLUMN_LAST_USE,
+            ProfilesDBHelper.COLUMN_START_VALUE
     };
 
     public ProfilesDataSource(Context context) {
@@ -40,7 +40,7 @@ public class ProfilesDataSource {
 
     public void open() {
         // id the data base is already open, nothing to do
-        if(isDbOpen) return;
+        if (isDbOpen) return;
         Log.d(LOG_TAG, "--> Open the db.");
         database = dbHelper.getWritableDatabase();
         Log.d(LOG_TAG, "--> Path of the db is: " + database.getPath());
@@ -60,8 +60,8 @@ public class ProfilesDataSource {
         //noinspection TryFinallyCanBeTryWithResources
         try {
             cursor = database.query(ProfilesDBHelper.TABLE_NAME, columns, ProfilesDBHelper.COLUMN_ID + "=?",
-                new String[] { String.valueOf(id) },null, null, null);
-            if(cursor.getCount() > 0) {
+                    new String[]{String.valueOf(id)}, null, null, null);
+            if (cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 profile = cursorToProfile(cursor);
             }
@@ -82,7 +82,7 @@ public class ProfilesDataSource {
         cursor.moveToFirst();
         ProfileBean profile;
 
-        while(!cursor.isAfterLast()) {
+        while (!cursor.isAfterLast()) {
             profile = cursorToProfile(cursor);
             profileList.add(profile);
             cursor.moveToNext();
@@ -97,7 +97,7 @@ public class ProfilesDataSource {
         ContentValues values = createProfileValues(null, name, description, null);
         long insertId = database.insert(ProfilesDBHelper.TABLE_NAME, null, values);
         Cursor cursor = database.query(ProfilesDBHelper.TABLE_NAME, columns, ProfilesDBHelper.COLUMN_ID + "=" + insertId,
-            null, null, null, null);
+                null, null, null, null);
         cursor.moveToFirst();
         ProfileBean profile = cursorToProfile(cursor);
         cursor.close();
@@ -108,7 +108,7 @@ public class ProfilesDataSource {
         ContentValues values = createProfileValues(id, newName, newDescription, newStartValue);
         database.update(ProfilesDBHelper.TABLE_NAME, values, ProfilesDBHelper.COLUMN_ID + "=" + id, null);
         Cursor cursor = database.query(ProfilesDBHelper.TABLE_NAME, columns, ProfilesDBHelper.COLUMN_ID + "=" + id,
-            null, null, null, null);
+                null, null, null, null);
         cursor.moveToFirst();
         ProfileBean profile = cursorToProfile(cursor);
         cursor.close();
@@ -138,11 +138,11 @@ public class ProfilesDataSource {
 
     private ContentValues createProfileValues(Long id, String name, String description, Integer startValue) {
         ContentValues values = new ContentValues();
-        if(id != null) values.put(ProfilesDBHelper.COLUMN_ID, id);
-        if(name != null) values.put(ProfilesDBHelper.COLUMN_NAME, name);
-        if(description != null) values.put(ProfilesDBHelper.COLUMN_DESCRIPTION, description);
+        if (id != null) values.put(ProfilesDBHelper.COLUMN_ID, id);
+        if (name != null) values.put(ProfilesDBHelper.COLUMN_NAME, name);
+        if (description != null) values.put(ProfilesDBHelper.COLUMN_DESCRIPTION, description);
         values.put(ProfilesDBHelper.COLUMN_LAST_USE, System.currentTimeMillis()); // set the current date.
-        if(startValue != null) values.put(ProfilesDBHelper.COLUMN_START_VALUE, startValue);
+        if (startValue != null) values.put(ProfilesDBHelper.COLUMN_START_VALUE, startValue);
         return values;
     }
 }
