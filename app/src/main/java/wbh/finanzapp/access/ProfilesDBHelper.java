@@ -21,7 +21,7 @@ class ProfilesDBHelper {
                     COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COLUMN_NAME + " TEXT NOT NULL, " +
                     COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
-                    COLUMN_LAST_USE + " INTEGER NOT NULL, " +
+                    COLUMN_LAST_USE + " INTEGER NOT NULL" +
                     ");";
 
     public static void createTable(SQLiteDatabase db) {

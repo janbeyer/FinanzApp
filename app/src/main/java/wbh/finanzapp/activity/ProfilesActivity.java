@@ -79,7 +79,7 @@ public class ProfilesActivity extends AppCompatActivity {
 
         profilesListView.setOnItemClickListener((adapterView, view, position, id) -> {
             ProfileBean profile = (ProfileBean) adapterView.getItemAtPosition(position);
-            profileDataSource.updateProfile(profile.getId(), null, null, null);
+            profileDataSource.updateProfile(profile.getId(), null, null);
 
             Intent myIntent = new Intent(this, MenuActivity.class);
             myIntent.putExtra(MenuActivity.PARAM_PROFILE_ID, profile.getId());
@@ -226,7 +226,7 @@ public class ProfilesActivity extends AppCompatActivity {
                         return;
                     }
 
-                    ProfileBean updatedProfile = profileDataSource.updateProfile(profile.getId(), name, description, null);
+                    ProfileBean updatedProfile = profileDataSource.updateProfile(profile.getId(), name, description);
 
                     Log.d(LOG_TAG, "--> Update old entry: " + profile.toString());
                     Log.d(LOG_TAG, "--> Update new entry: " + updatedProfile.toString());
