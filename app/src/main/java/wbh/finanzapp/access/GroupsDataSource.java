@@ -48,7 +48,7 @@ public class GroupsDataSource {
      */
     private boolean isDbOpen = false;
 
-    private String[] columns = {
+    private final String[] columns = {
         GroupsDBHelper.COLUMN_ID,
         GroupsDBHelper.COLUMN_NAME,
         GroupsDBHelper.COLUMN_DESCRIPTION,
@@ -77,40 +77,10 @@ public class GroupsDataSource {
         isDbOpen = false;
     }
 
-    @SuppressWarnings("unused")
-    public GroupBean getGroup(long id) {
-        Cursor cursor = null;
-        GroupBean group = null;
-
-        //noinspection TryFinallyCanBeTryWithResources
-        try {
-            cursor = database.query(GroupsDBHelper.TABLE_NAME, columns, GroupsDBHelper.COLUMN_ID + "=?",
-                new String[] { String.valueOf(id) },null, null, GroupsDBHelper.COLUMN_NAME + " ASC");
-            if(cursor.getCount() > 0) {
-                cursor.moveToFirst();
-                group = cursorToGroup(cursor);
-            }
-            return group;
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-    }
-
-    @SuppressWarnings("WeakerAccess")
-    public boolean existGroup(String name) {
-        Cursor cursor = null;
-        //GroupBean group = null;
-        //noinspection TryFinallyCanBeTryWithResources
-        try {
-            cursor = database.query(GroupsDBHelper.TABLE_NAME, columns, GroupsDBHelper.COLUMN_NAME + "=?",
-                    new String[] { name },null, null, null);
+    private boolean existGroup(String name) {
+        try (Cursor cursor = database.query(GroupsDBHelper.TABLE_NAME, columns, GroupsDBHelper.COLUMN_NAME + "=?",
+                new String[]{name}, null, null, null)) {
             return cursor.getCount() > 0;
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
         }
     }
 
@@ -177,9 +147,7 @@ public class GroupsDataSource {
         long id = cursor.getLong(idIndex);
         String name = cursor.getString(idName);
         String description = cursor.getString(idDescription);
-        // TODO: check logic
-        @SuppressWarnings("RedundantConditionalExpression")
-        Boolean writable = (cursor.getInt(idWritable) == 1) ? true : false;
+        Boolean writable = (cursor.getInt(idWritable) == 1);
 
         return new GroupBean(id, name, description, writable);
     }

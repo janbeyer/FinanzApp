@@ -3,8 +3,7 @@ package wbh.finanzapp.access;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-@SuppressWarnings("WeakerAccess")
-public class ProfilesDBHelper {
+class ProfilesDBHelper {
 
     private static final String LOG_TAG = ProfilesDBHelper.class.getSimpleName();
 
@@ -15,16 +14,16 @@ public class ProfilesDBHelper {
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_DESCRIPTION = "description";
-    public static final String COLUMN_LASTUSE = "last_use";
-    public static final String COLUMN_STARTVALUE = "start_value";
+    public static final String COLUMN_LAST_USE = "last_use";
+    public static final String COLUMN_START_VALUE = "start_value";
 
     private static final String SQL_CREATE =
         "CREATE TABLE " + TABLE_NAME + "(" +
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_NAME + " TEXT NOT NULL, " +
             COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
-            COLUMN_LASTUSE + " INTEGER NOT NULL, " +
-            COLUMN_STARTVALUE + " INTEGER NOT NULL DEFAULT 0" +
+                COLUMN_LAST_USE + " INTEGER NOT NULL, " +
+                COLUMN_START_VALUE + " INTEGER NOT NULL DEFAULT 0" +
             ");";
 
     public static void createTable(SQLiteDatabase db) {

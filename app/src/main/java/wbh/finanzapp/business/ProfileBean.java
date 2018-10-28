@@ -1,19 +1,12 @@
 package wbh.finanzapp.business;
 
-import android.annotation.SuppressLint;
-
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-@SuppressWarnings("unused")
 public class ProfileBean {
 
-    private long id;
-    private String name;
-    private String description;
-    private long lastUse;
-    private int startValue;
+    private final long id;
+    private final String name;
+    private final String description;
+    private final long lastUse;
+    private final int startValue;
 
     public ProfileBean(long id, String name, String description, long lastUse, int startValue) {
         this.id = id;
@@ -27,37 +20,13 @@ public class ProfileBean {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getDescription() {
         return description;
     }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public long getLastUse() {
-        return lastUse;
-    }
-
-    public void setLastUse(long lastUse) {
-        this.lastUse = lastUse;
-    }
-
-    public int getStartValue() { return startValue; }
-
-    public void setStartValue(int startValue) { this.startValue = startValue; }
 
     @Override
     public String toString() {
@@ -68,13 +37,5 @@ public class ProfileBean {
                 ", lastUse=" + lastUse +
                 ", startValue=" + startValue +
                 '}';
-    }
-
-    private String convertTime(long time){
-        Date date = new Date(time);
-        // TODO
-        @SuppressLint("SimpleDateFormat")
-        Format format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-        return format.format(date);
     }
 }

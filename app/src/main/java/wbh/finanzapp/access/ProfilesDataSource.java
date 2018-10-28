@@ -17,19 +17,19 @@ public class ProfilesDataSource {
 
     private SQLiteDatabase database;
 
-    private DBHelper dbHelper;
+    private final DBHelper dbHelper;
 
     /**
      * Indicate if this data bas is open.
      */
     private boolean isDbOpen = false;
 
-    private String[] columns = {
+    private final String[] columns = {
         ProfilesDBHelper.COLUMN_ID,
         ProfilesDBHelper.COLUMN_NAME,
         ProfilesDBHelper.COLUMN_DESCRIPTION,
-        ProfilesDBHelper.COLUMN_LASTUSE,
-        ProfilesDBHelper.COLUMN_STARTVALUE
+        ProfilesDBHelper.COLUMN_LAST_USE,
+        ProfilesDBHelper.COLUMN_START_VALUE
     };
 
     public ProfilesDataSource(Context context) {
@@ -77,7 +77,7 @@ public class ProfilesDataSource {
         List<ProfileBean> profileList = new ArrayList<>();
 
         Cursor cursor = database.query(ProfilesDBHelper.TABLE_NAME, columns,
-                null, null, null, null, ProfilesDBHelper.COLUMN_LASTUSE + " DESC");
+                null, null, null, null, ProfilesDBHelper.COLUMN_LAST_USE + " DESC");
 
         cursor.moveToFirst();
         ProfileBean profile;
@@ -124,8 +124,8 @@ public class ProfilesDataSource {
         int idIndex = cursor.getColumnIndex(ProfilesDBHelper.COLUMN_ID);
         int idName = cursor.getColumnIndex(ProfilesDBHelper.COLUMN_NAME);
         int idDescription = cursor.getColumnIndex(ProfilesDBHelper.COLUMN_DESCRIPTION);
-        int idLastUse = cursor.getColumnIndex(ProfilesDBHelper.COLUMN_LASTUSE);
-        int idStartValue = cursor.getColumnIndex(ProfilesDBHelper.COLUMN_STARTVALUE);
+        int idLastUse = cursor.getColumnIndex(ProfilesDBHelper.COLUMN_LAST_USE);
+        int idStartValue = cursor.getColumnIndex(ProfilesDBHelper.COLUMN_START_VALUE);
 
         long id = cursor.getLong(idIndex);
         String name = cursor.getString(idName);
@@ -141,8 +141,8 @@ public class ProfilesDataSource {
         if(id != null) values.put(ProfilesDBHelper.COLUMN_ID, id);
         if(name != null) values.put(ProfilesDBHelper.COLUMN_NAME, name);
         if(description != null) values.put(ProfilesDBHelper.COLUMN_DESCRIPTION, description);
-        values.put(ProfilesDBHelper.COLUMN_LASTUSE, System.currentTimeMillis()); // set the current date.
-        if(startValue != null) values.put(ProfilesDBHelper.COLUMN_STARTVALUE, startValue);
+        values.put(ProfilesDBHelper.COLUMN_LAST_USE, System.currentTimeMillis()); // set the current date.
+        if(startValue != null) values.put(ProfilesDBHelper.COLUMN_START_VALUE, startValue);
         return values;
     }
 }

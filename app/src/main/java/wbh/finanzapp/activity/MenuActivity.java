@@ -26,10 +26,11 @@ public class MenuActivity extends AppCompatActivity {
         profileDataSource = new ProfilesDataSource(this);
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
-            // TODO use Shared preferences
-            long profileId = (Long) bundle.get(PARAM_PROFILE_ID);
-            ProfileBean profile = profileDataSource.getProfile(profileId);
-            this.setTitle(profile.getName());
+            Long profileId = (Long) bundle.get(PARAM_PROFILE_ID);
+            if(profileId != null) {
+                ProfileBean profile = profileDataSource.getProfile(profileId);
+                this.setTitle(profile.getName());
+            }
         }
         activateButtons();
     }
