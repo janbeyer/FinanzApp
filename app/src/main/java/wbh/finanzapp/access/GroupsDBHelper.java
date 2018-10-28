@@ -12,6 +12,7 @@ class GroupsDBHelper {
     public static final int TABLE_VERSION = 1;
 
     public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_PROFILE_ID = "_profileId";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_DESCRIPTION = "description";
     public static final String COLUMN_WRITEABLE = "writeable";
@@ -19,9 +20,11 @@ class GroupsDBHelper {
     private static final String SQL_CREATE =
             "CREATE TABLE " + TABLE_NAME + "(" +
                     COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_PROFILE_ID + " INTEGER NOT NULL, " +
                     COLUMN_NAME + " TEXT NOT NULL, " +
                     COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
-                    COLUMN_WRITEABLE + " INTEGER NOT NULL" +
+                    COLUMN_WRITEABLE + " INTEGER NOT NULL, " +
+                    "FOREIGN KEY(" + COLUMN_PROFILE_ID + ") REFERENCES " + ProfilesDBHelper.TABLE_NAME + "(" + ProfilesDBHelper.COLUMN_ID + ")" +
                     ");";
 
     public static void createTable(SQLiteDatabase db) {

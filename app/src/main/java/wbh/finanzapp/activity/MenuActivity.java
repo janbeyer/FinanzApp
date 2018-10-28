@@ -19,17 +19,19 @@ public class MenuActivity extends AppCompatActivity {
 
     private ProfilesDataSource profileDataSource;
 
+    private ProfileBean profileBean;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         profileDataSource = new ProfilesDataSource(this);
         Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
+        if(bundle != null) {
             Long profileId = (Long) bundle.get(PARAM_PROFILE_ID);
-            if (profileId != null) {
-                ProfileBean profile = profileDataSource.getProfile(profileId);
-                this.setTitle(profile.getName());
+            if(profileId != null) {
+                profileBean = profileDataSource.getProfile(profileId);
+                this.setTitle(profileBean.getName());
             }
         }
         activateButtons();
@@ -64,7 +66,7 @@ public class MenuActivity extends AppCompatActivity {
         buttonGroups.setOnClickListener(view -> {
             Intent myIntent = new Intent(this, GroupsActivity.class);
             Log.d(LOG_TAG, "--> Start the groups activity.");
-            myIntent.putExtra(MenuActivity.PARAM_PROFILE_ID, 0);
+            myIntent.putExtra(GroupsActivity.PARAM_PROFILE_ID, profileBean.getId());
             startActivity(myIntent);
         });
         Button buttonHelp = findViewById(R.id.menu_button_help);

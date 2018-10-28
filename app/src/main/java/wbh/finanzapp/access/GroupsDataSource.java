@@ -18,7 +18,6 @@ public class GroupsDataSource {
 
     private static final String LOG_TAG = GroupsDataSource.class.getSimpleName();
 
-    private static boolean BASICS_AVAILABLE_IN_DB = false;
     private static final Map<String, String> BASIC_GROUPS;
 
     static {
@@ -26,7 +25,7 @@ public class GroupsDataSource {
         tmpMap.put("Haushalt", "Transaktionen die den Haushalt betreffen");
         tmpMap.put("Lebensmittel", "Transaktionen zur Lebensmittelvorsorge");
         tmpMap.put("Restaurant", "Restaurantbesuche");
-        tmpMap.put("Verkehrsmittel", "Kosten für Pkw, Bahn oder ähnliches");
+        tmpMap.put("Verkehrsmittel", "Kosten für Pkw, Bahn o.ä.");
         tmpMap.put("Unterhaltung", "Unterhaltung wie z.B. Spiele");
         tmpMap.put("Persönlich", "Persönliche Transaktionen");
         tmpMap.put("Gesundheit", "Arztkosten, Medikamente o.ä.");
@@ -51,6 +50,7 @@ public class GroupsDataSource {
 
     private final String[] columns = {
             GroupsDBHelper.COLUMN_ID,
+            GroupsDBHelper.COLUMN_PROFILE_ID,
             GroupsDBHelper.COLUMN_NAME,
             GroupsDBHelper.COLUMN_DESCRIPTION,
             GroupsDBHelper.COLUMN_WRITEABLE
@@ -67,7 +67,6 @@ public class GroupsDataSource {
         if (isDbOpen) return;
         Log.d(LOG_TAG, "--> Start getting a reference of the db.");
         database = dbHelper.getWritableDatabase();
-        if (!BASICS_AVAILABLE_IN_DB) insertBasics();
         Log.d(LOG_TAG, "--> Finish getting the db reference. Path of the db: " + database.getPath());
         isDbOpen = true;
     }
@@ -78,18 +77,11 @@ public class GroupsDataSource {
         isDbOpen = false;
     }
 
-    private boolean existGroup(String name) {
-        try (Cursor cursor = database.query(GroupsDBHelper.TABLE_NAME, columns, GroupsDBHelper.COLUMN_NAME + "=?",
-                new String[]{name}, null, null, null)) {
-            return cursor.getCount() > 0;
-        }
-    }
-
-    public List<GroupBean> getAllGroups() {
+    public List<GroupBean> getProfileGroups(long profileId) {
         List<GroupBean> groupList = new ArrayList<>();
 
-        Cursor cursor = database.query(GroupsDBHelper.TABLE_NAME, columns,
-                null, null, null, null, GroupsDBHelper.COLUMN_NAME + " ASC");
+        Cursor cursor = database.query(GroupsDBHelper.TABLE_NAME, columns, GroupsDBHelper.COLUMN_PROFILE_ID + "=?",
+                new String[]{String.valueOf(profileId)}, null, null, GroupsDBHelper.COLUMN_NAME + " ASC");
 
         cursor.moveToFirst();
         GroupBean group;
@@ -105,15 +97,12 @@ public class GroupsDataSource {
         return groupList;
     }
 
-    private void insertBasics() {
-        BASIC_GROUPS.forEach((name, descr) -> {
-            if (!existGroup(name)) insertGroup(name, descr, false);
-        });
-        BASICS_AVAILABLE_IN_DB = true;
+    public void insertBasics(long profileId) {
+        BASIC_GROUPS.forEach((name, descr) -> insertGroup(profileId, name, descr, false));
     }
 
-    public GroupBean insertGroup(String name, String description, Boolean writable) {
-        ContentValues values = createGroupValues(null, name, description, writable);
+    public GroupBean insertGroup(Long profileId, String name, String description, Boolean writable) {
+        ContentValues values = createGroupValues(null, profileId, name, description, writable);
         long insertId = database.insert(GroupsDBHelper.TABLE_NAME, null, values);
         Cursor cursor = database.query(GroupsDBHelper.TABLE_NAME, columns, GroupsDBHelper.COLUMN_ID + "=" + insertId,
                 null, null, null, null);
@@ -123,8 +112,8 @@ public class GroupsDataSource {
         return group;
     }
 
-    public GroupBean updateGroup(long id, String newName, String newDescription) {
-        ContentValues values = createGroupValues(id, newName, newDescription, true);
+    public GroupBean updateGroup(long id, long profileId, String newName, String newDescription) {
+        ContentValues values = createGroupValues(id, profileId, newName, newDescription, true);
         database.update(GroupsDBHelper.TABLE_NAME, values, GroupsDBHelper.COLUMN_ID + "=" + id, null);
         Cursor cursor = database.query(GroupsDBHelper.TABLE_NAME, columns, GroupsDBHelper.COLUMN_ID + "=" + id,
                 null, null, null, null);
@@ -134,28 +123,30 @@ public class GroupsDataSource {
         return group;
     }
 
-    public void deleteGroup(GroupBean group) {
-        long id = group.getId();
+    public void deleteGroup(long id) {
         database.delete(GroupsDBHelper.TABLE_NAME, GroupsDBHelper.COLUMN_ID + "=" + id, null);
     }
 
     private GroupBean cursorToGroup(Cursor cursor) {
         int idIndex = cursor.getColumnIndex(GroupsDBHelper.COLUMN_ID);
+        int idProfile = cursor.getColumnIndex(GroupsDBHelper.COLUMN_PROFILE_ID);
         int idName = cursor.getColumnIndex(GroupsDBHelper.COLUMN_NAME);
         int idDescription = cursor.getColumnIndex(GroupsDBHelper.COLUMN_DESCRIPTION);
         int idWritable = cursor.getColumnIndex(GroupsDBHelper.COLUMN_WRITEABLE);
 
         long id = cursor.getLong(idIndex);
+        long profileId = cursor.getLong(idProfile);
         String name = cursor.getString(idName);
         String description = cursor.getString(idDescription);
         Boolean writable = (cursor.getInt(idWritable) == 1);
 
-        return new GroupBean(id, name, description, writable);
+        return new GroupBean(id, profileId, name, description, writable);
     }
 
-    private ContentValues createGroupValues(Long id, String name, String description, Boolean writable) {
+    private ContentValues createGroupValues(Long id, Long profileId, String name, String description, Boolean writable) {
         ContentValues values = new ContentValues();
         if (id != null) values.put(GroupsDBHelper.COLUMN_ID, id);
+        if (profileId != null) values.put(GroupsDBHelper.COLUMN_PROFILE_ID, profileId);
         if (name != null) values.put(GroupsDBHelper.COLUMN_NAME, name);
         if (description != null) values.put(GroupsDBHelper.COLUMN_DESCRIPTION, description);
         if (writable != null) values.put(GroupsDBHelper.COLUMN_WRITEABLE, writable);

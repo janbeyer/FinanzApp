@@ -22,6 +22,7 @@ import android.widget.ListView;
 import java.util.List;
 
 import wbh.finanzapp.R;
+import wbh.finanzapp.access.GroupsDataSource;
 import wbh.finanzapp.access.ProfilesDataSource;
 import wbh.finanzapp.business.ProfileBean;
 
@@ -31,11 +32,16 @@ public class ProfilesActivity extends AppCompatActivity {
 
     private ProfilesDataSource profileDataSource;
 
+    private GroupsDataSource groupsDataSource;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(LOG_TAG, "--> Create ProfilesActivity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profiles);
+
+        groupsDataSource = new GroupsDataSource(this);
+
         profileDataSource = new ProfilesDataSource(this);
         Button buttonAddProfile = findViewById(R.id.button_add_profile);
 
@@ -191,6 +197,7 @@ public class ProfilesActivity extends AppCompatActivity {
                     }
 
                     ProfileBean newProfile = profileDataSource.insertProfile(name, description);
+                    groupsDataSource.insertBasics(newProfile.getId());
 
                     Log.d(LOG_TAG, "--> Insert new entry: " + newProfile.toString());
 

@@ -22,19 +22,37 @@ import java.util.List;
 
 import wbh.finanzapp.R;
 import wbh.finanzapp.access.GroupsDataSource;
+import wbh.finanzapp.access.ProfilesDataSource;
 import wbh.finanzapp.business.GroupBean;
+import wbh.finanzapp.business.ProfileBean;
 
 public class GroupsActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = GroupsActivity.class.getSimpleName();
 
-    private GroupsDataSource groupDataSource;
+    public static final String PARAM_PROFILE_ID = "profileId";
+
+    private ProfilesDataSource profileDataSource;
+
+    private ProfileBean profileBean;
+
+    private GroupsDataSource groupsDataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_groups);
-        groupDataSource = new GroupsDataSource(this);
+
+        profileDataSource = new ProfilesDataSource(this);
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            Long profileId = (Long) bundle.get(PARAM_PROFILE_ID);
+            if (profileId != null) {
+                profileBean = profileDataSource.getProfile(profileId);
+            }
+        }
+
+        groupsDataSource = new GroupsDataSource(this);
         Button buttonAddGroup = findViewById(R.id.button_add_group);
 
         buttonAddGroup.setOnClickListener(view -> {
@@ -48,7 +66,8 @@ public class GroupsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d(LOG_TAG, "--> Open the data source.");
-        groupDataSource.open();
+        profileDataSource.open();
+        groupsDataSource.open();
         showAllListEntries();
     }
 
@@ -56,11 +75,12 @@ public class GroupsActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         Log.d(LOG_TAG, "--> Close the data source.");
-        groupDataSource.close();
+        profileDataSource.close();
+        groupsDataSource.close();
     }
 
     private void showAllListEntries() {
-        List<GroupBean> groups = groupDataSource.getAllGroups();
+        List<GroupBean> groups = groupsDataSource.getProfileGroups(profileBean.getId());
 
         ArrayAdapter<GroupBean> groupArrayAdapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_list_item_activated_1, groups);
@@ -112,7 +132,7 @@ public class GroupsActivity extends AppCompatActivity {
                                 int positionInListView = touchedGroupPositions.keyAt(i);
                                 GroupBean group = (GroupBean) groupsListView.getItemAtPosition(positionInListView);
                                 Log.d(LOG_TAG, "--> Position in ListView: " + positionInListView + " Content: " + group.toString());
-                                groupDataSource.deleteGroup(group);
+                                groupsDataSource.deleteGroup(group.getId());
                                 Log.d(LOG_TAG, "--> Delete old entry: " + group.toString());
                             }
                         }
@@ -171,7 +191,7 @@ public class GroupsActivity extends AppCompatActivity {
                         return;
                     }
 
-                    GroupBean newGroup = groupDataSource.insertGroup(name, description, true);
+                    GroupBean newGroup = groupsDataSource.insertGroup(profileBean.getId(), name, description, true);
 
                     Log.d(LOG_TAG, "--> Insert new entry: " + newGroup.toString());
 
@@ -207,7 +227,7 @@ public class GroupsActivity extends AppCompatActivity {
                         return;
                     }
 
-                    GroupBean updatedGroup = groupDataSource.updateGroup(group.getId(), name, description);
+                    GroupBean updatedGroup = groupsDataSource.updateGroup(profileBean.getId(), group.getId(), name, description);
 
                     Log.d(LOG_TAG, "--> Update old entry: " + group.toString());
                     Log.d(LOG_TAG, "--> Update new entry: " + updatedGroup.toString());
