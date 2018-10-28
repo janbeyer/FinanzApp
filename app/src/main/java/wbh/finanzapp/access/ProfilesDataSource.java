@@ -28,8 +28,7 @@ public class ProfilesDataSource {
             ProfilesDBHelper.COLUMN_ID,
             ProfilesDBHelper.COLUMN_NAME,
             ProfilesDBHelper.COLUMN_DESCRIPTION,
-            ProfilesDBHelper.COLUMN_LAST_USE,
-            ProfilesDBHelper.COLUMN_START_VALUE
+            ProfilesDBHelper.COLUMN_LAST_USE
     };
 
     public ProfilesDataSource(Context context) {
@@ -54,22 +53,15 @@ public class ProfilesDataSource {
     }
 
     public ProfileBean getProfile(long id) {
-        Cursor cursor = null;
         ProfileBean profile = null;
 
-        //noinspection TryFinallyCanBeTryWithResources
-        try {
-            cursor = database.query(ProfilesDBHelper.TABLE_NAME, columns, ProfilesDBHelper.COLUMN_ID + "=?",
-                    new String[]{String.valueOf(id)}, null, null, null);
+        try (Cursor cursor = database.query(ProfilesDBHelper.TABLE_NAME, columns, ProfilesDBHelper.COLUMN_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null)) {
             if (cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 profile = cursorToProfile(cursor);
             }
             return profile;
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
         }
     }
 
@@ -94,7 +86,7 @@ public class ProfilesDataSource {
     }
 
     public ProfileBean insertProfile(String name, String description) {
-        ContentValues values = createProfileValues(null, name, description, null);
+        ContentValues values = createProfileValues(null, name, description);
         long insertId = database.insert(ProfilesDBHelper.TABLE_NAME, null, values);
         Cursor cursor = database.query(ProfilesDBHelper.TABLE_NAME, columns, ProfilesDBHelper.COLUMN_ID + "=" + insertId,
                 null, null, null, null);
@@ -104,8 +96,8 @@ public class ProfilesDataSource {
         return profile;
     }
 
-    public ProfileBean updateProfile(long id, String newName, String newDescription, Integer newStartValue) {
-        ContentValues values = createProfileValues(id, newName, newDescription, newStartValue);
+    public ProfileBean updateProfile(long id, String newName, String newDescription) {
+        ContentValues values = createProfileValues(id, newName, newDescription);
         database.update(ProfilesDBHelper.TABLE_NAME, values, ProfilesDBHelper.COLUMN_ID + "=" + id, null);
         Cursor cursor = database.query(ProfilesDBHelper.TABLE_NAME, columns, ProfilesDBHelper.COLUMN_ID + "=" + id,
                 null, null, null, null);
@@ -125,24 +117,21 @@ public class ProfilesDataSource {
         int idName = cursor.getColumnIndex(ProfilesDBHelper.COLUMN_NAME);
         int idDescription = cursor.getColumnIndex(ProfilesDBHelper.COLUMN_DESCRIPTION);
         int idLastUse = cursor.getColumnIndex(ProfilesDBHelper.COLUMN_LAST_USE);
-        int idStartValue = cursor.getColumnIndex(ProfilesDBHelper.COLUMN_START_VALUE);
 
         long id = cursor.getLong(idIndex);
         String name = cursor.getString(idName);
         String description = cursor.getString(idDescription);
         long lastUse = cursor.getLong(idLastUse);
-        int startValue = cursor.getInt(idStartValue);
 
-        return new ProfileBean(id, name, description, lastUse, startValue);
+        return new ProfileBean(id, name, description, lastUse);
     }
 
-    private ContentValues createProfileValues(Long id, String name, String description, Integer startValue) {
+    private ContentValues createProfileValues(Long id, String name, String description) {
         ContentValues values = new ContentValues();
         if (id != null) values.put(ProfilesDBHelper.COLUMN_ID, id);
         if (name != null) values.put(ProfilesDBHelper.COLUMN_NAME, name);
         if (description != null) values.put(ProfilesDBHelper.COLUMN_DESCRIPTION, description);
         values.put(ProfilesDBHelper.COLUMN_LAST_USE, System.currentTimeMillis()); // set the current date.
-        if (startValue != null) values.put(ProfilesDBHelper.COLUMN_START_VALUE, startValue);
         return values;
     }
 }

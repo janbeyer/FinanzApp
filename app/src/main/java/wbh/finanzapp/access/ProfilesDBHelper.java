@@ -15,7 +15,6 @@ class ProfilesDBHelper {
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_DESCRIPTION = "description";
     public static final String COLUMN_LAST_USE = "last_use";
-    public static final String COLUMN_START_VALUE = "start_value";
 
     private static final String SQL_CREATE =
             "CREATE TABLE " + TABLE_NAME + "(" +
@@ -23,7 +22,6 @@ class ProfilesDBHelper {
                     COLUMN_NAME + " TEXT NOT NULL, " +
                     COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
                     COLUMN_LAST_USE + " INTEGER NOT NULL, " +
-                    COLUMN_START_VALUE + " INTEGER NOT NULL DEFAULT 0" +
                     ");";
 
     public static void createTable(SQLiteDatabase db) {

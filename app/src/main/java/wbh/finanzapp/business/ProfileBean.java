@@ -6,14 +6,12 @@ public class ProfileBean {
     private final String name;
     private final String description;
     private final long lastUse;
-    private final int startValue;
 
-    public ProfileBean(long id, String name, String description, long lastUse, int startValue) {
+    public ProfileBean(long id, String name, String description, long lastUse) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.lastUse = lastUse;
-        this.startValue = startValue;
     }
 
     public long getId() {
@@ -35,7 +33,6 @@ public class ProfileBean {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", lastUse=" + lastUse +
-                ", startValue=" + startValue +
                 '}';
     }
 }
