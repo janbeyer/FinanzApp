@@ -245,15 +245,4 @@ public class ProfilesActivity extends AppCompatActivity {
 
         return builder.create();
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return true;
-    }
-
 }
