@@ -30,7 +30,7 @@ public class GroupsActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = GroupsActivity.class.getSimpleName();
 
-    public static final String PARAM_PROFILE_ID = "profileId";
+    public static final String PARAM_GROUPS_ID = "groupsId";
 
     private ProfilesDataSource profileDataSource;
 
@@ -46,7 +46,7 @@ public class GroupsActivity extends AppCompatActivity {
         profileDataSource = new ProfilesDataSource(this);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            Long profileId = (Long) bundle.get(PARAM_PROFILE_ID);
+            Long profileId = (Long) bundle.get(PARAM_GROUPS_ID);
             if (profileId != null) {
                 profileBean = profileDataSource.getProfile(profileId);
             }
