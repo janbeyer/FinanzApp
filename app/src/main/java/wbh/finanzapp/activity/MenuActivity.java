@@ -66,7 +66,7 @@ public class MenuActivity extends AppCompatActivity {
         buttonGroups.setOnClickListener(view -> {
             Intent myIntent = new Intent(this, GroupsActivity.class);
             Log.d(LOG_TAG, "--> Start the groups activity.");
-            myIntent.putExtra(GroupsActivity.PARAM_GROUPS_ID, profileBean.getId());
+            myIntent.putExtra(GroupsActivity.PARAM_PROFILE_ID, profileBean.getId());
             startActivity(myIntent);
         });
         Button buttonHelp = findViewById(R.id.menu_button_help);
