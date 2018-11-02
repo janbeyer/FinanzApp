@@ -24,7 +24,7 @@ class GroupsDBHelper {
                     COLUMN_NAME + " TEXT NOT NULL, " +
                     COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
                     COLUMN_WRITEABLE + " INTEGER NOT NULL, " +
-                    "FOREIGN KEY(" + COLUMN_PROFILE_ID + ") REFERENCES " + ProfilesDBHelper.TABLE_NAME + "(" + ProfilesDBHelper.COLUMN_ID + ")" +
+                    "CONSTRAINT fk_profile FOREIGN KEY (" + COLUMN_PROFILE_ID + ") REFERENCES " + ProfilesDBHelper.TABLE_NAME + " (" + ProfilesDBHelper.COLUMN_ID + ") ON DELETE CASCADE" +
                     ");";
 
     public static void createTable(SQLiteDatabase db) {
