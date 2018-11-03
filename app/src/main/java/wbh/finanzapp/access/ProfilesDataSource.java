@@ -3,7 +3,6 @@ package wbh.finanzapp.access;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -15,14 +14,7 @@ public class ProfilesDataSource {
 
     private static final String LOG_TAG = ProfilesDataSource.class.getSimpleName();
 
-    private SQLiteDatabase database;
-
     private final DBHelper dbHelper;
-
-    /**
-     * Indicate if this data bas is open.
-     */
-    private boolean isDbOpen = false;
 
     private final String[] columns = {
             ProfilesDBHelper.COLUMN_ID,
@@ -34,28 +26,13 @@ public class ProfilesDataSource {
     public ProfilesDataSource(Context context) {
         Log.d(LOG_TAG, "--> Create ProfilesDataSource.");
         dbHelper = new DBHelper(context);
-        open();
-    }
-
-    public void open() {
-        // id the data base is already open, nothing to do
-        if (isDbOpen) return;
-        Log.d(LOG_TAG, "--> Open the db.");
-        database = dbHelper.getWritableDatabase();
-        Log.d(LOG_TAG, "--> Path of the db is: " + database.getPath());
-        isDbOpen = true;
-    }
-
-    public void close() {
-        dbHelper.close();
-        Log.d(LOG_TAG, "--> Close the db.");
-        isDbOpen = false;
+        dbHelper.open();
     }
 
     public ProfileBean getProfile(long id) {
         ProfileBean profile = null;
 
-        try (Cursor cursor = database.query(ProfilesDBHelper.TABLE_NAME, columns, ProfilesDBHelper.COLUMN_ID + "=?",
+        try (Cursor cursor = dbHelper.getDatabase().query(ProfilesDBHelper.TABLE_NAME, columns, ProfilesDBHelper.COLUMN_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null)) {
             if (cursor.getCount() > 0) {
                 cursor.moveToFirst();
@@ -67,8 +44,7 @@ public class ProfilesDataSource {
 
     public List<ProfileBean> getAllProfiles() {
         List<ProfileBean> profileList = new ArrayList<>();
-        if (!isDbOpen) open();
-        Cursor cursor = database.query(ProfilesDBHelper.TABLE_NAME, columns,
+        Cursor cursor = dbHelper.getDatabase().query(ProfilesDBHelper.TABLE_NAME, columns,
                 null, null, null, null, ProfilesDBHelper.COLUMN_LAST_USE + " DESC");
 
         cursor.moveToFirst();
@@ -87,8 +63,8 @@ public class ProfilesDataSource {
 
     public ProfileBean insertProfile(String name, String description) {
         ContentValues values = createProfileValues(null, name, description);
-        long insertId = database.insert(ProfilesDBHelper.TABLE_NAME, null, values);
-        Cursor cursor = database.query(ProfilesDBHelper.TABLE_NAME, columns, ProfilesDBHelper.COLUMN_ID + "=" + insertId,
+        long insertId = dbHelper.getDatabase().insert(ProfilesDBHelper.TABLE_NAME, null, values);
+        Cursor cursor = dbHelper.getDatabase().query(ProfilesDBHelper.TABLE_NAME, columns, ProfilesDBHelper.COLUMN_ID + "=" + insertId,
                 null, null, null, null);
         cursor.moveToFirst();
         ProfileBean profile = cursorToProfile(cursor);
@@ -98,8 +74,8 @@ public class ProfilesDataSource {
 
     public ProfileBean updateProfile(long id, String newName, String newDescription) {
         ContentValues values = createProfileValues(id, newName, newDescription);
-        database.update(ProfilesDBHelper.TABLE_NAME, values, ProfilesDBHelper.COLUMN_ID + "=" + id, null);
-        Cursor cursor = database.query(ProfilesDBHelper.TABLE_NAME, columns, ProfilesDBHelper.COLUMN_ID + "=" + id,
+        dbHelper.getDatabase().update(ProfilesDBHelper.TABLE_NAME, values, ProfilesDBHelper.COLUMN_ID + "=" + id, null);
+        Cursor cursor = dbHelper.getDatabase().query(ProfilesDBHelper.TABLE_NAME, columns, ProfilesDBHelper.COLUMN_ID + "=" + id,
                 null, null, null, null);
         cursor.moveToFirst();
         ProfileBean profile = cursorToProfile(cursor);
@@ -109,7 +85,7 @@ public class ProfilesDataSource {
 
     public void deleteProfile(ProfileBean profile) {
         long id = profile.getId();
-        database.delete(ProfilesDBHelper.TABLE_NAME, ProfilesDBHelper.COLUMN_ID + "=" + id, null);
+        dbHelper.getDatabase().delete(ProfilesDBHelper.TABLE_NAME, ProfilesDBHelper.COLUMN_ID + "=" + id, null);
     }
 
     private ProfileBean cursorToProfile(Cursor cursor) {

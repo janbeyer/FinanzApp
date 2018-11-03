@@ -32,8 +32,6 @@ public class GroupsActivity extends AppCompatActivity {
 
     public static final String PARAM_PROFILE_ID = "profileId";
 
-    private ProfilesDataSource profileDataSource;
-
     private ProfileBean profileBean;
 
     private GroupsDataSource groupsDataSource;
@@ -43,7 +41,7 @@ public class GroupsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_groups);
 
-        profileDataSource = new ProfilesDataSource(this);
+        ProfilesDataSource profileDataSource = new ProfilesDataSource(this);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             Long profileId = (Long) bundle.get(PARAM_PROFILE_ID);
@@ -66,8 +64,8 @@ public class GroupsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d(LOG_TAG, "--> Open the data source.");
-        profileDataSource.open();
-        groupsDataSource.open();
+        //profileDataSource.open();
+        //groupsDataSource.open();
         showAllListEntries();
     }
 
@@ -75,8 +73,8 @@ public class GroupsActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         Log.d(LOG_TAG, "--> Close the data source.");
-        profileDataSource.close();
-        groupsDataSource.close();
+        //profileDataSource.close();
+        //groupsDataSource.close();
     }
 
     private void showAllListEntries() {

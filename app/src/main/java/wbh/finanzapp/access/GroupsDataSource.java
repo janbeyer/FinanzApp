@@ -3,7 +3,6 @@ package wbh.finanzapp.access;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -39,14 +38,7 @@ public class GroupsDataSource {
         BASIC_GROUPS = Collections.unmodifiableMap(tmpMap);
     }
 
-    private SQLiteDatabase database;
-
     private DBHelper dbHelper;
-
-    /**
-     * Indicate if this data bas is open.
-     */
-    private boolean isDbOpen = false;
 
     private final String[] columns = {
             GroupsDBHelper.COLUMN_ID,
@@ -57,30 +49,18 @@ public class GroupsDataSource {
     };
 
     public GroupsDataSource(Context context) {
-        Log.d(LOG_TAG, "--> Now the data source createss the dbHelper.");
+        Log.d(LOG_TAG, "--> Create GroupsDataSource.");
         dbHelper = new DBHelper(context);
-        open();
+        // open the Database
+        dbHelper.open();
     }
 
-    public void open() {
-        // id the data base is already open, nothing to do
-        if (isDbOpen) return;
-        Log.d(LOG_TAG, "--> Start getting a reference of the db.");
-        database = dbHelper.getWritableDatabase();
-        Log.d(LOG_TAG, "--> Finish getting the db reference. Path of the db: " + database.getPath());
-        isDbOpen = true;
-    }
-
-    public void close() {
-        dbHelper.close();
-        Log.d(LOG_TAG, "--> Close the db with the help of the DBHelper.");
-        isDbOpen = false;
-    }
 
     public List<GroupBean> getProfileGroups(long profileId) {
         List<GroupBean> groupList = new ArrayList<>();
 
-        Cursor cursor = database.query(GroupsDBHelper.TABLE_NAME, columns, GroupsDBHelper.COLUMN_PROFILE_ID + "=?",
+        Cursor cursor = dbHelper.getDatabase().query(
+                GroupsDBHelper.TABLE_NAME, columns, GroupsDBHelper.COLUMN_PROFILE_ID + "=?",
                 new String[]{String.valueOf(profileId)}, null, null, GroupsDBHelper.COLUMN_NAME + " ASC");
 
         cursor.moveToFirst();
@@ -103,9 +83,8 @@ public class GroupsDataSource {
 
     public GroupBean insertGroup(Long profileId, String name, String description, Boolean writable) {
         ContentValues values = createGroupValues(null, profileId, name, description, writable);
-        long insertId = database.insert(GroupsDBHelper.TABLE_NAME, null, values);
-        Cursor cursor = database.query(GroupsDBHelper.TABLE_NAME, columns, GroupsDBHelper.COLUMN_ID + "=" + insertId,
-                null, null, null, null);
+        long insertId = dbHelper.getDatabase().insert(GroupsDBHelper.TABLE_NAME, null, values);
+        Cursor cursor = dbHelper.getDatabase().query(GroupsDBHelper.TABLE_NAME, columns, GroupsDBHelper.COLUMN_ID + "=" + insertId,null, null, null, null);
         cursor.moveToFirst();
         GroupBean group = cursorToGroup(cursor);
         cursor.close();
@@ -114,8 +93,8 @@ public class GroupsDataSource {
 
     public GroupBean updateGroup(long id, long profileId, String newName, String newDescription) {
         ContentValues values = createGroupValues(id, profileId, newName, newDescription, true);
-        database.update(GroupsDBHelper.TABLE_NAME, values, GroupsDBHelper.COLUMN_ID + "=" + id, null);
-        Cursor cursor = database.query(GroupsDBHelper.TABLE_NAME, columns, GroupsDBHelper.COLUMN_ID + "=" + id,
+        dbHelper.getDatabase().update(GroupsDBHelper.TABLE_NAME, values, GroupsDBHelper.COLUMN_ID + "=" + id, null);
+        Cursor cursor = dbHelper.getDatabase().query(GroupsDBHelper.TABLE_NAME, columns, GroupsDBHelper.COLUMN_ID + "=" + id,
                 null, null, null, null);
         cursor.moveToFirst();
         GroupBean group = cursorToGroup(cursor);
@@ -124,7 +103,7 @@ public class GroupsDataSource {
     }
 
     public void deleteGroup(long id) {
-        database.delete(GroupsDBHelper.TABLE_NAME, GroupsDBHelper.COLUMN_ID + "=" + id, null);
+        dbHelper.getDatabase().delete(GroupsDBHelper.TABLE_NAME, GroupsDBHelper.COLUMN_ID + "=" + id, null);
     }
 
     private GroupBean cursorToGroup(Cursor cursor) {

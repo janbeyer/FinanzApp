@@ -7,15 +7,19 @@ class GroupsDBHelper {
 
     private static final String LOG_TAG = GroupsDBHelper.class.getSimpleName();
 
-    public static final String TABLE_NAME = "groups";
+    static final String TABLE_NAME = "groups";
 
-    public static final int TABLE_VERSION = 1;
+    static final int TABLE_VERSION = 1;
 
-    public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_PROFILE_ID = "_profileId";
-    public static final String COLUMN_NAME = "name";
-    public static final String COLUMN_DESCRIPTION = "description";
-    public static final String COLUMN_WRITEABLE = "writeable";
+    static final String COLUMN_ID = "_id";
+
+    static final String COLUMN_PROFILE_ID = "_profileId";
+
+    static final String COLUMN_NAME = "name";
+
+    static final String COLUMN_DESCRIPTION = "description";
+
+    static final String COLUMN_WRITEABLE = "writeable";
 
     private static final String SQL_CREATE =
             "CREATE TABLE " + TABLE_NAME + "(" +
@@ -27,7 +31,7 @@ class GroupsDBHelper {
                     "FOREIGN KEY(" + COLUMN_PROFILE_ID + ") REFERENCES " + ProfilesDBHelper.TABLE_NAME + "(" + ProfilesDBHelper.COLUMN_ID + ")" +
                     ");";
 
-    public static void createTable(SQLiteDatabase db) {
+    static void createTable(SQLiteDatabase db) {
         try {
             Log.d(LOG_TAG, "--> Create the groups table with the statement: " + SQL_CREATE);
             db.execSQL(SQL_CREATE);

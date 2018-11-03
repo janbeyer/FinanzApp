@@ -41,14 +41,14 @@ public class MenuActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d(LOG_TAG, "--> Open the data source.");
-        profileDataSource.open();
+        //profileDataSource.open();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         Log.d(LOG_TAG, "--> Close the data source.");
-        profileDataSource.close();
+        //profileDataSource.close();
     }
 
     private void activateButtons() {
