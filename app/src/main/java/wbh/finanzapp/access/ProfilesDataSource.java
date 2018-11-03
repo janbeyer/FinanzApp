@@ -44,6 +44,7 @@ public class ProfilesDataSource {
 
     public List<ProfileBean> getAllProfiles() {
         List<ProfileBean> profileList = new ArrayList<>();
+
         Cursor cursor = dbHelper.getDatabase().query(ProfilesDBHelper.TABLE_NAME, columns,
                 null, null, null, null, ProfilesDBHelper.COLUMN_LAST_USE + " DESC");
 

@@ -51,7 +51,7 @@ class DBHelper extends SQLiteOpenHelper {
      *
      * @param context the application context.
      */
-    private DBHelper(Context context) {
+    DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
         Log.d(LOG_TAG, "--> Create DBHelper with db name: " + getDatabaseName());
         Log.d(LOG_TAG, "--> The SQLite db version is    : " + DB_VERSION);
