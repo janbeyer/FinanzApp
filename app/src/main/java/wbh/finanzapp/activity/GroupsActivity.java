@@ -63,18 +63,12 @@ public class GroupsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(LOG_TAG, "--> Open the data source.");
-        //profileDataSource.open();
-        //groupsDataSource.open();
         showAllListEntries();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d(LOG_TAG, "--> Close the data source.");
-        //profileDataSource.close();
-        //groupsDataSource.close();
     }
 
     private void showAllListEntries() {

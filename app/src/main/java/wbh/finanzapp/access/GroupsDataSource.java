@@ -51,7 +51,6 @@ public class GroupsDataSource {
     public GroupsDataSource(Context context) {
         Log.d(LOG_TAG, "--> Create GroupsDataSource.");
         dbHelper = new DBHelper(context);
-        // open the Database
         dbHelper.open();
     }
 

@@ -8,15 +8,11 @@ class ProfilesDBHelper {
     private static final String LOG_TAG = ProfilesDBHelper.class.getSimpleName();
 
     static final String TABLE_NAME = "profiles";
-
     static final int TABLE_VERSION = 1;
 
     static final String COLUMN_ID = "_id";
-
     static final String COLUMN_NAME = "name";
-
     static final String COLUMN_DESCRIPTION = "description";
-
     static final String COLUMN_LAST_USE = "last_use";
 
     private static final String SQL_CREATE =

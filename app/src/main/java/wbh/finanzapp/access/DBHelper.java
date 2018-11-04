@@ -63,7 +63,6 @@ class DBHelper extends SQLiteOpenHelper {
         Log.d(LOG_TAG, "--> Try to create the SQLite database.");
         ProfilesDBHelper.createTable(db);
         GroupsDBHelper.createTable(db);
-        // TODO: Insert Default Groups here ...
     }
 
     @Override
@@ -79,7 +78,6 @@ class DBHelper extends SQLiteOpenHelper {
         Log.d(LOG_TAG, "--> Try to open the SQLite database.");
 
         // Create and/or open a database that will be used for reading and writing.
-        // TODO handle SQLite exception
         database = getWritableDatabase();
 
         Log.d(LOG_TAG, "--> Open the db was successful.");

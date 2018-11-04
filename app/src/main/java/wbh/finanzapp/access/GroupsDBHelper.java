@@ -8,17 +8,12 @@ class GroupsDBHelper {
     private static final String LOG_TAG = GroupsDBHelper.class.getSimpleName();
 
     static final String TABLE_NAME = "groups";
-
     static final int TABLE_VERSION = 1;
 
     static final String COLUMN_ID = "_id";
-
     static final String COLUMN_PROFILE_ID = "_profileId";
-
     static final String COLUMN_NAME = "name";
-
     static final String COLUMN_DESCRIPTION = "description";
-
     static final String COLUMN_WRITEABLE = "writeable";
 
     private static final String SQL_CREATE =

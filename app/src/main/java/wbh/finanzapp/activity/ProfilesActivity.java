@@ -40,10 +40,7 @@ public class ProfilesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profiles);
 
-        // Create the database and the GroupsDataSource
         groupsDataSource = new GroupsDataSource(this);
-
-        //
         profileDataSource = new ProfilesDataSource(this);
 
         Button buttonAddProfile = findViewById(R.id.button_add_profile);
@@ -67,8 +64,6 @@ public class ProfilesActivity extends AppCompatActivity {
     protected void onPause() {
         Log.d(LOG_TAG, "--> Pause ProfilesActivity");
         super.onPause();
-        Log.d(LOG_TAG, "--> Close the data source.");
-        // profileDataSource.close();
     }
 
     /**
