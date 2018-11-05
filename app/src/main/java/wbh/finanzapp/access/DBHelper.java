@@ -79,6 +79,8 @@ class DBHelper extends SQLiteOpenHelper {
 
         // Create and/or open a database that will be used for reading and writing.
         database = getWritableDatabase();
+        // Turn on the support for foreign keys, which is necessary to work properly.
+        database.execSQL("PRAGMA foreign_keys=ON");
 
         Log.d(LOG_TAG, "--> Open the db was successful.");
         Log.d(LOG_TAG, "--> Db Path: " + database.getPath());
