@@ -2,6 +2,7 @@ package wbh.finanzapp.access;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.util.Log;
 
@@ -11,32 +12,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import wbh.finanzapp.R;
 import wbh.finanzapp.business.GroupBean;
 
 public class GroupsDataSource {
 
     private static final String LOG_TAG = GroupsDataSource.class.getSimpleName();
-
-    private static final Map<String, String> BASIC_GROUPS;
-
-    static {
-        Map<String, String> tmpMap = new HashMap<>();
-        tmpMap.put("Haushalt", "Transaktionen die den Haushalt betreffen");
-        tmpMap.put("Lebensmittel", "Transaktionen zur Lebensmittelvorsorge");
-        tmpMap.put("Restaurant", "Restaurantbesuche");
-        tmpMap.put("Verkehrsmittel", "Kosten für Pkw, Bahn o.ä.");
-        tmpMap.put("Unterhaltung", "Unterhaltung wie z.B. Spiele");
-        tmpMap.put("Persönlich", "Persönliche Transaktionen");
-        tmpMap.put("Gesundheit", "Arztkosten, Medikamente o.ä.");
-        tmpMap.put("Versicherung", "Versicherung für Haus, Pkw o.ä.");
-        tmpMap.put("Wohnen", "Miete, Heizung, Strom u.ä.");
-        tmpMap.put("Kleidung", "Mode und Accessoires");
-        tmpMap.put("Bildung", "Kosten für Bildung wie z.B. Schule oder Studium");
-        tmpMap.put("Urlaub", "Urlaubskosten");
-        tmpMap.put("Freizeit", "Kosten die in der Frezeit entstehen");
-        tmpMap.put("Gehalt", "Monatliches Grundeinkommen");
-        BASIC_GROUPS = Collections.unmodifiableMap(tmpMap);
-    }
 
     private DBHelper dbHelper;
 
@@ -75,8 +56,8 @@ public class GroupsDataSource {
         return groupList;
     }
 
-    public void insertBasics(long profileId) {
-        BASIC_GROUPS.forEach((name, descr) -> insertGroup(profileId, name, descr));
+    public void insertBasics(Map<String, String> basicGroups, long profileId) {
+        basicGroups.forEach((name, descr) -> insertGroup(profileId, name, descr));
     }
 
     public GroupBean insertGroup(Long profileId, String name, String description) {

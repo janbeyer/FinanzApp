@@ -31,4 +31,33 @@
     <string name="group_delete_title">Delete a group</string>
     <string name="group">Group</string>
 
+    <string name="group_default_housekeeping_name">Housekeeping</string>
+    <string name="group_default_housekeeping_descr">Housekeeping transactions</string>
+    <string name="group_default_groceries_name">Grocerie</string>
+    <string name="group_default_groceries_descr">Groceries transactions</string>
+    <string name="group_default_restaurant_name">Restaurant</string>
+    <string name="group_default_restaurant_descr">Restaurant transactions</string>
+    <string name="group_default_transport_name">Transport</string>
+    <string name="group_default_transport_descr">Transport transactions</string>
+    <string name="group_default_entertainment_name">Entertainment</string>
+    <string name="group_default_entertainment_descr">Entertainment transactions</string>
+    <string name="group_default_personal_name">Personal</string>
+    <string name="group_default_personal_descr">Personal transactions</string>
+    <string name="group_default_health_name">Health</string>
+    <string name="group_default_health_descr">Health transactions</string>
+    <string name="group_default_insurance_name">Insurance</string>
+    <string name="group_default_insurance_descr">Insurance transactions</string>
+    <string name="group_default_realestate_name">Real estate</string>
+    <string name="group_default_realestate_descr">Real estate transactions</string>
+    <string name="group_default_clothing_name">Clothing</string>
+    <string name="group_default_clothing_descr">Clothing transactions</string>
+    <string name="group_default_education_name">Education</string>
+    <string name="group_default_education_descr">Education transactions</string>
+    <string name="group_default_holiday_name">Holiday</string>
+    <string name="group_default_holiday_descr">Holiday transactions</string>
+    <string name="group_default_freetime_name">Free time</string>
+    <string name="group_default_freetime_descr">Free time transactions</string>
+    <string name="group_default_salary_name">Salary</string>
+    <string name="group_default_salary_descr">Salary transactions</string>
+
 </resources>

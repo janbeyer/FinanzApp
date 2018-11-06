@@ -1,5 +1,6 @@
 package wbh.finanzapp.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -19,7 +20,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import wbh.finanzapp.R;
 import wbh.finanzapp.access.GroupsDataSource;
@@ -31,7 +35,6 @@ public class ProfilesActivity extends AppCompatActivity {
     private static final String LOG_TAG = ProfilesActivity.class.getSimpleName();
 
     private ProfilesDataSource profileDataSource;
-
     private GroupsDataSource groupsDataSource;
 
     @Override
@@ -192,8 +195,10 @@ public class ProfilesActivity extends AppCompatActivity {
                         return;
                     }
 
+                    Map<String, String> basicGroups = getBasicGroups(this);
+
                     ProfileBean newProfile = profileDataSource.insertProfile(name, description);
-                    groupsDataSource.insertBasics(newProfile.getId());
+                    groupsDataSource.insertBasics(basicGroups, newProfile.getId());
 
                     Log.d(LOG_TAG, "--> Insert new entry: " + newProfile.toString());
 
@@ -240,5 +245,24 @@ public class ProfilesActivity extends AppCompatActivity {
                 .setNegativeButton(R.string.dialog_button_negative, (dialog, id) -> dialog.cancel());
 
         return builder.create();
+    }
+
+    private Map<String, String> getBasicGroups(Context context) {
+        Map<String, String> basicGroups = new HashMap<>();
+        basicGroups.put(context.getString(R.string.group_default_housekeeping_name), context.getString(R.string.group_default_housekeeping_descr));
+        basicGroups.put(context.getString(R.string.group_default_groceries_name), context.getString(R.string.group_default_groceries_descr));
+        basicGroups.put(context.getString(R.string.group_default_restaurant_name), context.getString(R.string.group_default_restaurant_descr));
+        basicGroups.put(context.getString(R.string.group_default_transport_name), context.getString(R.string.group_default_transport_descr));
+        basicGroups.put(context.getString(R.string.group_default_entertainment_name), context.getString(R.string.group_default_entertainment_descr));
+        basicGroups.put(context.getString(R.string.group_default_personal_name), context.getString(R.string.group_default_personal_descr));
+        basicGroups.put(context.getString(R.string.group_default_health_name), context.getString(R.string.group_default_health_descr));
+        basicGroups.put(context.getString(R.string.group_default_insurance_name), context.getString(R.string.group_default_insurance_descr));
+        basicGroups.put(context.getString(R.string.group_default_realestate_name), context.getString(R.string.group_default_restaurant_descr));
+        basicGroups.put(context.getString(R.string.group_default_clothing_name), context.getString(R.string.group_default_clothing_descr));
+        basicGroups.put(context.getString(R.string.group_default_education_name), context.getString(R.string.group_default_education_descr));
+        basicGroups.put(context.getString(R.string.group_default_holiday_name), context.getString(R.string.group_default_holiday_descr));
+        basicGroups.put(context.getString(R.string.group_default_freetime_name), context.getString(R.string.group_default_freetime_descr));
+        basicGroups.put(context.getString(R.string.group_default_salary_name), context.getString(R.string.group_default_salary_descr));
+        return basicGroups;
     }
 }

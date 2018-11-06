@@ -31,4 +31,33 @@
     <string name="group_delete_title">Gruppe löschen</string>
     <string name="group">Group</string>
 
+    <string name="group_default_housekeeping_name">Haushalt</string>
+    <string name="group_default_housekeeping_descr">Transaktionen des Haushalts</string>
+    <string name="group_default_groceries_name">Lebensmittel</string>
+    <string name="group_default_groceries_descr">Transaktionen für Lebensmitteleinkäufe</string>
+    <string name="group_default_restaurant_name">Restaurants</string>
+    <string name="group_default_restaurant_descr">Transaktionen für Restaurantbesuche</string>
+    <string name="group_default_transport_name">Transporte</string>
+    <string name="group_default_transport_descr">Transaktionen für Transportkosten</string>
+    <string name="group_default_entertainment_name">Unterhaltung</string>
+    <string name="group_default_entertainment_descr">Transaktionen für Unterhaltung</string>
+    <string name="group_default_personal_name">Persönlich</string>
+    <string name="group_default_personal_descr">Persönliche Transaktionen</string>
+    <string name="group_default_health_name">Gesundheit</string>
+    <string name="group_default_health_descr">Transaktionen für die Gesundheit</string>
+    <string name="group_default_insurance_name">Versicherung</string>
+    <string name="group_default_insurance_descr">Transaktionen für Versicherungen</string>
+    <string name="group_default_realestate_name">Immobilien</string>
+    <string name="group_default_realestate_descr">Transaktionen für Immobilien</string>
+    <string name="group_default_clothing_name">Kleidung</string>
+    <string name="group_default_clothing_descr">Transaktionen für Mode und Accessoires</string>
+    <string name="group_default_education_name">Bildung</string>
+    <string name="group_default_education_descr">Transaktionen für Bildung</string>
+    <string name="group_default_holiday_name">Urlaub</string>
+    <string name="group_default_holiday_descr">Transaktionen für Urlaube</string>
+    <string name="group_default_freetime_name">Freizeit</string>
+    <string name="group_default_freetime_descr">Transaktionen für die Freizeit</string>
+    <string name="group_default_salary_name">Gehalt</string>
+    <string name="group_default_salary_descr">Transaktionen für Gehälter</string>
+
 </resources>
