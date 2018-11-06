@@ -183,7 +183,7 @@ public class GroupsActivity extends AppCompatActivity {
                         return;
                     }
 
-                    GroupBean newGroup = groupsDataSource.insertGroup(profileBean.getId(), name, description, true);
+                    GroupBean newGroup = groupsDataSource.insertGroup(profileBean.getId(), name, description);
 
                     Log.d(LOG_TAG, "--> Insert new entry: " + newGroup.toString());
 

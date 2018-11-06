@@ -6,14 +6,12 @@ public class GroupBean {
     private final long profileId;
     private final String name;
     private final String description;
-    private final Boolean writable;
 
-    public GroupBean(long id, long profileId, String name, String description, Boolean writable) {
+    public GroupBean(long id, long profileId, String name, String description) {
         this.id = id;
         this.profileId = profileId;
         this.name = name;
         this.description = description;
-        this.writable = writable;
     }
 
     public long getId() {
@@ -34,8 +32,7 @@ public class GroupBean {
                 "id=" + id +
                 ", profileId" + profileId +
                 ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", writable=" + writable +
+                ", description='" + description +
                 '}';
     }
 }

@@ -44,8 +44,7 @@ public class GroupsDataSource {
             GroupsDBHelper.COLUMN_ID,
             GroupsDBHelper.COLUMN_PROFILE_ID,
             GroupsDBHelper.COLUMN_NAME,
-            GroupsDBHelper.COLUMN_DESCRIPTION,
-            GroupsDBHelper.COLUMN_WRITEABLE
+            GroupsDBHelper.COLUMN_DESCRIPTION
     };
 
     public GroupsDataSource(Context context) {
@@ -77,11 +76,11 @@ public class GroupsDataSource {
     }
 
     public void insertBasics(long profileId) {
-        BASIC_GROUPS.forEach((name, descr) -> insertGroup(profileId, name, descr, false));
+        BASIC_GROUPS.forEach((name, descr) -> insertGroup(profileId, name, descr));
     }
 
-    public GroupBean insertGroup(Long profileId, String name, String description, Boolean writable) {
-        ContentValues values = createGroupValues(null, profileId, name, description, writable);
+    public GroupBean insertGroup(Long profileId, String name, String description) {
+        ContentValues values = createGroupValues(null, profileId, name, description);
         long insertId = dbHelper.getDatabase().insert(GroupsDBHelper.TABLE_NAME, null, values);
         Cursor cursor = dbHelper.getDatabase().query(GroupsDBHelper.TABLE_NAME, columns, GroupsDBHelper.COLUMN_ID + "=" + insertId,null, null, null, null);
         cursor.moveToFirst();
@@ -91,7 +90,7 @@ public class GroupsDataSource {
     }
 
     public GroupBean updateGroup(long id, long profileId, String newName, String newDescription) {
-        ContentValues values = createGroupValues(id, profileId, newName, newDescription, true);
+        ContentValues values = createGroupValues(id, profileId, newName, newDescription);
         dbHelper.getDatabase().update(GroupsDBHelper.TABLE_NAME, values, GroupsDBHelper.COLUMN_ID + "=" + id, null);
         Cursor cursor = dbHelper.getDatabase().query(GroupsDBHelper.TABLE_NAME, columns, GroupsDBHelper.COLUMN_ID + "=" + id,
                 null, null, null, null);
@@ -110,24 +109,21 @@ public class GroupsDataSource {
         int idProfile = cursor.getColumnIndex(GroupsDBHelper.COLUMN_PROFILE_ID);
         int idName = cursor.getColumnIndex(GroupsDBHelper.COLUMN_NAME);
         int idDescription = cursor.getColumnIndex(GroupsDBHelper.COLUMN_DESCRIPTION);
-        int idWritable = cursor.getColumnIndex(GroupsDBHelper.COLUMN_WRITEABLE);
 
         long id = cursor.getLong(idIndex);
         long profileId = cursor.getLong(idProfile);
         String name = cursor.getString(idName);
         String description = cursor.getString(idDescription);
-        Boolean writable = (cursor.getInt(idWritable) == 1);
 
-        return new GroupBean(id, profileId, name, description, writable);
+        return new GroupBean(id, profileId, name, description);
     }
 
-    private ContentValues createGroupValues(Long id, Long profileId, String name, String description, Boolean writable) {
+    private ContentValues createGroupValues(Long id, Long profileId, String name, String description) {
         ContentValues values = new ContentValues();
         if (id != null) values.put(GroupsDBHelper.COLUMN_ID, id);
         if (profileId != null) values.put(GroupsDBHelper.COLUMN_PROFILE_ID, profileId);
         if (name != null) values.put(GroupsDBHelper.COLUMN_NAME, name);
         if (description != null) values.put(GroupsDBHelper.COLUMN_DESCRIPTION, description);
-        if (writable != null) values.put(GroupsDBHelper.COLUMN_WRITEABLE, writable);
         return values;
     }
 }

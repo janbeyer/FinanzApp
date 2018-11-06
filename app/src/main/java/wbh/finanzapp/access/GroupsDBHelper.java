@@ -14,7 +14,6 @@ class GroupsDBHelper {
     static final String COLUMN_PROFILE_ID = "_profileId";
     static final String COLUMN_NAME = "name";
     static final String COLUMN_DESCRIPTION = "description";
-    static final String COLUMN_WRITEABLE = "writeable";
 
     private static final String SQL_CREATE =
             "CREATE TABLE " + TABLE_NAME + "(" +
@@ -22,7 +21,6 @@ class GroupsDBHelper {
                     COLUMN_PROFILE_ID + " INTEGER NOT NULL, " +
                     COLUMN_NAME + " TEXT NOT NULL, " +
                     COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
-                    COLUMN_WRITEABLE + " INTEGER NOT NULL, " +
                     "CONSTRAINT fk_profile FOREIGN KEY (" + COLUMN_PROFILE_ID + ") REFERENCES " + ProfilesDBHelper.TABLE_NAME + " (" + ProfilesDBHelper.COLUMN_ID + ") ON DELETE CASCADE" +
                     ");";
 
