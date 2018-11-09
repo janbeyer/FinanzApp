@@ -52,46 +52,4 @@ class GroupsDBHelper {
             Log.e(LOG_TAG, "--> Error by creating the groups table: " + e.getMessage());
         }
     }
-
-    /**
-     * Return an database insert Cursor to a Group.
-     */
-    static Cursor getInsertCursor(DBHelper dbHelper, long insertId) {
-        return dbHelper.getDatabase().query(
-                TABLE_NAME,
-                COLUMNS,
-                COLUMN_ID + "=" + insertId,
-                null,
-                null,
-                null,
-                null);
-    }
-
-    /**
-     * Return an database get Cursor to a Group.
-     */
-    static Cursor getGroupsCursor(DBHelper dbHelper, long profileId) {
-        return dbHelper.getDatabase().query(
-                TABLE_NAME,
-                COLUMNS,
-                COLUMN_PROFILE_ID + "=?",
-                new String[]{String.valueOf(profileId)},
-                null,
-                null,
-                COLUMN_NAME + " ASC");
-    }
-
-    /**
-     * Return an database update Cursor to a Group.
-     */
-    static Cursor getUpdateCursor(DBHelper dbHelper, long id) {
-        return dbHelper.getDatabase().query(
-                TABLE_NAME,
-                COLUMNS,
-                COLUMN_ID + "=" + id,
-                null,
-                null,
-                null,
-                null);
-    }
 }

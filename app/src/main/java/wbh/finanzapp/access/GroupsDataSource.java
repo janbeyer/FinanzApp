@@ -46,7 +46,9 @@ public class GroupsDataSource extends AbstractDataSource {
     @Override
     public List<AbstractBean> getBeans() {
         List<AbstractBean> groupList = new ArrayList<>();
-        Cursor cursor = GroupsDBHelper.getGroupsCursor(dbHelper, profileId);
+        Cursor cursor = dbHelper.getDatabase().query(GroupsDBHelper.TABLE_NAME, GroupsDBHelper.COLUMNS,
+                GroupsDBHelper.COLUMN_PROFILE_ID + "=?", new String[]{String.valueOf(profileId)},
+                null, null, GroupsDBHelper.COLUMN_NAME + " ASC");
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             GroupBean group = cursorToBean(cursor);
@@ -62,7 +64,8 @@ public class GroupsDataSource extends AbstractDataSource {
         ContentValues values = createValues(null, name, description);
         long insertId = dbHelper.getDatabase().insert(GroupsDBHelper.TABLE_NAME, null, values);
 
-        Cursor cursor = GroupsDBHelper.getInsertCursor(dbHelper, insertId);
+        Cursor cursor = dbHelper.getDatabase().query(GroupsDBHelper.TABLE_NAME, GroupsDBHelper.COLUMNS,
+                GroupsDBHelper.COLUMN_ID + "=" + insertId, null, null, null, null);
         cursor.moveToFirst();
         GroupBean group = cursorToBean(cursor);
         cursor.close();
@@ -74,7 +77,8 @@ public class GroupsDataSource extends AbstractDataSource {
         ContentValues values = createValues(id, newName, newDescription);
         dbHelper.getDatabase().update(GroupsDBHelper.TABLE_NAME, values, GroupsDBHelper.COLUMN_ID + "=" + id, null);
 
-        Cursor cursor = GroupsDBHelper.getUpdateCursor(dbHelper, id);
+        Cursor cursor = dbHelper.getDatabase().query(GroupsDBHelper.TABLE_NAME, GroupsDBHelper.COLUMNS,
+                GroupsDBHelper.COLUMN_ID + "=" + id, null, null, null, null);
         cursor.moveToFirst();
         GroupBean group = cursorToBean(cursor);
         cursor.close();
