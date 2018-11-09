@@ -1,38 +1,26 @@
 package wbh.finanzapp.business;
 
-public class GroupBean {
+/**
+ * A GroupBean class store every properties of a single Group.
+ */
+public class GroupBean extends AbstractBean {
 
-    private final long id;
+    /**
+     * A reference to the Profile ID.
+     */
     private final long profileId;
-    private final String name;
-    private final String description;
 
-    public GroupBean(long id, long profileId, String name, String description) {
-        this.id = id;
+
+    /**
+     * Create a new GroupBean.
+     */
+    public GroupBean(long id, String name, String description, long profileId) {
+        super(id, name, description);
         this.profileId = profileId;
-        this.name = name;
-        this.description = description;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     @Override
     public String toString() {
-        return "GroupBean{" +
-                "id=" + id +
-                ", profileId" + profileId +
-                ", name='" + name + '\'' +
-                ", description='" + description +
-                '}';
+        return  name + "(id: " + id + ", profileId: " + profileId + ")" + description;
     }
 }

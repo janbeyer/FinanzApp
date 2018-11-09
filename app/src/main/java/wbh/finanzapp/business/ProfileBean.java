@@ -1,38 +1,25 @@
 package wbh.finanzapp.business;
 
-public class ProfileBean {
+/**
+ * The ProfileBean class store every properties of a single Profile.
+ */
+public class ProfileBean extends AbstractBean {
 
-    private final long id;
-    private final String name;
-    private final String description;
+    /**
+     * The last use time stamp.
+     */
     private final long lastUse;
 
+    /**
+     * Create a new ProfileBean.
+     */
     public ProfileBean(long id, String name, String description, long lastUse) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
+        super(id, name, description);
         this.lastUse = lastUse;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     @Override
     public String toString() {
-        return "ProfileBean{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", lastUse=" + lastUse +
-                '}';
+        return name + "(id: " + id + ") " + description + " last use: " + lastUse;
     }
 }
