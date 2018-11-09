@@ -3,6 +3,8 @@ package wbh.finanzapp.access;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import java.util.List;
+
 import wbh.finanzapp.business.AbstractBean;
 
 /**
@@ -34,5 +36,10 @@ public abstract class DataSource {
      * Create Value from the given parameter.
      */
     public abstract ContentValues createValues(Long id, String name, String description);
+
+    /**
+     * Return a list with AbstractBean.
+     */
+    public abstract List<AbstractBean> getDataSources();
 
 }

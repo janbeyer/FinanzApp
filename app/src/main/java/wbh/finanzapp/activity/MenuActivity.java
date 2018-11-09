@@ -18,7 +18,7 @@ public class MenuActivity extends AbstractActivity {
 
     private Long profileId;
 
-    private String profileName;
+    private static String profileName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +32,10 @@ public class MenuActivity extends AbstractActivity {
             if(profileId != null) {
                 ProfileBean profileBean = (ProfileBean) profileDataSource.getProfile(profileId);
                 profileName = profileBean.getName();
-                this.setTitle(profileName);
+
             }
         }
+        this.setTitle(profileName);
         activateButtons();
     }
 

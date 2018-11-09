@@ -12,17 +12,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import java.util.List;
-
 import wbh.finanzapp.R;
 import wbh.finanzapp.access.GroupsDataSource;
 import wbh.finanzapp.access.ProfilesDataSource;
-import wbh.finanzapp.business.AbstractBean;
 import wbh.finanzapp.business.GroupBean;
 import wbh.finanzapp.business.ProfileBean;
 
@@ -32,7 +28,7 @@ public class GroupsActivity extends AbstractActivity {
 
     public static final String PARAM_PROFILE_ID = "profileId";
 
-    private ProfileBean profileBean;
+    private static ProfileBean profileBean;
 
     private GroupsDataSource groupsDataSource;
 
@@ -77,14 +73,13 @@ public class GroupsActivity extends AbstractActivity {
         super.onPause();
     }
 
-    private void showAllListEntries() {
-        List<AbstractBean> groups = groupsDataSource.getProfileGroups();
-
-        ArrayAdapter<AbstractBean> groupArrayAdapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_list_item_activated_1, groups);
-
-        ListView groupsListView = findViewById(R.id.list_view_groups);
-        groupsListView.setAdapter(groupArrayAdapter);
+    /**
+     * Show all profile list entries in the GroupsActivity.
+     */
+    public void showAllListEntries() {
+        Log.d(LOG_TAG, "--> Show all list entries.");
+        showAllListEntries(groupsDataSource.getDataSources(), android.R.layout.simple_list_item_activated_1,
+                R.id.list_view_groups);
     }
 
     private void initializeContextualActionBar() {

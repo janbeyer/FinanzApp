@@ -43,7 +43,8 @@ public class GroupsDataSource extends DataSource {
     /**
      * Iterate over all database elements and store it to a List.
      */
-    public List<AbstractBean> getProfileGroups() {
+    @Override
+    public List<AbstractBean> getDataSources() {
         List<AbstractBean> groupList = new ArrayList<>();
         Cursor cursor = GroupsDBHelper.getGroupsCursor(dbHelper, profileId);
         cursor.moveToFirst();

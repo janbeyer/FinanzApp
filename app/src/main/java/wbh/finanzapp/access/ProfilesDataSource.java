@@ -50,7 +50,8 @@ public class ProfilesDataSource extends DataSource {
     /**
      * Iterate over all database elements and store it to a List.
      */
-    public List<AbstractBean> getProfiles() {
+    @Override
+    public List<AbstractBean> getDataSources() {
         List<AbstractBean> profileList = new ArrayList<>();
         Cursor cursor = ProfilesDBHelper.getProfilesCursor(dbHelper);
         cursor.moveToFirst();

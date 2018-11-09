@@ -14,19 +14,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import wbh.finanzapp.R;
 import wbh.finanzapp.access.GroupsDataSource;
 import wbh.finanzapp.access.ProfilesDataSource;
-import wbh.finanzapp.business.AbstractBean;
 import wbh.finanzapp.business.ProfileBean;
 
 public class ProfilesActivity extends AbstractActivity {
@@ -69,15 +66,11 @@ public class ProfilesActivity extends AbstractActivity {
     /**
      * Show all profile list entries in the ProfileActivity.
      */
-    private void showAllListEntries() {
+    public void showAllListEntries() {
         Log.d(LOG_TAG, "--> Show all list entries.");
-        List<AbstractBean> profiles = profileDataSource.getProfiles();
 
-        ArrayAdapter<AbstractBean> profileArrayAdapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_list_item_activated_1, profiles);
-
-        ListView profilesListView = findViewById(R.id.list_view_profiles);
-        profilesListView.setAdapter(profileArrayAdapter);
+        ListView profilesListView = showAllListEntries(profileDataSource.getDataSources(), android.R.layout.simple_list_item_activated_1,
+                R.id.list_view_profiles);
 
         profilesListView.setOnItemClickListener((adapterView, view, position, id) -> {
             ProfileBean profile = (ProfileBean) adapterView.getItemAtPosition(position);
@@ -90,7 +83,7 @@ public class ProfilesActivity extends AbstractActivity {
         });
     }
 
-    private void initializeContextualActionBar() {
+    public void initializeContextualActionBar() {
         Log.d(LOG_TAG, "--> initialize contextual ActionBar.");
         final ListView profilesListView = findViewById(R.id.list_view_profiles);
         profilesListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
