@@ -43,11 +43,11 @@ public class GroupsDataSource extends DataSource {
     /**
      * Iterate over all database elements and store it to a List.
      */
-    public List<GroupBean> getProfileGroups() {
-        List<GroupBean> groupList = new ArrayList<>();
+    public List<AbstractBean> getProfileGroups() {
+        List<AbstractBean> groupList = new ArrayList<>();
         Cursor cursor = GroupsDBHelper.getGroupsCursor(dbHelper, profileId);
         cursor.moveToFirst();
-        GroupBean group;
+        AbstractBean group;
         while (!cursor.isAfterLast()) {
             group = cursorToBean(cursor);
             groupList.add(group);
@@ -64,7 +64,7 @@ public class GroupsDataSource extends DataSource {
 
         Cursor cursor = GroupsDBHelper.getInsertCursor(dbHelper, insertId);
         cursor.moveToFirst();
-        GroupBean group = cursorToBean(cursor);
+        AbstractBean group = cursorToBean(cursor);
         cursor.close();
         return group;
     }
@@ -76,7 +76,7 @@ public class GroupsDataSource extends DataSource {
 
         Cursor cursor = GroupsDBHelper.getUpdateCursor(dbHelper, id);
         cursor.moveToFirst();
-        GroupBean group = cursorToBean(cursor);
+        AbstractBean group = cursorToBean(cursor);
         cursor.close();
         return group;
     }
@@ -86,12 +86,9 @@ public class GroupsDataSource extends DataSource {
         long id = profile.getId();
         dbHelper.getDatabase().delete(GroupsDBHelper.TABLE_NAME, GroupsDBHelper.COLUMN_ID + "=" + id, null);
     }
-
-    /**
-     * Move the cursor to Group.
-     */
+    
     @Override
-    public GroupBean cursorToBean(Cursor cursor) {
+    public AbstractBean cursorToBean(Cursor cursor) {
         int idIndex = cursor.getColumnIndex(GroupsDBHelper.COLUMN_ID);
         int idProfile = cursor.getColumnIndex(GroupsDBHelper.COLUMN_PROFILE_ID);
         int idName = cursor.getColumnIndex(GroupsDBHelper.COLUMN_NAME);

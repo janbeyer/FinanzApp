@@ -37,8 +37,8 @@ public class ProfilesDataSource extends DataSource {
     /**
      * Return a new ProfileBean.
      */
-    public ProfileBean getProfile(long id) {
-        ProfileBean profile = null;
+    public AbstractBean getProfile(long id) {
+        AbstractBean profile = null;
         Cursor cursor = ProfilesDBHelper.getProfileCursor(dbHelper, id);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
@@ -50,11 +50,11 @@ public class ProfilesDataSource extends DataSource {
     /**
      * Iterate over all database elements and store it to a List.
      */
-    public List<ProfileBean> getProfiles() {
-        List<ProfileBean> profileList = new ArrayList<>();
+    public List<AbstractBean> getProfiles() {
+        List<AbstractBean> profileList = new ArrayList<>();
         Cursor cursor = ProfilesDBHelper.getProfilesCursor(dbHelper);
         cursor.moveToFirst();
-        ProfileBean profile;
+        AbstractBean profile;
         while (!cursor.isAfterLast()) {
             profile = cursorToBean(cursor);
             profileList.add(profile);
@@ -63,53 +63,39 @@ public class ProfilesDataSource extends DataSource {
         cursor.close();
         return profileList;
     }
-
-    /**
-     * Insert a Group.
-     */
+    
     @Override
-    public ProfileBean insert(String name, String description) {
+    public AbstractBean insert(String name, String description) {
         ContentValues values = createValues(null, name, description);
-        long insertId = dbHelper.getDatabase().insert(
-                ProfilesDBHelper.TABLE_NAME,
-                null, values);
+        long insertId = dbHelper.getDatabase().insert(ProfilesDBHelper.TABLE_NAME, null, values);
 
         Cursor cursor = ProfilesDBHelper.getInsertCursor(dbHelper, insertId);
         cursor.moveToFirst();
-        ProfileBean profile = cursorToBean(cursor);
+        AbstractBean profile = cursorToBean(cursor);
         cursor.close();
         return profile;
     }
-
-    /**
-     * Update Group.
-     */
+    
     @Override
-    public ProfileBean update(long id, String newName, String newDescription) {
+    public AbstractBean update(long id, String newName, String newDescription) {
         ContentValues values = createValues(id, newName, newDescription);
         dbHelper.getDatabase().update(ProfilesDBHelper.TABLE_NAME, values, ProfilesDBHelper.COLUMN_ID + "=" + id, null);
 
         Cursor cursor = ProfilesDBHelper.getUpdateCursor(dbHelper, id);
         cursor.moveToFirst();
-        ProfileBean profile = cursorToBean(cursor);
+        AbstractBean profile = cursorToBean(cursor);
         cursor.close();
         return profile;
     }
-
-    /**
-     * Delete a Group.
-     */
+    
     @Override
     public void delete(AbstractBean profile) {
         long id = profile.getId();
         dbHelper.getDatabase().delete(ProfilesDBHelper.TABLE_NAME, ProfilesDBHelper.COLUMN_ID + "=" + id, null);
     }
-
-    /**
-     * Move the cursor to Group.
-     */
+    
     @Override
-    public ProfileBean cursorToBean(Cursor cursor) {
+    public AbstractBean cursorToBean(Cursor cursor) {
         int idIndex = cursor.getColumnIndex(ProfilesDBHelper.COLUMN_ID);
         int idName = cursor.getColumnIndex(ProfilesDBHelper.COLUMN_NAME);
         int idDescription = cursor.getColumnIndex(ProfilesDBHelper.COLUMN_DESCRIPTION);
@@ -122,10 +108,7 @@ public class ProfilesDataSource extends DataSource {
 
         return new ProfileBean(id, name, description, lastUse);
     }
-
-    /**
-     * Create group values.
-     */
+   
     @Override
     public ContentValues createValues(Long id, String name, String description) {
         ContentValues values = new ContentValues();

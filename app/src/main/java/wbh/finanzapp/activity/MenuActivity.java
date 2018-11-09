@@ -17,20 +17,18 @@ public class MenuActivity extends AppCompatActivity {
 
     public static final String PARAM_PROFILE_ID = "profileId";
 
-    private ProfilesDataSource profileDataSource;
-
     private ProfileBean profileBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        profileDataSource = new ProfilesDataSource(this);
+        ProfilesDataSource profileDataSource = new ProfilesDataSource(this);
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
             Long profileId = (Long) bundle.get(PARAM_PROFILE_ID);
             if(profileId != null) {
-                profileBean = profileDataSource.getProfile(profileId);
+                profileBean = (ProfileBean) profileDataSource.getProfile(profileId);
                 this.setTitle(profileBean.getName());
             }
         }
@@ -47,6 +45,7 @@ public class MenuActivity extends AppCompatActivity {
         super.onPause();
     }
 
+    @SuppressWarnings("CodeBlock2Expr")
     private void activateButtons() {
         Button buttonTransaction = findViewById(R.id.menu_button_transaction);
         buttonTransaction.setOnClickListener(view -> {

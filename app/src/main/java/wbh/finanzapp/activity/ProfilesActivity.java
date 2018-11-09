@@ -27,6 +27,7 @@ import java.util.Map;
 import wbh.finanzapp.R;
 import wbh.finanzapp.access.GroupsDataSource;
 import wbh.finanzapp.access.ProfilesDataSource;
+import wbh.finanzapp.business.AbstractBean;
 import wbh.finanzapp.business.ProfileBean;
 
 public class ProfilesActivity extends AppCompatActivity {
@@ -73,9 +74,9 @@ public class ProfilesActivity extends AppCompatActivity {
      */
     private void showAllListEntries() {
         Log.d(LOG_TAG, "--> Show all list entries.");
-        List<ProfileBean> profiles = profileDataSource.getProfiles();
+        List<AbstractBean> profiles = profileDataSource.getProfiles();
 
-        ArrayAdapter<ProfileBean> profileArrayAdapter = new ArrayAdapter<>(
+        ArrayAdapter<AbstractBean> profileArrayAdapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_list_item_activated_1, profiles);
 
         ListView profilesListView = findViewById(R.id.list_view_profiles);
@@ -169,6 +170,7 @@ public class ProfilesActivity extends AppCompatActivity {
         });
     }
 
+    @SuppressWarnings("CodeBlock2Expr")
     private AlertDialog createAddProfileDialog() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -196,10 +198,10 @@ public class ProfilesActivity extends AppCompatActivity {
 
                     Map<String, String> basicGroups = getBasicGroups(this);
 
-                    ProfileBean newProfile = profileDataSource.insert(name, description);
+                    ProfileBean newProfile = (ProfileBean)profileDataSource.insert(name, description);
                     groupsDataSource = new GroupsDataSource(this, newProfile.getId());
-                    basicGroups.forEach((name2, descr) -> {
-                        groupsDataSource.insert(name2, descr);
+                    basicGroups.forEach((name2, description2) -> {
+                        groupsDataSource.insert(name2, description2);
                     });
 
                     Log.d(LOG_TAG, "--> Insert new entry: " + newProfile.toString());
@@ -236,7 +238,7 @@ public class ProfilesActivity extends AppCompatActivity {
                         return;
                     }
 
-                    ProfileBean updatedProfile = profileDataSource.update(profile.getId(), name, description);
+                    ProfileBean updatedProfile = (ProfileBean)profileDataSource.update(profile.getId(), name, description);
 
                     Log.d(LOG_TAG, "--> Update old entry: " + profile.toString());
                     Log.d(LOG_TAG, "--> Update new entry: " + updatedProfile.toString());

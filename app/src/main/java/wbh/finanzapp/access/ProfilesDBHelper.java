@@ -22,7 +22,7 @@ class ProfilesDBHelper {
     /**
      * The table columns for the Profile table.
      */
-    static final String[] columns = {
+    private static final String[] columns = {
             COLUMN_ID,
             COLUMN_NAME,
             COLUMN_DESCRIPTION,

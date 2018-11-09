@@ -23,6 +23,7 @@ import java.util.List;
 import wbh.finanzapp.R;
 import wbh.finanzapp.access.GroupsDataSource;
 import wbh.finanzapp.access.ProfilesDataSource;
+import wbh.finanzapp.business.AbstractBean;
 import wbh.finanzapp.business.GroupBean;
 import wbh.finanzapp.business.ProfileBean;
 
@@ -47,7 +48,7 @@ public class GroupsActivity extends AppCompatActivity {
         if (bundle != null) {
             profileId = (Long) bundle.get(PARAM_PROFILE_ID);
             if (profileId != null) {
-                profileBean = profileDataSource.getProfile(profileId);
+                profileBean = (ProfileBean)profileDataSource.getProfile(profileId);
             }
         }
 
@@ -73,9 +74,9 @@ public class GroupsActivity extends AppCompatActivity {
     }
 
     private void showAllListEntries() {
-        List<GroupBean> groups = groupsDataSource.getProfileGroups();
+        List<AbstractBean> groups = groupsDataSource.getProfileGroups();
 
-        ArrayAdapter<GroupBean> groupArrayAdapter = new ArrayAdapter<>(
+        ArrayAdapter<AbstractBean> groupArrayAdapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_list_item_activated_1, groups);
 
         ListView groupsListView = findViewById(R.id.list_view_groups);
