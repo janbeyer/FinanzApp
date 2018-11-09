@@ -21,7 +21,7 @@
         <activity
             android:name=".activity.MenuActivity"
             android:parentActivityName=".activity.ProfilesActivity"
-            android:label="@string/main_menu" >
+            android:label="@string/menu_title" >
         </activity>
 
         <activity

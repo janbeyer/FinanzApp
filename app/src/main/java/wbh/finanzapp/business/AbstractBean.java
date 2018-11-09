@@ -6,22 +6,22 @@ package wbh.finanzapp.business;
 public class AbstractBean {
 
     /**
-     * The profile id
+     * The bean id
      */
     protected final long id;
 
     /**
-     * The profile name.
+     * The bean name.
      */
     protected final String name;
 
     /**
-     * The profile description.
+     * The bean description.
      */
     protected final String description;
 
     /**
-     * Create a new ProfileBean.
+     * Create a new AbstractBean.
      */
     AbstractBean(long id, String name, String description) {
         this.id = id;

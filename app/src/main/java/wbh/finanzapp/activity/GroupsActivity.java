@@ -28,8 +28,6 @@ public class GroupsActivity extends AbstractActivity {
 
     public static final String PARAM_PROFILE_ID = "profileId";
 
-    private static ProfileBean profileBean;
-
     private GroupsDataSource groupsDataSource;
 
     @Override
@@ -44,9 +42,9 @@ public class GroupsActivity extends AbstractActivity {
             bundle = savedInstanceState.getBundle(PARAM_PROFILE_ID);
         }
 
-        Long profileId;
+        ProfileBean profileBean = null;
         if (bundle != null) {
-            profileId = (Long) bundle.get(PARAM_PROFILE_ID);
+            Long profileId = (Long) bundle.get(PARAM_PROFILE_ID);
             if (profileId != null) {
                 profileBean = (ProfileBean)profileDataSource.getProfile(profileId);
             }
@@ -78,7 +76,7 @@ public class GroupsActivity extends AbstractActivity {
      */
     public void showAllListEntries() {
         Log.d(LOG_TAG, "--> Show all list entries.");
-        showAllListEntries(groupsDataSource.getDataSources(), android.R.layout.simple_list_item_activated_1,
+        showAllListEntries(groupsDataSource.getBeans(), android.R.layout.simple_list_item_activated_1,
                 R.id.list_view_groups);
     }
 
@@ -125,7 +123,7 @@ public class GroupsActivity extends AbstractActivity {
                                 int positionInListView = touchedGroupPositions.keyAt(i);
                                 GroupBean group = (GroupBean) groupsListView.getItemAtPosition(positionInListView);
                                 Log.d(LOG_TAG, "--> Position in ListView: " + positionInListView + " Content: " + group.toString());
-                                groupsDataSource.delete(profileBean);
+                                groupsDataSource.delete(group.getId());
                                 Log.d(LOG_TAG, "--> Delete old entry: " + group.toString());
                             }
                         }

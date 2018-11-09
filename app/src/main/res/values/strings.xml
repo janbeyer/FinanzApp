@@ -18,6 +18,8 @@
     <string name="profile_lastUse">Last use</string>
 
     <!-- Menu properties -->
+    <string name="menu_title">Main menu</string>
+
     <string name="menu_button_transaction">Transactions</string>
     <string name="menu_button_analyze">Analysis</string>
     <string name="menu_button_groups">Groups</string>
@@ -59,6 +61,5 @@
     <string name="group_default_freetime_descr">Free time transactions</string>
     <string name="group_default_salary_name">Salary</string>
     <string name="group_default_salary_descr">Salary transactions</string>
-    <string name="main_menu">MainMenu</string>
 
 </resources>

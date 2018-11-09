@@ -18,6 +18,8 @@
     <string name="profile_lastUse">Letzte Verwendung</string>
 
     <!-- Menu properties -->
+    <string name="menu_title">Hauptmenü</string>
+
     <string name="menu_button_transaction">Transaktionen</string>
     <string name="menu_button_analyze">Analyse</string>
     <string name="menu_button_groups">Gruppen</string>

@@ -10,7 +10,7 @@ import wbh.finanzapp.business.AbstractBean;
 /**
  * Parent class for all data source classes
  */
-public abstract class DataSource {
+public abstract class AbstractDataSource {
 
     /**
      * Insert a Bean to the database.
@@ -25,7 +25,7 @@ public abstract class DataSource {
     /**
      * Delete a Bean from database.
      */
-    public abstract void delete(AbstractBean profile);
+    public abstract void delete(long id);
 
     /**
      * Get the Bean to the given database Cursor.
@@ -40,6 +40,6 @@ public abstract class DataSource {
     /**
      * Return a list with AbstractBean.
      */
-    public abstract List<AbstractBean> getDataSources();
+    public abstract List<AbstractBean> getBeans();
 
 }

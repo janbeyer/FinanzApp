@@ -14,7 +14,7 @@ import wbh.finanzapp.business.ProfileBean;
 /**
  * ProfilesDataSource class.
  */
-public class ProfilesDataSource extends DataSource {
+public class ProfilesDataSource extends AbstractDataSource {
 
     private static final String LOG_TAG = ProfilesDataSource.class.getSimpleName();
 
@@ -37,8 +37,8 @@ public class ProfilesDataSource extends DataSource {
     /**
      * Return a new ProfileBean.
      */
-    public AbstractBean getProfile(long id) {
-        AbstractBean profile = null;
+    public ProfileBean getProfile(long id) {
+        ProfileBean profile = null;
         Cursor cursor = ProfilesDBHelper.getProfileCursor(dbHelper, id);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
@@ -51,13 +51,12 @@ public class ProfilesDataSource extends DataSource {
      * Iterate over all database elements and store it to a List.
      */
     @Override
-    public List<AbstractBean> getDataSources() {
+    public List<AbstractBean> getBeans() {
         List<AbstractBean> profileList = new ArrayList<>();
         Cursor cursor = ProfilesDBHelper.getProfilesCursor(dbHelper);
         cursor.moveToFirst();
-        AbstractBean profile;
         while (!cursor.isAfterLast()) {
-            profile = cursorToBean(cursor);
+            ProfileBean profile = cursorToBean(cursor);
             profileList.add(profile);
             cursor.moveToNext();
         }
@@ -66,37 +65,36 @@ public class ProfilesDataSource extends DataSource {
     }
     
     @Override
-    public AbstractBean insert(String name, String description) {
+    public ProfileBean insert(String name, String description) {
         ContentValues values = createValues(null, name, description);
         long insertId = dbHelper.getDatabase().insert(ProfilesDBHelper.TABLE_NAME, null, values);
 
         Cursor cursor = ProfilesDBHelper.getInsertCursor(dbHelper, insertId);
         cursor.moveToFirst();
-        AbstractBean profile = cursorToBean(cursor);
+        ProfileBean profile = cursorToBean(cursor);
         cursor.close();
         return profile;
     }
     
     @Override
-    public AbstractBean update(long id, String newName, String newDescription) {
+    public ProfileBean update(long id, String newName, String newDescription) {
         ContentValues values = createValues(id, newName, newDescription);
         dbHelper.getDatabase().update(ProfilesDBHelper.TABLE_NAME, values, ProfilesDBHelper.COLUMN_ID + "=" + id, null);
 
         Cursor cursor = ProfilesDBHelper.getUpdateCursor(dbHelper, id);
         cursor.moveToFirst();
-        AbstractBean profile = cursorToBean(cursor);
+        ProfileBean profile = cursorToBean(cursor);
         cursor.close();
         return profile;
     }
     
     @Override
-    public void delete(AbstractBean profile) {
-        long id = profile.getId();
-        dbHelper.getDatabase().delete(ProfilesDBHelper.TABLE_NAME, ProfilesDBHelper.COLUMN_ID + "=" + id, null);
+    public void delete(long profileId) {
+        dbHelper.getDatabase().delete(ProfilesDBHelper.TABLE_NAME, ProfilesDBHelper.COLUMN_ID + "=" + profileId, null);
     }
     
     @Override
-    public AbstractBean cursorToBean(Cursor cursor) {
+    public ProfileBean cursorToBean(Cursor cursor) {
         int idIndex = cursor.getColumnIndex(ProfilesDBHelper.COLUMN_ID);
         int idName = cursor.getColumnIndex(ProfilesDBHelper.COLUMN_NAME);
         int idDescription = cursor.getColumnIndex(ProfilesDBHelper.COLUMN_DESCRIPTION);

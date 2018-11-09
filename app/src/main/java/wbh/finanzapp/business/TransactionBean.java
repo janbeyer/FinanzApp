@@ -5,9 +5,8 @@ package wbh.finanzapp.business;
  */
 public class TransactionBean extends AbstractBean {
 
-
     /**
-     * Create a new ProfileBean.
+     * Create a new TransactionBean.
      */
     public TransactionBean(long id, String name, String description) {
         super(id, name, description);

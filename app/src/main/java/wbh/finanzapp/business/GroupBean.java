@@ -10,7 +10,6 @@ public class GroupBean extends AbstractBean {
      */
     private final long profileId;
 
-
     /**
      * Create a new GroupBean.
      */

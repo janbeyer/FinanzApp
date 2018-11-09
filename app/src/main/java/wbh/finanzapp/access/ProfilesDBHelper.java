@@ -22,7 +22,7 @@ class ProfilesDBHelper {
     /**
      * The table columns for the Profile table.
      */
-    private static final String[] columns = {
+    static final String[] COLUMNS = {
             COLUMN_ID,
             COLUMN_NAME,
             COLUMN_DESCRIPTION,
@@ -41,7 +41,7 @@ class ProfilesDBHelper {
                     ");";
 
     /**
-     * Create the Groups Table.
+     * Create the Profile Table.
      */
     static void createTable(SQLiteDatabase db) {
         try {
@@ -53,12 +53,12 @@ class ProfilesDBHelper {
     }
 
     /**
-     * Return an database insert Cursor to a Group.
+     * Return an database insert Cursor to a Profile.
      */
     static Cursor getInsertCursor(DBHelper dbHelper, long insertId) {
         return dbHelper.getDatabase().query(
                 TABLE_NAME,
-                columns,
+                COLUMNS,
                 COLUMN_ID + "=" + insertId,
                 null,
                 null,
@@ -67,12 +67,12 @@ class ProfilesDBHelper {
     }
 
     /**
-     * Return an database get Cursor to a Group.
+     * Return an database get Cursor to a Profile.
      */
     static Cursor getProfileCursor(DBHelper dbHelper, long id) {
         return dbHelper.getDatabase().query(
                 TABLE_NAME,
-                columns,
+                COLUMNS,
                 COLUMN_ID + "=?",
                 new String[]{String.valueOf(id)},
                 null,
@@ -86,7 +86,7 @@ class ProfilesDBHelper {
     static Cursor getProfilesCursor(DBHelper dbHelper) {
         return dbHelper.getDatabase().query(
                 TABLE_NAME,
-                columns,
+                COLUMNS,
                 null,
                 null,
                 null,
@@ -100,7 +100,7 @@ class ProfilesDBHelper {
     static Cursor getUpdateCursor(DBHelper dbHelper, long id) {
         return dbHelper.getDatabase().query(
                 TABLE_NAME,
-                columns,
+                COLUMNS,
                 COLUMN_ID + "=" + id,
                 null,
                 null,

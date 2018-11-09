@@ -22,7 +22,7 @@ class GroupsDBHelper {
     /**
      * The table columns for the Groups table.
      */
-    private static final String[] columns = {
+    static final String[] COLUMNS = {
             COLUMN_ID,
             COLUMN_PROFILE_ID,
             COLUMN_NAME,
@@ -59,7 +59,7 @@ class GroupsDBHelper {
     static Cursor getInsertCursor(DBHelper dbHelper, long insertId) {
         return dbHelper.getDatabase().query(
                 TABLE_NAME,
-                columns,
+                COLUMNS,
                 COLUMN_ID + "=" + insertId,
                 null,
                 null,
@@ -73,7 +73,7 @@ class GroupsDBHelper {
     static Cursor getGroupsCursor(DBHelper dbHelper, long profileId) {
         return dbHelper.getDatabase().query(
                 TABLE_NAME,
-                columns,
+                COLUMNS,
                 COLUMN_PROFILE_ID + "=?",
                 new String[]{String.valueOf(profileId)},
                 null,
@@ -87,7 +87,7 @@ class GroupsDBHelper {
     static Cursor getUpdateCursor(DBHelper dbHelper, long id) {
         return dbHelper.getDatabase().query(
                 TABLE_NAME,
-                columns,
+                COLUMNS,
                 COLUMN_ID + "=" + id,
                 null,
                 null,

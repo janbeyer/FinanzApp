@@ -69,7 +69,7 @@ public class ProfilesActivity extends AbstractActivity {
     public void showAllListEntries() {
         Log.d(LOG_TAG, "--> Show all list entries.");
 
-        ListView profilesListView = showAllListEntries(profileDataSource.getDataSources(), android.R.layout.simple_list_item_activated_1,
+        ListView profilesListView = showAllListEntries(profileDataSource.getBeans(), android.R.layout.simple_list_item_activated_1,
                 R.id.list_view_profiles);
 
         profilesListView.setOnItemClickListener((adapterView, view, position, id) -> {
@@ -126,7 +126,7 @@ public class ProfilesActivity extends AbstractActivity {
                                 int positionInListView = touchedProfilePositions.keyAt(i);
                                 ProfileBean profile = (ProfileBean) profilesListView.getItemAtPosition(positionInListView);
                                 Log.d(LOG_TAG, "--> Position in ListView: " + positionInListView + " Content: " + profile.toString());
-                                profileDataSource.delete(profile);
+                                profileDataSource.delete(profile.getId());
                                 Log.d(LOG_TAG, "--> Delete old entry: " + profile.toString());
                             }
                         }
@@ -178,20 +178,20 @@ public class ProfilesActivity extends AbstractActivity {
         builder.setView(dialogsView)
                 .setTitle(R.string.profile_add_title)
                 .setPositiveButton(R.string.dialog_button_positive, (dialog, id) -> {
-                    String name = editTextNewName.getText().toString();
-                    String description = editTextNewDescription.getText().toString();
+                    String profileName = editTextNewName.getText().toString();
+                    String profileDescription = editTextNewDescription.getText().toString();
 
-                    if ((TextUtils.isEmpty(name))) {
+                    if ((TextUtils.isEmpty(profileName))) {
                         editTextNewName.setError(getString(R.string.field_name_error_required));
                         return;
                     }
 
                     Map<String, String> basicGroups = getBasicGroups(this);
 
-                    ProfileBean newProfile = (ProfileBean)profileDataSource.insert(name, description);
+                    ProfileBean newProfile = (ProfileBean)profileDataSource.insert(profileName, profileDescription);
                     GroupsDataSource groupsDataSource = new GroupsDataSource(this, newProfile.getId());
-                    basicGroups.forEach((name2, description2) -> {
-                        groupsDataSource.insert(name2, description2);
+                    basicGroups.forEach((groupName, groupDescription) -> {
+                        groupsDataSource.insert(groupName, groupDescription);
                     });
 
                     Log.d(LOG_TAG, "--> Insert new entry: " + newProfile.toString());
