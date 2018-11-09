@@ -7,8 +7,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import wbh.finanzapp.R;
-import wbh.finanzapp.access.ProfilesDataSource;
-import wbh.finanzapp.business.ProfileBean;
 
 public class MenuActivity extends AbstractActivity {
 
@@ -18,24 +16,15 @@ public class MenuActivity extends AbstractActivity {
 
     private Long profileId;
 
-    private static String profileName;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(LOG_TAG, "--> onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        ProfilesDataSource profileDataSource = new ProfilesDataSource(this);
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
             profileId = (Long) bundle.get(PARAM_PROFILE_ID);
-            if(profileId != null) {
-                ProfileBean profileBean = (ProfileBean) profileDataSource.getProfile(profileId);
-                profileName = profileBean.getName();
-
-            }
         }
-        this.setTitle(profileName);
         activateButtons();
     }
 
