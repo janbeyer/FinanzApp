@@ -154,7 +154,7 @@ public class GroupsActivity extends AbstractActivity {
 
         builder.setView(dialogsView)
                 .setTitle(R.string.group_add_title)
-                .setPositiveButton(R.string.dialog_button_positive, (dialog, id) -> {
+                .setPositiveButton(R.string.dialog_button_save, (dialog, id) -> {
                     String name = editTextNewName.getText().toString();
                     String description = editTextNewDescription.getText().toString();
 
@@ -170,7 +170,7 @@ public class GroupsActivity extends AbstractActivity {
                     showAllListEntries();
                     dialog.dismiss();
                 })
-                .setNegativeButton(R.string.dialog_button_negative, (dialog, id) -> dialog.cancel());
+                .setNegativeButton(R.string.dialog_button_cancel, (dialog, id) -> dialog.cancel());
 
         return builder.create();
     }
@@ -190,7 +190,7 @@ public class GroupsActivity extends AbstractActivity {
 
         builder.setView(dialogsView)
                 .setTitle(R.string.group_edit_title)
-                .setPositiveButton(R.string.dialog_button_positive, (dialog, id) -> {
+                .setPositiveButton(R.string.dialog_button_save, (dialog, id) -> {
                     String name = editTextNewName.getText().toString();
                     String description = editTextNewDescription.getText().toString();
 
@@ -207,7 +207,7 @@ public class GroupsActivity extends AbstractActivity {
                     showAllListEntries();
                     dialog.dismiss();
                 })
-                .setNegativeButton(R.string.dialog_button_negative, (dialog, id) -> dialog.cancel());
+                .setNegativeButton(R.string.dialog_button_cancel, (dialog, id) -> dialog.cancel());
 
         return builder.create();
     }

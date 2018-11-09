@@ -2,8 +2,12 @@
     <!-- Common properties -->
     <string name="app_name">FinanzApp</string>
     <string name="cab_checked_string">ausgewählt</string>
-    <string name="dialog_button_positive">Speichern</string>
-    <string name="dialog_button_negative">Abbrechen</string>
+    <string name="dialog_button_ok">Ok</string>
+    <string name="dialog_button_save">Speichern</string>
+    <string name="dialog_button_cancel">Abbrechen</string>
+
+    <string name="help_title">Hilfe</string>
+    <string name="action_help">Hilfe</string>
 
     <string name="field_name">Name</string>
     <string name="field_description">Beschr.</string>

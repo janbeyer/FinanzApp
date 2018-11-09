@@ -177,7 +177,7 @@ public class ProfilesActivity extends AbstractActivity {
 
         builder.setView(dialogsView)
                 .setTitle(R.string.profile_add_title)
-                .setPositiveButton(R.string.dialog_button_positive, (dialog, id) -> {
+                .setPositiveButton(R.string.dialog_button_save, (dialog, id) -> {
                     String profileName = editTextNewName.getText().toString();
                     String profileDescription = editTextNewDescription.getText().toString();
 
@@ -199,7 +199,7 @@ public class ProfilesActivity extends AbstractActivity {
                     showAllListEntries();
                     dialog.dismiss();
                 })
-                .setNegativeButton(R.string.dialog_button_negative, (dialog, id) -> dialog.cancel());
+                .setNegativeButton(R.string.dialog_button_cancel, (dialog, id) -> dialog.cancel());
 
         return builder.create();
     }
@@ -219,7 +219,7 @@ public class ProfilesActivity extends AbstractActivity {
 
         builder.setView(dialogsView)
                 .setTitle(R.string.profile_edit_title)
-                .setPositiveButton(R.string.dialog_button_positive, (dialog, id) -> {
+                .setPositiveButton(R.string.dialog_button_save, (dialog, id) -> {
                     String name = editTextNewName.getText().toString();
                     String description = editTextNewDescription.getText().toString();
 
@@ -236,7 +236,7 @@ public class ProfilesActivity extends AbstractActivity {
                     showAllListEntries();
                     dialog.dismiss();
                 })
-                .setNegativeButton(R.string.dialog_button_negative, (dialog, id) -> dialog.cancel());
+                .setNegativeButton(R.string.dialog_button_cancel, (dialog, id) -> dialog.cancel());
 
         return builder.create();
     }
