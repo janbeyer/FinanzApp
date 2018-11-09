@@ -43,14 +43,15 @@ public class GroupsActivity extends AppCompatActivity {
 
         ProfilesDataSource profileDataSource = new ProfilesDataSource(this);
         Bundle bundle = getIntent().getExtras();
+        Long profileId;
         if (bundle != null) {
-            Long profileId = (Long) bundle.get(PARAM_PROFILE_ID);
+            profileId = (Long) bundle.get(PARAM_PROFILE_ID);
             if (profileId != null) {
                 profileBean = profileDataSource.getProfile(profileId);
             }
         }
 
-        groupsDataSource = new GroupsDataSource(this);
+        groupsDataSource = new GroupsDataSource(this, profileBean.getId());
         Button buttonAddGroup = findViewById(R.id.button_add_group);
 
         buttonAddGroup.setOnClickListener(view -> {
@@ -72,7 +73,7 @@ public class GroupsActivity extends AppCompatActivity {
     }
 
     private void showAllListEntries() {
-        List<GroupBean> groups = groupsDataSource.getProfileGroups(profileBean.getId());
+        List<GroupBean> groups = groupsDataSource.getProfileGroups();
 
         ArrayAdapter<GroupBean> groupArrayAdapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_list_item_activated_1, groups);
@@ -124,7 +125,7 @@ public class GroupsActivity extends AppCompatActivity {
                                 int positionInListView = touchedGroupPositions.keyAt(i);
                                 GroupBean group = (GroupBean) groupsListView.getItemAtPosition(positionInListView);
                                 Log.d(LOG_TAG, "--> Position in ListView: " + positionInListView + " Content: " + group.toString());
-                                groupsDataSource.deleteGroup(group.getId());
+                                groupsDataSource.delete(profileBean);
                                 Log.d(LOG_TAG, "--> Delete old entry: " + group.toString());
                             }
                         }
@@ -183,7 +184,7 @@ public class GroupsActivity extends AppCompatActivity {
                         return;
                     }
 
-                    GroupBean newGroup = groupsDataSource.insertGroup(profileBean.getId(), name, description);
+                    GroupBean newGroup = (GroupBean) groupsDataSource.insert(name, description);
 
                     Log.d(LOG_TAG, "--> Insert new entry: " + newGroup.toString());
 
@@ -219,7 +220,7 @@ public class GroupsActivity extends AppCompatActivity {
                         return;
                     }
 
-                    GroupBean updatedGroup = groupsDataSource.updateGroup(profileBean.getId(), group.getId(), name, description);
+                    GroupBean updatedGroup = (GroupBean) groupsDataSource.update(group.getId(), name, description);
 
                     Log.d(LOG_TAG, "--> Update old entry: " + group.toString());
                     Log.d(LOG_TAG, "--> Update new entry: " + updatedGroup.toString());

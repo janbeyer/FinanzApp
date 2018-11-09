@@ -2,90 +2,96 @@ package wbh.finanzapp.access;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import wbh.finanzapp.R;
+import wbh.finanzapp.business.AbstractBean;
 import wbh.finanzapp.business.GroupBean;
 
-public class GroupsDataSource {
+/**
+ * GroupsDataSource class.
+ */
+public class GroupsDataSource extends DataSource {
 
     private static final String LOG_TAG = GroupsDataSource.class.getSimpleName();
 
+    /**
+     * The DBHelper instance.
+     */
     private DBHelper dbHelper;
 
-    private final String[] columns = {
-            GroupsDBHelper.COLUMN_ID,
-            GroupsDBHelper.COLUMN_PROFILE_ID,
-            GroupsDBHelper.COLUMN_NAME,
-            GroupsDBHelper.COLUMN_DESCRIPTION
-    };
+    /**
+     * The profile id to identify the Profile.
+     */
+    private long profileId;
 
-    public GroupsDataSource(Context context) {
+    /**
+     * Create a new GroupsDataSource.
+     *
+     * @param context the application context.
+     */
+    public GroupsDataSource(Context context, long profileId) {
         Log.d(LOG_TAG, "--> Create GroupsDataSource.");
+        this.profileId = profileId;
         dbHelper = new DBHelper(context);
         dbHelper.open();
     }
 
-
-    public List<GroupBean> getProfileGroups(long profileId) {
+    /**
+     * Iterate over all database elements and store it to a List.
+     */
+    public List<GroupBean> getProfileGroups() {
         List<GroupBean> groupList = new ArrayList<>();
-
-        Cursor cursor = dbHelper.getDatabase().query(
-                GroupsDBHelper.TABLE_NAME, columns, GroupsDBHelper.COLUMN_PROFILE_ID + "=?",
-                new String[]{String.valueOf(profileId)}, null, null, GroupsDBHelper.COLUMN_NAME + " ASC");
-
+        Cursor cursor = GroupsDBHelper.getGroupsCursor(dbHelper, profileId);
         cursor.moveToFirst();
         GroupBean group;
-
         while (!cursor.isAfterLast()) {
-            group = cursorToGroup(cursor);
+            group = cursorToBean(cursor);
             groupList.add(group);
             cursor.moveToNext();
         }
-
         cursor.close();
-
         return groupList;
     }
 
-    public void insertBasics(Map<String, String> basicGroups, long profileId) {
-        basicGroups.forEach((name, descr) -> insertGroup(profileId, name, descr));
-    }
-
-    public GroupBean insertGroup(Long profileId, String name, String description) {
-        ContentValues values = createGroupValues(null, profileId, name, description);
+    @Override
+    public AbstractBean insert(String name, String description) {
+        ContentValues values = createValues(null, name, description);
         long insertId = dbHelper.getDatabase().insert(GroupsDBHelper.TABLE_NAME, null, values);
-        Cursor cursor = dbHelper.getDatabase().query(GroupsDBHelper.TABLE_NAME, columns, GroupsDBHelper.COLUMN_ID + "=" + insertId,null, null, null, null);
+
+        Cursor cursor = GroupsDBHelper.getInsertCursor(dbHelper, insertId);
         cursor.moveToFirst();
-        GroupBean group = cursorToGroup(cursor);
+        GroupBean group = cursorToBean(cursor);
         cursor.close();
         return group;
     }
 
-    public GroupBean updateGroup(long id, long profileId, String newName, String newDescription) {
-        ContentValues values = createGroupValues(id, profileId, newName, newDescription);
+    @Override
+    public AbstractBean update(long id, String newName, String newDescription) {
+        ContentValues values = createValues(id, newName, newDescription);
         dbHelper.getDatabase().update(GroupsDBHelper.TABLE_NAME, values, GroupsDBHelper.COLUMN_ID + "=" + id, null);
-        Cursor cursor = dbHelper.getDatabase().query(GroupsDBHelper.TABLE_NAME, columns, GroupsDBHelper.COLUMN_ID + "=" + id,
-                null, null, null, null);
+
+        Cursor cursor = GroupsDBHelper.getUpdateCursor(dbHelper, id);
         cursor.moveToFirst();
-        GroupBean group = cursorToGroup(cursor);
+        GroupBean group = cursorToBean(cursor);
         cursor.close();
         return group;
     }
 
-    public void deleteGroup(long id) {
+    @Override
+    public void delete(AbstractBean profile) {
+        long id = profile.getId();
         dbHelper.getDatabase().delete(GroupsDBHelper.TABLE_NAME, GroupsDBHelper.COLUMN_ID + "=" + id, null);
     }
 
-    private GroupBean cursorToGroup(Cursor cursor) {
+    /**
+     * Move the cursor to Group.
+     */
+    @Override
+    public GroupBean cursorToBean(Cursor cursor) {
         int idIndex = cursor.getColumnIndex(GroupsDBHelper.COLUMN_ID);
         int idProfile = cursor.getColumnIndex(GroupsDBHelper.COLUMN_PROFILE_ID);
         int idName = cursor.getColumnIndex(GroupsDBHelper.COLUMN_NAME);
@@ -96,15 +102,17 @@ public class GroupsDataSource {
         String name = cursor.getString(idName);
         String description = cursor.getString(idDescription);
 
-        return new GroupBean(id, profileId, name, description);
+        return new GroupBean(id, name, description, profileId);
     }
 
-    private ContentValues createGroupValues(Long id, Long profileId, String name, String description) {
+    @Override
+    public ContentValues createValues(Long id, String name, String description) {
         ContentValues values = new ContentValues();
         if (id != null) values.put(GroupsDBHelper.COLUMN_ID, id);
-        if (profileId != null) values.put(GroupsDBHelper.COLUMN_PROFILE_ID, profileId);
+        if (profileId != 0) values.put(GroupsDBHelper.COLUMN_PROFILE_ID, profileId);
         if (name != null) values.put(GroupsDBHelper.COLUMN_NAME, name);
         if (description != null) values.put(GroupsDBHelper.COLUMN_DESCRIPTION, description);
         return values;
     }
+
 }

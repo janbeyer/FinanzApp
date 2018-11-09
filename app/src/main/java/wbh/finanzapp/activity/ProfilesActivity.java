@@ -20,7 +20,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +34,7 @@ public class ProfilesActivity extends AppCompatActivity {
     private static final String LOG_TAG = ProfilesActivity.class.getSimpleName();
 
     private ProfilesDataSource profileDataSource;
+
     private GroupsDataSource groupsDataSource;
 
     @Override
@@ -43,7 +43,6 @@ public class ProfilesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profiles);
 
-        groupsDataSource = new GroupsDataSource(this);
         profileDataSource = new ProfilesDataSource(this);
 
         Button buttonAddProfile = findViewById(R.id.button_add_profile);
@@ -74,7 +73,7 @@ public class ProfilesActivity extends AppCompatActivity {
      */
     private void showAllListEntries() {
         Log.d(LOG_TAG, "--> Show all list entries.");
-        List<ProfileBean> profiles = profileDataSource.getAllProfiles();
+        List<ProfileBean> profiles = profileDataSource.getProfiles();
 
         ArrayAdapter<ProfileBean> profileArrayAdapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_list_item_activated_1, profiles);
@@ -84,7 +83,7 @@ public class ProfilesActivity extends AppCompatActivity {
 
         profilesListView.setOnItemClickListener((adapterView, view, position, id) -> {
             ProfileBean profile = (ProfileBean) adapterView.getItemAtPosition(position);
-            profileDataSource.updateProfile(profile.getId(), null, null);
+            profileDataSource.update(profile.getId(), null, null);
 
             Intent myIntent = new Intent(this, MenuActivity.class);
             myIntent.putExtra(MenuActivity.PARAM_PROFILE_ID, profile.getId());
@@ -136,7 +135,7 @@ public class ProfilesActivity extends AppCompatActivity {
                                 int positionInListView = touchedProfilePositions.keyAt(i);
                                 ProfileBean profile = (ProfileBean) profilesListView.getItemAtPosition(positionInListView);
                                 Log.d(LOG_TAG, "--> Position in ListView: " + positionInListView + " Content: " + profile.toString());
-                                profileDataSource.deleteProfile(profile);
+                                profileDataSource.delete(profile);
                                 Log.d(LOG_TAG, "--> Delete old entry: " + profile.toString());
                             }
                         }
@@ -197,8 +196,11 @@ public class ProfilesActivity extends AppCompatActivity {
 
                     Map<String, String> basicGroups = getBasicGroups(this);
 
-                    ProfileBean newProfile = profileDataSource.insertProfile(name, description);
-                    groupsDataSource.insertBasics(basicGroups, newProfile.getId());
+                    ProfileBean newProfile = profileDataSource.insert(name, description);
+                    groupsDataSource = new GroupsDataSource(this, newProfile.getId());
+                    basicGroups.forEach((name2, descr) -> {
+                        groupsDataSource.insert(name2, descr);
+                    });
 
                     Log.d(LOG_TAG, "--> Insert new entry: " + newProfile.toString());
 
@@ -234,7 +236,7 @@ public class ProfilesActivity extends AppCompatActivity {
                         return;
                     }
 
-                    ProfileBean updatedProfile = profileDataSource.updateProfile(profile.getId(), name, description);
+                    ProfileBean updatedProfile = profileDataSource.update(profile.getId(), name, description);
 
                     Log.d(LOG_TAG, "--> Update old entry: " + profile.toString());
                     Log.d(LOG_TAG, "--> Update new entry: " + updatedProfile.toString());
