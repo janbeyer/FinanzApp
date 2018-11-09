@@ -17,9 +17,4 @@ public class ProfileBean extends AbstractBean {
         super(id, name, description);
         this.lastUse = lastUse;
     }
-
-    @Override
-    public String toString() {
-        return name + "(id: " + id + ") " + description + " last use: " + lastUse;
-    }
 }

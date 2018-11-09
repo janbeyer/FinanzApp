@@ -17,9 +17,4 @@ public class GroupBean extends AbstractBean {
         super(id, name, description);
         this.profileId = profileId;
     }
-
-    @Override
-    public String toString() {
-        return  name + "(id: " + id + ", profileId: " + profileId + ")" + description;
-    }
 }

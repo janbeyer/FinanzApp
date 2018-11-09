@@ -49,4 +49,9 @@ public class AbstractBean {
     public String getDescription() {
         return description;
     }
+
+    @Override
+    public String toString() {
+        return id + ": " + name + " [" + description + "]";
+    }
 }

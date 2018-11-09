@@ -11,9 +11,4 @@ public class TransactionBean extends AbstractBean {
     public TransactionBean(long id, String name, String description) {
         super(id, name, description);
     }
-
-    @Override
-    public String toString() {
-        return super.toString();
-    }
 }
