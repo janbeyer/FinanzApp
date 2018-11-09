@@ -73,12 +73,12 @@ public class ProfilesActivity extends AbstractActivity {
                 R.id.list_view_profiles);
 
         profilesListView.setOnItemClickListener((adapterView, view, position, id) -> {
-            ProfileBean profile = (ProfileBean) adapterView.getItemAtPosition(position);
-            profileDataSource.update(profile.getId(), null, null);
+            ProfileBean selectedProfile = (ProfileBean) adapterView.getItemAtPosition(position);
+            ActivityMemory.setCurProfileBean(selectedProfile);
+            profileDataSource.update(selectedProfile.getId(), null, null);
 
             Intent myIntent = new Intent(this, MenuActivity.class);
-            myIntent.putExtra(MenuActivity.PARAM_PROFILE_ID, profile.getId());
-            Log.d(LOG_TAG, "--> Start the menu activity for the profile: " + profile.toString());
+            Log.d(LOG_TAG, "--> Start the menu activity for the profile: " + selectedProfile.toString());
             startActivity(myIntent);
         });
     }

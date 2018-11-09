@@ -7,6 +7,7 @@ import android.widget.ListView;
 import java.util.List;
 
 import wbh.finanzapp.business.AbstractBean;
+import wbh.finanzapp.business.ProfileBean;
 
 public abstract class AbstractActivity extends AppCompatActivity {
 

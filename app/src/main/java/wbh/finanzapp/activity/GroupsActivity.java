@@ -18,15 +18,11 @@ import android.widget.ListView;
 
 import wbh.finanzapp.R;
 import wbh.finanzapp.access.GroupsDataSource;
-import wbh.finanzapp.access.ProfilesDataSource;
 import wbh.finanzapp.business.GroupBean;
-import wbh.finanzapp.business.ProfileBean;
 
 public class GroupsActivity extends AbstractActivity {
 
     private static final String LOG_TAG = GroupsActivity.class.getSimpleName();
-
-    public static final String PARAM_PROFILE_ID = "profileId";
 
     private GroupsDataSource groupsDataSource;
 
@@ -35,22 +31,7 @@ public class GroupsActivity extends AbstractActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_groups);
 
-        ProfilesDataSource profileDataSource = new ProfilesDataSource(this);
-        Bundle bundle = getIntent().getExtras();
-
-        if(savedInstanceState != null) {
-            bundle = savedInstanceState.getBundle(PARAM_PROFILE_ID);
-        }
-
-        ProfileBean profileBean = null;
-        if (bundle != null) {
-            Long profileId = (Long) bundle.get(PARAM_PROFILE_ID);
-            if (profileId != null) {
-                profileBean = (ProfileBean)profileDataSource.getProfile(profileId);
-            }
-        }
-
-        groupsDataSource = new GroupsDataSource(this, profileBean.getId());
+        groupsDataSource = new GroupsDataSource(this, ActivityMemory.getCurProfileBean().getId());
         Button buttonAddGroup = findViewById(R.id.button_add_group);
 
         buttonAddGroup.setOnClickListener(view -> {

@@ -12,19 +12,11 @@ public class MenuActivity extends AbstractActivity {
 
     private static final String LOG_TAG = MenuActivity.class.getSimpleName();
 
-    public static final String PARAM_PROFILE_ID = "profileId";
-
-    private Long profileId;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(LOG_TAG, "--> onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        Bundle bundle = getIntent().getExtras();
-        if(bundle != null) {
-            profileId = (Long) bundle.get(PARAM_PROFILE_ID);
-        }
         activateButtons();
     }
 
@@ -72,7 +64,6 @@ public class MenuActivity extends AbstractActivity {
         buttonGroups.setOnClickListener(view -> {
             Intent myIntent = new Intent(this, GroupsActivity.class);
             Log.d(LOG_TAG, "--> Start the groups activity.");
-            myIntent.putExtra(GroupsActivity.PARAM_PROFILE_ID, profileId);
             startActivity(myIntent);
         });
         Button buttonHelp = findViewById(R.id.menu_button_help);
