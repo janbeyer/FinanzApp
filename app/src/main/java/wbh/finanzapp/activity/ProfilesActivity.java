@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -30,13 +29,11 @@ import wbh.finanzapp.access.ProfilesDataSource;
 import wbh.finanzapp.business.AbstractBean;
 import wbh.finanzapp.business.ProfileBean;
 
-public class ProfilesActivity extends AppCompatActivity {
+public class ProfilesActivity extends AbstractActivity {
 
     private static final String LOG_TAG = ProfilesActivity.class.getSimpleName();
 
     private ProfilesDataSource profileDataSource;
-
-    private GroupsDataSource groupsDataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,7 +167,7 @@ public class ProfilesActivity extends AppCompatActivity {
         });
     }
 
-    @SuppressWarnings("CodeBlock2Expr")
+    @SuppressWarnings({"CodeBlock2Expr", "Convert2MethodRef"})
     private AlertDialog createAddProfileDialog() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -199,7 +196,7 @@ public class ProfilesActivity extends AppCompatActivity {
                     Map<String, String> basicGroups = getBasicGroups(this);
 
                     ProfileBean newProfile = (ProfileBean)profileDataSource.insert(name, description);
-                    groupsDataSource = new GroupsDataSource(this, newProfile.getId());
+                    GroupsDataSource groupsDataSource = new GroupsDataSource(this, newProfile.getId());
                     basicGroups.forEach((name2, description2) -> {
                         groupsDataSource.insert(name2, description2);
                     });

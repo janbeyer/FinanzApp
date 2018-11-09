@@ -20,19 +20,14 @@
 
         <activity
             android:name=".activity.MenuActivity"
-            android:parentActivityName=".activity.ProfilesActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.ProfilesActivity" />
+            android:parentActivityName=".activity.ProfilesActivity"
+            android:label="@string/main_menu" >
         </activity>
 
         <activity
             android:name=".activity.GroupsActivity"
             android:parentActivityName=".activity.MenuActivity"
             android:label="@string/group_title" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MenuActivity" />
         </activity>
 
     </application>

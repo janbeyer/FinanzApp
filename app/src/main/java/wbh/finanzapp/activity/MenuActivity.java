@@ -2,7 +2,6 @@ package wbh.finanzapp.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
@@ -11,38 +10,62 @@ import wbh.finanzapp.R;
 import wbh.finanzapp.access.ProfilesDataSource;
 import wbh.finanzapp.business.ProfileBean;
 
-public class MenuActivity extends AppCompatActivity {
+public class MenuActivity extends AbstractActivity {
 
     private static final String LOG_TAG = MenuActivity.class.getSimpleName();
 
     public static final String PARAM_PROFILE_ID = "profileId";
 
-    private ProfileBean profileBean;
+    private Long profileId;
+
+    private String profileName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(LOG_TAG, "--> onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         ProfilesDataSource profileDataSource = new ProfilesDataSource(this);
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
-            Long profileId = (Long) bundle.get(PARAM_PROFILE_ID);
+            profileId = (Long) bundle.get(PARAM_PROFILE_ID);
             if(profileId != null) {
-                profileBean = (ProfileBean) profileDataSource.getProfile(profileId);
-                this.setTitle(profileBean.getName());
+                ProfileBean profileBean = (ProfileBean) profileDataSource.getProfile(profileId);
+                profileName = profileBean.getName();
+                this.setTitle(profileName);
             }
         }
         activateButtons();
     }
 
     @Override
+    protected void onStart() {
+        Log.d(LOG_TAG, "--> onStart()");
+        super.onStart();
+    }
+
+    @Override
     protected void onResume() {
+        Log.d(LOG_TAG, "--> onResume()");
         super.onResume();
     }
 
     @Override
     protected void onPause() {
+        Log.d(LOG_TAG, "--> onPause()");
         super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(LOG_TAG, "--> onStop()");
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d(LOG_TAG, "--> onDestroy()");
+        super.onDestroy();
     }
 
     @SuppressWarnings("CodeBlock2Expr")
@@ -59,7 +82,7 @@ public class MenuActivity extends AppCompatActivity {
         buttonGroups.setOnClickListener(view -> {
             Intent myIntent = new Intent(this, GroupsActivity.class);
             Log.d(LOG_TAG, "--> Start the groups activity.");
-            myIntent.putExtra(GroupsActivity.PARAM_PROFILE_ID, profileBean.getId());
+            myIntent.putExtra(GroupsActivity.PARAM_PROFILE_ID, profileId);
             startActivity(myIntent);
         });
         Button buttonHelp = findViewById(R.id.menu_button_help);

@@ -59,5 +59,6 @@
     <string name="group_default_freetime_descr">Free time transactions</string>
     <string name="group_default_salary_name">Salary</string>
     <string name="group_default_salary_descr">Salary transactions</string>
+    <string name="main_menu">MainMenu</string>
 
 </resources>

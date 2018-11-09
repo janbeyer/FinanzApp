@@ -2,7 +2,6 @@ package wbh.finanzapp.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -27,7 +26,7 @@ import wbh.finanzapp.business.AbstractBean;
 import wbh.finanzapp.business.GroupBean;
 import wbh.finanzapp.business.ProfileBean;
 
-public class GroupsActivity extends AppCompatActivity {
+public class GroupsActivity extends AbstractActivity {
 
     private static final String LOG_TAG = GroupsActivity.class.getSimpleName();
 
@@ -44,6 +43,11 @@ public class GroupsActivity extends AppCompatActivity {
 
         ProfilesDataSource profileDataSource = new ProfilesDataSource(this);
         Bundle bundle = getIntent().getExtras();
+
+        if(savedInstanceState != null) {
+            bundle = savedInstanceState.getBundle(PARAM_PROFILE_ID);
+        }
+
         Long profileId;
         if (bundle != null) {
             profileId = (Long) bundle.get(PARAM_PROFILE_ID);
