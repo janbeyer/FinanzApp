@@ -71,4 +71,8 @@ public class MenuActivity extends AbstractActivity {
             Toast.makeText(this, "TODO: Open Help Activity.", Toast.LENGTH_SHORT).show();
         });
     }
+
+    protected int getHelpText() {
+        return R.string.help_menu_text;
+    }
 }

@@ -6,13 +6,19 @@
     <string name="dialog_button_save">Speichern</string>
     <string name="dialog_button_cancel">Abbrechen</string>
 
-    <string name="help_title">Hilfe</string>
     <string name="action_help">Hilfe</string>
 
     <string name="field_name">Name</string>
     <string name="field_description">Beschr.</string>
 
     <string name="field_name_error_required">Der Name darf nicht leer sein</string>
+
+    <!-- Help properties -->
+    <string name="help_title">Hilfe</string>
+
+    <string name="help_profile_text">TODO: Hilfe Profil Text</string>
+    <string name="help_menu_text">TODO: Hilfe Menu Text</string>
+    <string name="help_group_text">TODO: Hilfe Gruppen Text</string>
 
     <!-- Profile properties -->
     <string name="profile_add_title">Neues Profil hinzufügen</string>

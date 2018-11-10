@@ -166,8 +166,8 @@ public class ProfilesActivity extends AbstractActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
 
-        ViewGroup viewGroup = findViewById(R.id.dialog_add_profile_root_view);
-        View dialogsView = inflater.inflate(R.layout.dialog_add_profile, viewGroup);
+        ViewGroup viewGroup = findViewById(R.id.dialog_write_profile_root_view);
+        View dialogsView = inflater.inflate(R.layout.dialog_write_profile, viewGroup);
 
         final EditText editTextNewName = dialogsView.findViewById(R.id.profile_new_name);
         editTextNewName.setText("");
@@ -208,8 +208,8 @@ public class ProfilesActivity extends AbstractActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
 
-        ViewGroup viewGroup = findViewById(R.id.dialog_edit_profile_root_view);
-        View dialogsView = inflater.inflate(R.layout.dialog_edit_profile, viewGroup);
+        ViewGroup viewGroup = findViewById(R.id.dialog_write_profile_root_view);
+        View dialogsView = inflater.inflate(R.layout.dialog_write_profile, viewGroup);
 
         final EditText editTextNewName = dialogsView.findViewById(R.id.profile_new_name);
         editTextNewName.setText(profile.getName());
@@ -258,5 +258,9 @@ public class ProfilesActivity extends AbstractActivity {
         basicGroups.put(context.getString(R.string.group_default_freetime_name), context.getString(R.string.group_default_freetime_descr));
         basicGroups.put(context.getString(R.string.group_default_salary_name), context.getString(R.string.group_default_salary_descr));
         return basicGroups;
+    }
+
+    protected int getHelpText() {
+        return R.string.help_profile_text;
     }
 }

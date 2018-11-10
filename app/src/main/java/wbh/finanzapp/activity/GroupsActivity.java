@@ -143,8 +143,8 @@ public class GroupsActivity extends AbstractActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
 
-        ViewGroup viewGroup = findViewById(R.id.dialog_add_profile_root_view);
-        View dialogsView = inflater.inflate(R.layout.dialog_add_group, viewGroup);
+        ViewGroup viewGroup = findViewById(R.id.dialog_write_group_root_view);
+        View dialogsView = inflater.inflate(R.layout.dialog_write_group, viewGroup);
 
         final EditText editTextNewName = dialogsView.findViewById(R.id.group_new_name);
         editTextNewName.setText("");
@@ -179,8 +179,8 @@ public class GroupsActivity extends AbstractActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
 
-        ViewGroup viewGroup = findViewById(R.id.select_dialog_list_root_view);
-        View dialogsView = inflater.inflate(R.layout.dialog_edit_group, viewGroup);
+        ViewGroup viewGroup = findViewById(R.id.dialog_write_group_root_view);
+        View dialogsView = inflater.inflate(R.layout.dialog_write_group, viewGroup);
 
         final EditText editTextNewName = dialogsView.findViewById(R.id.group_new_name);
         editTextNewName.setText(group.getName());
@@ -210,5 +210,9 @@ public class GroupsActivity extends AbstractActivity {
                 .setNegativeButton(R.string.dialog_button_cancel, (dialog, id) -> dialog.cancel());
 
         return builder.create();
+    }
+
+    protected int getHelpText() {
+        return R.string.help_group_text;
     }
 }

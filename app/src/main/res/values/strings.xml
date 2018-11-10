@@ -6,13 +6,19 @@
     <string name="dialog_button_save">Save</string>
     <string name="dialog_button_cancel">Cancel</string>
 
-    <string name="help_title">Hilfe</string>
     <string name="action_help">Hilfe</string>
 
     <string name="field_name">Name</string>
     <string name="field_description">Descr.</string>
 
     <string name="field_name_error_required">The name can not be empty</string>
+
+    <!-- Help properties -->
+    <string name="help_title">Help</string>
+
+    <string name="help_profile_text">TODO: Help profile text</string>
+    <string name="help_menu_text">TODO: Help menu text</string>
+    <string name="help_group_text">TODO: Help group text</string>
 
     <!-- Profile properties -->
     <string name="profile_add_title">Add a new profile</string>
