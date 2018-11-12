@@ -66,10 +66,6 @@ public class MenuActivity extends AbstractActivity {
             Log.d(LOG_TAG, "--> Start the groups activity.");
             startActivity(myIntent);
         });
-        Button buttonHelp = findViewById(R.id.menu_button_help);
-        buttonHelp.setOnClickListener(view -> {
-            Toast.makeText(this, "TODO: Open Help Activity.", Toast.LENGTH_SHORT).show();
-        });
     }
 
     protected int getHelpText() {
