@@ -11,6 +11,11 @@ public class TransactionBean extends AbstractBean {
     private final long profileId;
 
     /**
+     * A reference to the Group ID.
+     */
+    private final long groupId;
+
+    /**
      * The amount of the transaction.
      */
     private final long amount;
@@ -54,11 +59,13 @@ public class TransactionBean extends AbstractBean {
     /**
      * Create a new GroupBean.
      */
-    public TransactionBean(long id, String name, String description, long profileId, long amount,
-                           boolean expenditure, int state, Long uniqueDate, Integer dayOfWeek,
-                           Integer monthlyDay, Integer yearlyMonth, Integer yearlyDay) {
+    public TransactionBean(long id, String name, String description, long profileId, long groupId,
+                           long amount, boolean expenditure, int state, Long uniqueDate,
+                           Integer dayOfWeek, Integer monthlyDay, Integer yearlyMonth,
+                           Integer yearlyDay) {
         super(id, name, description);
         this.profileId = profileId;
+        this.groupId = groupId;
         this.amount = amount;
         this.expenditure = expenditure;
         this.state = state;

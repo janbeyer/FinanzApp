@@ -169,20 +169,17 @@ public class ProfilesActivity extends AbstractActivity {
         ViewGroup viewGroup = findViewById(R.id.dialog_write_profile_root_view);
         View dialogsView = inflater.inflate(R.layout.dialog_write_profile, viewGroup);
 
-        final EditText editTextNewName = dialogsView.findViewById(R.id.profile_new_name);
-        editTextNewName.setText("");
-
-        final EditText editTextNewDescription = dialogsView.findViewById(R.id.profile_new_description);
-        editTextNewDescription.setText("");
-
         builder.setView(dialogsView)
                 .setTitle(R.string.profile_add_title)
                 .setPositiveButton(R.string.dialog_button_save, (dialog, id) -> {
-                    String profileName = editTextNewName.getText().toString();
-                    String profileDescription = editTextNewDescription.getText().toString();
+                    EditText editTextName = dialogsView.findViewById(R.id.profile_new_name);
+                    final String profileName = editTextName.getText().toString();
+
+                    EditText editTextDescription = dialogsView.findViewById(R.id.profile_new_description);
+                    final String profileDescription = editTextDescription.getText().toString();
 
                     if ((TextUtils.isEmpty(profileName))) {
-                        editTextNewName.setError(getString(R.string.field_name_error_required));
+                        editTextName.setError(getString(R.string.field_name_error_required));
                         return;
                     }
 

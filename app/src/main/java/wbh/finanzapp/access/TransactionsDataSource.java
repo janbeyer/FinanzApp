@@ -73,8 +73,8 @@ public class TransactionsDataSource extends AbstractDataSource {
         return transactionList;
     }
 
-    public TransactionBean insert(String name, String description, long amount, boolean expenditure, int state, Long uniqueDate, Integer dayOfWeek, Integer monthlyDay, Integer yearlyMonth, Integer yearlyDay) {
-        ContentValues values = createValues(null, name, description, profileId, amount, expenditure, state, uniqueDate, dayOfWeek, monthlyDay, yearlyMonth, yearlyDay);
+    public TransactionBean insert(String name, String description, long groupId, long amount, boolean expenditure, int state, Long uniqueDate, Integer dayOfWeek, Integer monthlyDay, Integer yearlyMonth, Integer yearlyDay) {
+        ContentValues values = createValues(null, name, description, profileId, groupId, amount, expenditure, state, uniqueDate, dayOfWeek, monthlyDay, yearlyMonth, yearlyDay);
         long insertId = dbHelper.getDatabase().insert(TransactionsDBHelper.TABLE_NAME, null, values);
 
         Cursor cursor = dbHelper.getDatabase().query(TransactionsDBHelper.TABLE_NAME, TransactionsDBHelper.COLUMNS,
@@ -85,8 +85,8 @@ public class TransactionsDataSource extends AbstractDataSource {
         return transaction;
     }
 
-    public TransactionBean update(long id, String newName, String newDescription, long newAmount, boolean newExpenditure, int newState, Long newUniqueDate, Integer newDayOfWeek, Integer newMonthlyDay, Integer newYearlyMonth, Integer newYearlyDay) {
-        ContentValues values = createValues(id, newName, newDescription, profileId, newAmount, newExpenditure, newState, newUniqueDate, newDayOfWeek, newMonthlyDay, newYearlyMonth, newYearlyDay);
+    public TransactionBean update(long id, String newName, String newDescription, long newGroupId, long newAmount, boolean newExpenditure, int newState, Long newUniqueDate, Integer newDayOfWeek, Integer newMonthlyDay, Integer newYearlyMonth, Integer newYearlyDay) {
+        ContentValues values = createValues(id, newName, newDescription, profileId, newGroupId, newAmount, newExpenditure, newState, newUniqueDate, newDayOfWeek, newMonthlyDay, newYearlyMonth, newYearlyDay);
         dbHelper.getDatabase().update(TransactionsDBHelper.TABLE_NAME, values, TransactionsDBHelper.COLUMN_ID + "=" + id, null);
 
         Cursor cursor = dbHelper.getDatabase().query(TransactionsDBHelper.TABLE_NAME, TransactionsDBHelper.COLUMNS,
@@ -108,6 +108,7 @@ public class TransactionsDataSource extends AbstractDataSource {
         int idName = cursor.getColumnIndex(TransactionsDBHelper.COLUMN_NAME);
         int idDescription = cursor.getColumnIndex(TransactionsDBHelper.COLUMN_DESCRIPTION);
         int idProfile = cursor.getColumnIndex(TransactionsDBHelper.COLUMN_PROFILE_ID);
+        int idGroup = cursor.getColumnIndex(TransactionsDBHelper.COLUMN_GROUP_ID);
         int idAmount = cursor.getColumnIndex(TransactionsDBHelper.COLUMN_AMOUNT);
         int idExpenditure = cursor.getColumnIndex(TransactionsDBHelper.COLUMN_EXPENDITURE);
         int idState = cursor.getColumnIndex(TransactionsDBHelper.COLUMN_STATE);
@@ -121,6 +122,7 @@ public class TransactionsDataSource extends AbstractDataSource {
         String name = cursor.getString(idName);
         String description = cursor.getString(idDescription);
         long profileId = cursor.getLong(idProfile);
+        long groupId = cursor.getLong(idGroup);
         long amount = cursor.getLong(idAmount);
         boolean expenditure = cursor.getInt(idExpenditure) == 1 ? true : false;
         int state = cursor.getInt(idState);
@@ -130,15 +132,16 @@ public class TransactionsDataSource extends AbstractDataSource {
         Integer yearlyMonth = cursor.getInt(idYearlyMonth);
         Integer yearlyDay = cursor.getInt(idYearlyDay);
 
-        return new TransactionBean(id, name, description, profileId, amount, expenditure, state, uniqueDate, dayOfWeek, monthlyDay, yearlyMonth, yearlyDay);
+        return new TransactionBean(id, name, description, profileId, groupId, amount, expenditure, state, uniqueDate, dayOfWeek, monthlyDay, yearlyMonth, yearlyDay);
     }
 
-    public ContentValues createValues(Long id, String name, String description, long profileId, long amount, boolean expenditure, int state, Long uniqueDate, Integer dayOfWeek, Integer monthlyDay, Integer yearlyMonth, Integer yearlyDay) {
+    public ContentValues createValues(Long id, String name, String description, long profileId, long groupId, long amount, boolean expenditure, int state, Long uniqueDate, Integer dayOfWeek, Integer monthlyDay, Integer yearlyMonth, Integer yearlyDay) {
         ContentValues values = new ContentValues();
         if (id != null) values.put(TransactionsDBHelper.COLUMN_ID, id);
         if (name != null) values.put(TransactionsDBHelper.COLUMN_NAME, name);
         if (description != null) values.put(TransactionsDBHelper.COLUMN_DESCRIPTION, description);
         values.put(TransactionsDBHelper.COLUMN_PROFILE_ID, profileId);
+        values.put(TransactionsDBHelper.COLUMN_GROUP_ID, groupId);
         values.put(TransactionsDBHelper.COLUMN_AMOUNT, amount);
         values.put(TransactionsDBHelper.COLUMN_EXPENDITURE, expenditure);
         values.put(TransactionsDBHelper.COLUMN_STATE, state);

@@ -14,9 +14,10 @@ class TransactionsDBHelper {
     static final int TABLE_VERSION = 1;
 
     static final String COLUMN_ID = "_id";
-    static final String COLUMN_PROFILE_ID = "_profileId";
     static final String COLUMN_NAME = "name";
     static final String COLUMN_DESCRIPTION = "description";
+    static final String COLUMN_PROFILE_ID = "_profileId";
+    static final String COLUMN_GROUP_ID = "_groupId";
     static final String COLUMN_AMOUNT = "amount";
     // 1=expenditure;2=revenue
     static final String COLUMN_EXPENDITURE = "expenditure";
@@ -37,6 +38,7 @@ class TransactionsDBHelper {
             COLUMN_NAME,
             COLUMN_DESCRIPTION,
             COLUMN_PROFILE_ID,
+            COLUMN_GROUP_ID,
             COLUMN_AMOUNT,
             COLUMN_EXPENDITURE,
             COLUMN_STATE,
@@ -56,6 +58,7 @@ class TransactionsDBHelper {
                     COLUMN_NAME + " TEXT NOT NULL, " +
                     COLUMN_DESCRIPTION + " TEXT, " +
                     COLUMN_PROFILE_ID + " INTEGER NOT NULL, " +
+                    COLUMN_GROUP_ID + " INTEGER NOT NULL, " +
                     COLUMN_AMOUNT + " INTEGER NOT NULL, " +
                     COLUMN_EXPENDITURE + " INTEGER NOT NULL, " +
                     COLUMN_STATE + " INTEGER NOT NULL, " +
@@ -64,7 +67,8 @@ class TransactionsDBHelper {
                     COLUMN_MONTHLY_DAY + " INTEGER, " +
                     COLUMN_YEARLY_MONTH + " INTEGER, " +
                     COLUMN_YEARLY_DAY + " INTEGER, " +
-                    "CONSTRAINT fk_profile FOREIGN KEY (" + COLUMN_PROFILE_ID + ") REFERENCES " + ProfilesDBHelper.TABLE_NAME + " (" + ProfilesDBHelper.COLUMN_ID + ") ON DELETE CASCADE" +
+                    "CONSTRAINT fk_profile FOREIGN KEY (" + COLUMN_PROFILE_ID + ") REFERENCES " + ProfilesDBHelper.TABLE_NAME + " (" + ProfilesDBHelper.COLUMN_ID + ") ON DELETE CASCADE, " +
+                    "CONSTRAINT fk_group FOREIGN KEY (" + COLUMN_GROUP_ID + ") REFERENCES " + GroupsDBHelper.TABLE_NAME + " (" + GroupsDBHelper.COLUMN_ID + ") ON DELETE CASCADE" +
                     ");";
 
     /**

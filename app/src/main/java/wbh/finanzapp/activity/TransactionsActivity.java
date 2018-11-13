@@ -12,12 +12,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
+
+import java.util.HashMap;
+import java.util.List;
 
 import wbh.finanzapp.R;
+import wbh.finanzapp.access.GroupsDataSource;
 import wbh.finanzapp.access.TransactionsDataSource;
+import wbh.finanzapp.business.AbstractBean;
 import wbh.finanzapp.business.GroupBean;
 import wbh.finanzapp.business.TransactionBean;
 
@@ -25,6 +34,7 @@ public class TransactionsActivity extends AbstractActivity {
 
     private static final String LOG_TAG = TransactionsActivity.class.getSimpleName();
 
+    private GroupsDataSource groupsDataSource;
     private TransactionsDataSource transactionsDataSource;
 
     @Override
@@ -32,6 +42,7 @@ public class TransactionsActivity extends AbstractActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transactions);
 
+        groupsDataSource = new GroupsDataSource(this, ActivityMemory.getCurProfileBean().getId());
         transactionsDataSource = new TransactionsDataSource(this, ActivityMemory.getCurProfileBean().getId());
         Button buttonAddTransaction = findViewById(R.id.button_add_transaction);
 
@@ -147,15 +158,84 @@ public class TransactionsActivity extends AbstractActivity {
         ViewGroup viewGroup = findViewById(R.id.dialog_write_transaction_root_view);
         View dialogsView = inflater.inflate(R.layout.dialog_write_transaction, viewGroup);
 
-        final EditText editTextNewName = dialogsView.findViewById(R.id.transaction_new_name);
-        editTextNewName.setText("");
-
-        final EditText editTextNewDescription = dialogsView.findViewById(R.id.transaction_new_description);
-        editTextNewDescription.setText("");
+        Spinner spinner = dialogsView.findViewById(R.id.transaction_new_group);
+        List<AbstractBean> groups = groupsDataSource.getBeans();
+        String[] spinnerArray = new String[groups.size()];
+        HashMap<Integer,Long> spinnerMap = new HashMap<Integer, Long>();
+        for (int i = 0; i < groups.size(); i++) {
+            spinnerMap.put(i, groups.get(i).getId());
+            spinnerArray[i] = groups.get(i).getName();
+        }
+        ArrayAdapter<String> adapter =new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerArray);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
 
         builder.setView(dialogsView)
                 .setTitle(R.string.transaction_add_title)
                 .setPositiveButton(R.string.dialog_button_save, (dialog, id) -> {
+
+                    EditText editTextName = dialogsView.findViewById(R.id.transaction_new_name);
+                    final String name = editTextName.getText().toString();
+
+                    EditText editTextDesc = dialogsView.findViewById(R.id.transaction_new_description);
+                    final String descr = editTextDesc.getText().toString();
+
+                    EditText editTextAmount = dialogsView.findViewById(R.id.transaction_new_amount);
+                    final Integer amount = Integer.parseInt(editTextAmount.getText().toString());
+
+                    RadioButton radioButtonExpenditure = dialogsView.findViewById(R.id.transaction_new_expenditure);
+                    boolean expenditure = radioButtonExpenditure.isChecked();
+
+                    String groupName = spinner.getSelectedItem().toString();
+                    Long groupId = spinnerMap.get(spinner.getSelectedItemPosition());
+
+                    Integer state = null;
+                    Long uniqueDate = null;
+                    Integer dayOfWeek = null;
+                    Integer monthlyDay = null;
+                    Integer yearlyMonth = null;
+                    Integer yearlyDay = null;
+
+                    RadioButton rbStateUnique = dialogsView.findViewById(R.id.transaction_new_state_unique);
+                    RadioButton rbStateDaily = dialogsView.findViewById(R.id.transaction_new_state_daily);
+                    RadioButton rbStateWeekly = dialogsView.findViewById(R.id.transaction_new_state_weekly);
+                    RadioButton rbStateMonthly = dialogsView.findViewById(R.id.transaction_new_state_monthly);
+                    RadioButton rbStateYearly = dialogsView.findViewById(R.id.transaction_new_state_yearly);
+
+                    if(rbStateUnique.isChecked()) {
+                        state = 1;
+                        EditText editTextUniqueDate = dialogsView.findViewById(R.id.transaction_new_state_unique_date);
+                        uniqueDate = Long.parseLong(editTextUniqueDate.getText().toString());
+                    }
+
+                    if(rbStateDaily.isChecked()) {
+                        state = 2;
+                    }
+
+                    if(rbStateWeekly.isChecked()) {
+                        state = 3;
+                        EditText editTextDayOfWeek = dialogsView.findViewById(R.id.transaction_new_state_weekly_day);
+                        dayOfWeek = Integer.parseInt(editTextDayOfWeek.getText().toString());
+                    }
+
+                    if(rbStateMonthly.isChecked()) {
+                        state = 4;
+                        EditText editTextMonthlyDay = dialogsView.findViewById(R.id.transaction_new_state_monthly_day);
+                        monthlyDay = Integer.parseInt(editTextMonthlyDay.getText().toString());
+                    }
+
+                    if(rbStateYearly.isChecked()) {
+                        state = 5;
+                        EditText editTextYearlyMonth = dialogsView.findViewById(R.id.transaction_new_state_yearly_month);
+                        yearlyMonth = Integer.parseInt(editTextYearlyMonth.getText().toString());
+                        EditText editTextYearlyDay = dialogsView.findViewById(R.id.transaction_new_state_yearly_day);
+                        yearlyDay = Integer.parseInt(editTextYearlyDay.getText().toString());
+                    }
+
+                    transactionsDataSource.insert(name, descr, groupId, amount, expenditure, state, uniqueDate, dayOfWeek, monthlyDay, yearlyMonth, yearlyDay);
+
+                    // TODO: Validation.
+
                     showAllListEntries();
                     dialog.dismiss();
                 })
@@ -180,6 +260,8 @@ public class TransactionsActivity extends AbstractActivity {
         builder.setView(dialogsView)
                 .setTitle(R.string.group_edit_title)
                 .setPositiveButton(R.string.dialog_button_save, (dialog, id) -> {
+                    // TODO: Validation.
+                    // TODO: Update the validation
                     showAllListEntries();
                     dialog.dismiss();
                 })

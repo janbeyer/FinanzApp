@@ -42,7 +42,6 @@
     <string name="group_add_title">Neue Gruppe hinzufügen</string>
     <string name="group_edit_title">Gruppe bearbeiten</string>
     <string name="group_delete_title">Gruppe löschen</string>
-    <string name="group">Gruppe</string>
 
     <string name="group_default_housekeeping_name">Haushalt</string>
     <string name="group_default_housekeeping_descr">Transaktionen des Haushalts</string>
@@ -79,6 +78,15 @@
     <string name="transaction_add_title">Neue Transaktion hinzufügen</string>
     <string name="transaction_edit_title">Transaktion editieren</string>
     <string name="transaction_delete_title">Transaktion löschen</string>
-    <string name="transaction">Transaktion</string>
+
+    <string name="transaction_amount">Betrag</string>
+    <string name="transaction_expenture">Ausgabe</string>
+    <string name="transaction_revenue">Einnahme</string>
+    <string name="transaction_group">Gruppe</string>
+    <string name="transaction_state_unique">Einmalig am</string>
+    <string name="transaction_state_daily">Täglich</string>
+    <string name="transaction_state_weekly">Wöchentlich am</string>
+    <string name="transaction_state_monthly">Monatlich am</string>
+    <string name="transaction_state_yearly">Jährlich am</string>
 
 </resources>

@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:layout_weight="3"
+            android:text=""
             android:id="@+id/group_new_name"
             tools:ignore="Autofill,LabelFor"/>
     </LinearLayout>
@@ -46,6 +47,7 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:layout_weight="3"
+            android:text=""
             android:id="@+id/group_new_description"
             tools:ignore="Autofill,LabelFor"/>
     </LinearLayout>

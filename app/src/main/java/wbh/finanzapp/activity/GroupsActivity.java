@@ -146,24 +146,21 @@ public class GroupsActivity extends AbstractActivity {
         ViewGroup viewGroup = findViewById(R.id.dialog_write_group_root_view);
         View dialogsView = inflater.inflate(R.layout.dialog_write_group, viewGroup);
 
-        final EditText editTextNewName = dialogsView.findViewById(R.id.group_new_name);
-        editTextNewName.setText("");
-
-        final EditText editTextNewDescription = dialogsView.findViewById(R.id.group_new_description);
-        editTextNewDescription.setText("");
-
         builder.setView(dialogsView)
                 .setTitle(R.string.group_add_title)
                 .setPositiveButton(R.string.dialog_button_save, (dialog, id) -> {
-                    String name = editTextNewName.getText().toString();
-                    String description = editTextNewDescription.getText().toString();
+                    EditText editTextName = dialogsView.findViewById(R.id.group_new_name);
+                    final String groupName = editTextName.getText().toString();
 
-                    if ((TextUtils.isEmpty(name))) {
-                        editTextNewName.setError(getString(R.string.field_name_error_required));
+                    EditText editTextDescr = dialogsView.findViewById(R.id.group_new_description);
+                    final String groupDescr = editTextDescr.getText().toString();
+
+                    if ((TextUtils.isEmpty(groupName))) {
+                        editTextName.setError(getString(R.string.field_name_error_required));
                         return;
                     }
 
-                    GroupBean newGroup = (GroupBean) groupsDataSource.insert(name, description);
+                    GroupBean newGroup = (GroupBean) groupsDataSource.insert(groupName, groupDescr);
 
                     Log.d(LOG_TAG, "--> Insert new entry: " + newGroup.toString());
 

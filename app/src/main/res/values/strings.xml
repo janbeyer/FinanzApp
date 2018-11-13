@@ -42,7 +42,6 @@
     <string name="group_add_title">Add a new group</string>
     <string name="group_edit_title">Edit a group</string>
     <string name="group_delete_title">Delete a group</string>
-    <string name="group">Group</string>
 
     <string name="group_default_housekeeping_name">Housekeeping</string>
     <string name="group_default_housekeeping_descr">Housekeeping transactions</string>
@@ -79,6 +78,15 @@
     <string name="transaction_add_title">Add a new transaction</string>
     <string name="transaction_edit_title">Edit a transaction</string>
     <string name="transaction_delete_title">Delete a transaction</string>
-    <string name="transaction">Transaction</string>
+
+    <string name="transaction_amount">Amount</string>
+    <string name="transaction_expenture">Expenditure</string>
+    <string name="transaction_revenue">Revenue</string>
+    <string name="transaction_group">Group</string>
+    <string name="transaction_state_unique">Uniquely at</string>
+    <string name="transaction_state_daily">Daily</string>
+    <string name="transaction_state_weekly">Weekly</string>
+    <string name="transaction_state_monthly">Monthly at</string>
+    <string name="transaction_state_yearly">Yearly at</string>
 
 </resources>
