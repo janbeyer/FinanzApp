@@ -13,14 +13,14 @@ import wbh.finanzapp.business.AbstractBean;
 public abstract class AbstractDataSource {
 
     /**
-     * Insert a Bean to the database.
+     * Return an AbstractBean.
      */
-    public abstract AbstractBean insert(String name, String description);
+    public abstract AbstractBean getBean(long id);
 
     /**
-     * Update a database Bean.
+     * Return a list with AbstractBean.
      */
-    public abstract AbstractBean update(long id, String newName, String newDescription);
+    public abstract List<AbstractBean> getBeans();
 
     /**
      * Delete a Bean from database.
@@ -31,15 +31,5 @@ public abstract class AbstractDataSource {
      * Get the Bean to the given database Cursor.
      */
     public abstract AbstractBean cursorToBean(Cursor cursor);
-
-    /**
-     * Create Value from the given parameter.
-     */
-    public abstract ContentValues createValues(Long id, String name, String description);
-
-    /**
-     * Return a list with AbstractBean.
-     */
-    public abstract List<AbstractBean> getBeans();
 
 }

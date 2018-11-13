@@ -37,6 +37,7 @@ class DBHelper extends SQLiteOpenHelper {
         Map<String, Integer> tmpMap = new HashMap<>();
         tmpMap.put(ProfilesDBHelper.TABLE_NAME, ProfilesDBHelper.TABLE_VERSION);
         tmpMap.put(GroupsDBHelper.TABLE_NAME, GroupsDBHelper.TABLE_VERSION);
+        tmpMap.put(TransactionsDBHelper.TABLE_NAME, TransactionsDBHelper.TABLE_VERSION);
         DB_VERSION_MODULES = Collections.unmodifiableMap(tmpMap);
     }
 
@@ -63,6 +64,7 @@ class DBHelper extends SQLiteOpenHelper {
         Log.d(LOG_TAG, "--> Try to create the SQLite database.");
         ProfilesDBHelper.createTable(db);
         GroupsDBHelper.createTable(db);
+        TransactionsDBHelper.createTable(db);
     }
 
     @Override

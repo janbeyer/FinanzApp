@@ -19,6 +19,7 @@
     <string name="help_profile_text">Before you can use this application, you have to create a profile. To do so, you have to use the ADD NEW PROFILE button, type in your name and a description for the profile. For Instance Name: “Max Mustermann”, Description: “Business”. Next step is to click on the SAVE button and your profile will be created. If you want to cancel the process, press the CANCEL button on the bottom of the “Add new profile” dialogue. You can always change the Profile or delete it by holding on it and either using the trash can to delete it or the pencil to change it. You can create as many profiles as you want.</string>
     <string name="help_menu_text">This is the main menu. Here you can navigate to the different activities. Choose an action by clicking on one of the buttons below. The TRANSACTION button leads you to the transactions. The ANALYSIS button leads you to the analysis. The GROUPS button leads you to the groups.</string>
     <string name="help_group_text">TODO: Help group text</string>
+    <string name="help_transaction_text">TODO: Help transaction text</string>
 
     <!-- Profile properties -->
     <string name="profile_add_title">Add a new profile</string>
@@ -71,5 +72,13 @@
     <string name="group_default_freetime_descr">Free time transactions</string>
     <string name="group_default_salary_name">Salary</string>
     <string name="group_default_salary_descr">Salary transactions</string>
+
+    <!-- Transactions properties -->
+    <string name="transaction_title">Transactions</string>
+
+    <string name="transaction_add_title">Add a new transaction</string>
+    <string name="transaction_edit_title">Edit a transaction</string>
+    <string name="transaction_delete_title">Delete a transaction</string>
+    <string name="transaction">Transaction</string>
 
 </resources>

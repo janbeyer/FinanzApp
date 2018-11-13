@@ -35,9 +35,9 @@ public class ProfilesDataSource extends AbstractDataSource {
     }
 
     /**
-     * Return a new ProfileBean.
+     * Returns a ProfileBean.
      */
-    public ProfileBean getProfile(long id) {
+    public ProfileBean getBean(long id) {
         ProfileBean profile = null;
         Cursor cursor = dbHelper.getDatabase().query(ProfilesDBHelper.TABLE_NAME, ProfilesDBHelper.COLUMNS,
                 ProfilesDBHelper.COLUMN_ID + "=?", new String[]{String.valueOf(id)}, null, null, null);
@@ -66,7 +66,6 @@ public class ProfilesDataSource extends AbstractDataSource {
         return profileList;
     }
 
-    @Override
     public ProfileBean insert(String name, String description) {
         ContentValues values = createValues(null, name, description);
         long insertId = dbHelper.getDatabase().insert(ProfilesDBHelper.TABLE_NAME, null, values);
@@ -79,7 +78,6 @@ public class ProfilesDataSource extends AbstractDataSource {
         return profile;
     }
 
-    @Override
     public ProfileBean update(long id, String newName, String newDescription) {
         ContentValues values = createValues(id, newName, newDescription);
         dbHelper.getDatabase().update(ProfilesDBHelper.TABLE_NAME, values, ProfilesDBHelper.COLUMN_ID + "=" + id, null);
@@ -112,7 +110,6 @@ public class ProfilesDataSource extends AbstractDataSource {
         return new ProfileBean(id, name, description, lastUse);
     }
 
-    @Override
     public ContentValues createValues(Long id, String name, String description) {
         ContentValues values = new ContentValues();
         if (id != null) values.put(ProfilesDBHelper.COLUMN_ID, id);

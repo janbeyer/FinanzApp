@@ -30,6 +30,12 @@
             android:label="@string/group_title" >
         </activity>
 
+        <activity
+            android:name=".activity.TransactionsActivity"
+            android:parentActivityName=".activity.MenuActivity"
+            android:label="@string/transaction_title" >
+        </activity>
+
     </application>
 
 </manifest>

@@ -41,6 +41,20 @@ public class GroupsDataSource extends AbstractDataSource {
     }
 
     /**
+     * Returns a GroupBean.
+     */
+    public GroupBean getBean(long id) {
+        GroupBean group = null;
+        Cursor cursor = dbHelper.getDatabase().query(GroupsDBHelper.TABLE_NAME, GroupsDBHelper.COLUMNS,
+                GroupsDBHelper.COLUMN_ID + "=?", new String[]{String.valueOf(id)}, null, null, null);
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            group = cursorToBean(cursor);
+        }
+        return group;
+    }
+
+    /**
      * Iterate over all database elements and store it to a List.
      */
     @Override
@@ -59,7 +73,6 @@ public class GroupsDataSource extends AbstractDataSource {
         return groupList;
     }
 
-    @Override
     public GroupBean insert(String name, String description) {
         ContentValues values = createValues(null, name, description);
         long insertId = dbHelper.getDatabase().insert(GroupsDBHelper.TABLE_NAME, null, values);
@@ -72,7 +85,6 @@ public class GroupsDataSource extends AbstractDataSource {
         return group;
     }
 
-    @Override
     public GroupBean update(long id, String newName, String newDescription) {
         ContentValues values = createValues(id, newName, newDescription);
         dbHelper.getDatabase().update(GroupsDBHelper.TABLE_NAME, values, GroupsDBHelper.COLUMN_ID + "=" + id, null);
@@ -105,7 +117,6 @@ public class GroupsDataSource extends AbstractDataSource {
         return new GroupBean(id, name, description, profileId);
     }
 
-    @Override
     public ContentValues createValues(Long id, String name, String description) {
         ContentValues values = new ContentValues();
         if (id != null) values.put(GroupsDBHelper.COLUMN_ID, id);

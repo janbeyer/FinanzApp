@@ -19,6 +19,7 @@
     <string name="help_profile_text">TODO: Hilfe Profil Text</string>
     <string name="help_menu_text">TODO: Hilfe Menu Text</string>
     <string name="help_group_text">TODO: Hilfe Gruppen Text</string>
+    <string name="help_transaction_text">TODO: Hilfe Gruppen Text</string>
 
     <!-- Profile properties -->
     <string name="profile_add_title">Neues Profil hinzufügen</string>
@@ -41,7 +42,7 @@
     <string name="group_add_title">Neue Gruppe hinzufügen</string>
     <string name="group_edit_title">Gruppe bearbeiten</string>
     <string name="group_delete_title">Gruppe löschen</string>
-    <string name="group">Group</string>
+    <string name="group">Gruppe</string>
 
     <string name="group_default_housekeeping_name">Haushalt</string>
     <string name="group_default_housekeeping_descr">Transaktionen des Haushalts</string>
@@ -71,5 +72,13 @@
     <string name="group_default_freetime_descr">Transaktionen für die Freizeit</string>
     <string name="group_default_salary_name">Gehalt</string>
     <string name="group_default_salary_descr">Transaktionen für Gehälter</string>
+
+    <!-- Transactions properties -->
+    <string name="transaction_title">Transaktionen</string>
+
+    <string name="transaction_add_title">Neue Transaktion hinzufügen</string>
+    <string name="transaction_edit_title">Transaktion editieren</string>
+    <string name="transaction_delete_title">Transaktion löschen</string>
+    <string name="transaction">Transaktion</string>
 
 </resources>

@@ -54,7 +54,9 @@ public class MenuActivity extends AbstractActivity {
     private void activateButtons() {
         Button buttonTransaction = findViewById(R.id.menu_button_transaction);
         buttonTransaction.setOnClickListener(view -> {
-            Toast.makeText(this, "TODO: Open Transaktion Activity.", Toast.LENGTH_SHORT).show();
+            Intent myIntent = new Intent(this, TransactionsActivity.class);
+            Log.d(LOG_TAG, "--> Start the groups activity.");
+            startActivity(myIntent);
         });
         Button buttonAnalyze = findViewById(R.id.menu_button_analyze);
         buttonAnalyze.setOnClickListener(view -> {

@@ -30,7 +30,7 @@ class ProfilesDBHelper {
     };
 
     /**
-     * Groups table SQL Create statement.
+     * Profiles table SQL Create statement.
      */
     private static final String SQL_CREATE =
             "CREATE TABLE " + TABLE_NAME + "(" +
