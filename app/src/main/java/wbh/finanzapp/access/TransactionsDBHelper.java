@@ -54,7 +54,7 @@ class TransactionsDBHelper {
             "CREATE TABLE " + TABLE_NAME + "(" +
                     COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COLUMN_NAME + " TEXT NOT NULL, " +
-                    COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
+                    COLUMN_DESCRIPTION + " TEXT, " +
                     COLUMN_PROFILE_ID + " INTEGER NOT NULL, " +
                     COLUMN_AMOUNT + " INTEGER NOT NULL, " +
                     COLUMN_EXPENDITURE + " INTEGER NOT NULL, " +

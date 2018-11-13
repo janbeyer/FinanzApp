@@ -37,7 +37,7 @@ class GroupsDBHelper {
                     COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COLUMN_PROFILE_ID + " INTEGER NOT NULL, " +
                     COLUMN_NAME + " TEXT NOT NULL, " +
-                    COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
+                    COLUMN_DESCRIPTION + " TEXT, " +
                     "CONSTRAINT fk_profile FOREIGN KEY (" + COLUMN_PROFILE_ID + ") REFERENCES " + ProfilesDBHelper.TABLE_NAME + " (" + ProfilesDBHelper.COLUMN_ID + ") ON DELETE CASCADE" +
                     ");";
 

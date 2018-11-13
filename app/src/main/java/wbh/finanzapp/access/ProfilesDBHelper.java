@@ -36,7 +36,7 @@ class ProfilesDBHelper {
             "CREATE TABLE " + TABLE_NAME + "(" +
                     COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COLUMN_NAME + " TEXT NOT NULL, " +
-                    COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
+                    COLUMN_DESCRIPTION + " TEXT, " +
                     COLUMN_LAST_USE + " INTEGER NOT NULL" +
                     ");";
 
