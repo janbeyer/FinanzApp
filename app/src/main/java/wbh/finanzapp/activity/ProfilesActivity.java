@@ -1,21 +1,17 @@
 package wbh.finanzapp.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.HashMap;
@@ -37,15 +33,11 @@ public class ProfilesActivity extends AbstractActivity {
         Log.d(LOG_TAG, "--> Create ProfilesActivity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profiles);
-
         profileDataSource = new ProfilesDataSource(this);
-
         Button buttonAddProfile = findViewById(R.id.button_add_profile);
         buttonAddProfile.setOnClickListener(view -> {
-            AlertDialog addProfileDialog = createAddProfileDialog();
-            addProfileDialog.show();
+            createAddProfileDialog();
         });
-
         initializeContextualActionBar();
     }
 
@@ -68,15 +60,11 @@ public class ProfilesActivity extends AbstractActivity {
      */
     public void showAllListEntries() {
         Log.d(LOG_TAG, "--> Show all list entries.");
-
-        ListView profilesListView = showAllListEntries(profileDataSource.getBeans(), android.R.layout.simple_list_item_activated_1,
-                R.id.list_view_profiles);
-
+        ListView profilesListView = showAllListEntries(profileDataSource.getBeans(), android.R.layout.simple_list_item_activated_1, R.id.list_view_profiles);
         profilesListView.setOnItemClickListener((adapterView, view, position, id) -> {
-            ProfileBean selectedProfile = (ProfileBean) adapterView.getItemAtPosition(position);
+            ProfileBean selectedProfile = (ProfileBean)adapterView.getItemAtPosition(position);
             ActivityMemory.setCurProfileBean(selectedProfile);
             profileDataSource.update(selectedProfile.getId(), null, null);
-
             Intent myIntent = new Intent(this, MenuActivity.class);
             Log.d(LOG_TAG, "--> Start the menu activity for the profile: " + selectedProfile.toString());
             startActivity(myIntent);
@@ -93,8 +81,10 @@ public class ProfilesActivity extends AbstractActivity {
 
             @Override
             public void onItemCheckedStateChanged(ActionMode actionMode, int position, long id, boolean checked) {
-                if (checked) selCount++;
-                else selCount--;
+                if (checked)
+                    selCount++;
+                else
+                    selCount--;
                 String cabTitle = selCount + " " + getString(R.string.cab_checked_string);
                 actionMode.setTitle(cabTitle);
                 actionMode.invalidate();
@@ -109,8 +99,10 @@ public class ProfilesActivity extends AbstractActivity {
             @Override
             public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
                 MenuItem item = menu.findItem(R.id.button_edit_profile);
-                if (selCount == 1) item.setVisible(true);
-                else item.setVisible(false);
+                if (selCount == 1)
+                    item.setVisible(true);
+                else
+                    item.setVisible(false);
                 return true;
             }
 
@@ -124,7 +116,7 @@ public class ProfilesActivity extends AbstractActivity {
                             boolean isChecked = touchedProfilePositions.valueAt(i);
                             if (isChecked) {
                                 int positionInListView = touchedProfilePositions.keyAt(i);
-                                ProfileBean profile = (ProfileBean) profilesListView.getItemAtPosition(positionInListView);
+                                ProfileBean profile = (ProfileBean)profilesListView.getItemAtPosition(positionInListView);
                                 Log.d(LOG_TAG, "--> Position in ListView: " + positionInListView + " Content: " + profile.toString());
                                 profileDataSource.delete(profile.getId());
                                 Log.d(LOG_TAG, "--> Delete old entry: " + profile.toString());
@@ -138,10 +130,9 @@ public class ProfilesActivity extends AbstractActivity {
                             boolean isChecked = touchedProfilePositions.valueAt(i);
                             if (isChecked) {
                                 int positionInListView = touchedProfilePositions.keyAt(i);
-                                ProfileBean profile = (ProfileBean) profilesListView.getItemAtPosition(positionInListView);
+                                ProfileBean profile = (ProfileBean)profilesListView.getItemAtPosition(positionInListView);
                                 Log.d(LOG_TAG, "--> Position in ListView: " + positionInListView + " Content: " + profile.toString());
-                                AlertDialog editProfileDialog = createEditProfileDialog(profile);
-                                editProfileDialog.show();
+                                createEditProfileDialog(profile);
                             }
                         }
                         showAllListEntries();
@@ -160,82 +151,82 @@ public class ProfilesActivity extends AbstractActivity {
         });
     }
 
-    @SuppressWarnings({"CodeBlock2Expr", "Convert2MethodRef"})
-    private AlertDialog createAddProfileDialog() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = getLayoutInflater();
-
-        ViewGroup viewGroup = findViewById(R.id.dialog_write_profile_root_view);
-        View dialogsView = inflater.inflate(R.layout.dialog_write_profile, viewGroup);
-
-        builder.setView(dialogsView)
-                .setTitle(R.string.profile_add_title)
-                .setPositiveButton(R.string.dialog_button_save, (dialog, id) -> {
-                    EditText editTextName = dialogsView.findViewById(R.id.profile_new_name);
-                    final String profileName = editTextName.getText().toString();
-
-                    EditText editTextDescription = dialogsView.findViewById(R.id.profile_new_description);
-                    final String profileDescription = editTextDescription.getText().toString();
-
-                    if ((TextUtils.isEmpty(profileName))) {
-                        editTextName.setError(getString(R.string.field_name_error_required));
-                        return;
-                    }
-
-                    Map<String, String> basicGroups = getBasicGroups(this);
-
-                    ProfileBean newProfile = (ProfileBean)profileDataSource.insert(profileName, profileDescription);
-                    GroupsDataSource groupsDataSource = new GroupsDataSource(this, newProfile.getId());
-                    basicGroups.forEach((groupName, groupDescription) -> {
-                        groupsDataSource.insert(groupName, groupDescription);
-                    });
-
-                    Log.d(LOG_TAG, "--> Insert new entry: " + newProfile.toString());
-
-                    showAllListEntries();
-                    dialog.dismiss();
-                })
-                .setNegativeButton(R.string.dialog_button_cancel, (dialog, id) -> dialog.cancel());
-
-        return builder.create();
+    /**
+     * Add a new profile to the profile view.
+     */
+    @SuppressWarnings("Convert2MethodRef")
+    public void addProfile(String profileName, String profileDescription) {
+        Map<String, String> basicGroups = getBasicGroups(this);
+        ProfileBean newProfile = profileDataSource.insert(profileName, profileDescription);
+        GroupsDataSource groupsDataSource = new GroupsDataSource(this, newProfile.getId());
+        basicGroups.forEach((groupName, groupDescription) -> {
+            groupsDataSource.insert(groupName, groupDescription);
+        });
+        Log.d(LOG_TAG, "--> Insert new entry: " + newProfile.toString());
+        showAllListEntries();
     }
 
-    private AlertDialog createEditProfileDialog(final ProfileBean profile) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = getLayoutInflater();
+    /**
+     * Edit an existing profile in the profile view.
+     */
+    public void editProfile(ProfileBean profile, String name, String description) {
+        ProfileBean updatedProfile = profileDataSource.update(profile.getId(), name, description);
+        Log.d(LOG_TAG, "--> Update old entry: " + profile.toString());
+        Log.d(LOG_TAG, "--> Update new entry: " + updatedProfile.toString());
+        showAllListEntries();
+    }
 
-        ViewGroup viewGroup = findViewById(R.id.dialog_write_profile_root_view);
-        View dialogsView = inflater.inflate(R.layout.dialog_write_profile, viewGroup);
+    /**
+     * Add listener class.
+     */
+    class AddListener extends CustomListener {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            super.onClick(dialog, which);
+            addProfile(name, description);
+            dialog.dismiss();
+        }
+    }
 
-        final EditText editTextNewName = dialogsView.findViewById(R.id.profile_new_name);
-        editTextNewName.setText(profile.getName());
+    /**
+     * Edit listener class.
+     */
+    class EditListener extends CustomListener {
+        ProfileBean profile;
 
-        final EditText editTextNewDescription = dialogsView.findViewById(R.id.profile_new_description);
-        editTextNewDescription.setText(profile.getDescription());
+        EditListener(ProfileBean profile) {
+            this.profile = profile;
+        }
 
-        builder.setView(dialogsView)
-                .setTitle(R.string.profile_edit_title)
-                .setPositiveButton(R.string.dialog_button_save, (dialog, id) -> {
-                    String name = editTextNewName.getText().toString();
-                    String description = editTextNewDescription.getText().toString();
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            super.onClick(dialog, which);
+            editProfile(profile, name, description);
+            dialog.dismiss();
+        }
+    }
 
-                    if ((TextUtils.isEmpty(name))) {
-                        editTextNewName.setError(getString(R.string.field_name_error_required));
-                        return;
-                    }
+    /**
+     * Create a new add profile dialog.
+     */
+    @SuppressWarnings({ "CodeBlock2Expr" })
+    public void createAddProfileDialog() {
+        // Add specific listener
+        AlertDialog dialog = createDialog(R.string.profile_add_title, new AddListener());
+        // Button button = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+        // builder.setPositiveButton(R.string.dialog_button_save, new AddListener());
+        // dialog.setButton(DialogInterface.BUTTON_POSITIVE, new AddListener());
 
-                    ProfileBean updatedProfile = (ProfileBean)profileDataSource.update(profile.getId(), name, description);
+    }
 
-                    Log.d(LOG_TAG, "--> Update old entry: " + profile.toString());
-                    Log.d(LOG_TAG, "--> Update new entry: " + updatedProfile.toString());
-
-                    showAllListEntries();
-                    dialog.dismiss();
-                })
-                .setNegativeButton(R.string.dialog_button_cancel, (dialog, id) -> dialog.cancel());
-
-        return builder.create();
+    /**
+     * Create a new edit profile dialog.
+     */
+    public void createEditProfileDialog(final ProfileBean profile) {
+        AlertDialog dialog = createDialog(R.string.profile_edit_title, new EditListener(profile));
+        textNameInputField.setText(profile.getName());
+        textDescriptionInputField.setText(profile.getDescription());
+        // builder.setPositiveButton(R.string.dialog_button_save, new EditListener(profile));
     }
 
     private Map<String, String> getBasicGroups(Context context) {
