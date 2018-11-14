@@ -57,7 +57,7 @@ public class GroupsActivity extends AbstractActivity {
      */
     public void showAllListEntries() {
         Log.d(LOG_TAG, "--> Show all list entries.");
-        showAllListEntries(groupsDataSource.getBeans(), android.R.layout.simple_list_item_activated_1,
+        createListView(groupsDataSource.getBeans(), android.R.layout.simple_list_item_activated_1,
                 R.id.list_view_groups);
     }
 

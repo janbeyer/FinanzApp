@@ -74,11 +74,11 @@ public abstract class AbstractActivity extends AppCompatActivity {
     }
 
     /**
-     * Show all list entries.
+     * Create the list view and set the array adapter.
      */
-    public ListView showAllListEntries(List<AbstractBean> list, int resource, int id) {
-        ArrayAdapter<AbstractBean> arrayAdapter = new ArrayAdapter<>(this, resource, list);
-        ListView listView = findViewById(id);
+    public ListView createListView(List<AbstractBean> list, int layoutType, int listViewId) {
+        ArrayAdapter<AbstractBean> arrayAdapter = new ArrayAdapter<>(this, layoutType, list);
+        ListView listView = findViewById(listViewId);
         listView.setAdapter(arrayAdapter);
         return listView;
     }
@@ -87,20 +87,20 @@ public abstract class AbstractActivity extends AppCompatActivity {
      * Return a new AlertDialog.
      */
     public AlertDialog createDialog(int title, CustomListener listener) {
-        // create the builder dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         ViewGroup viewGroup = findViewById(R.id.dialog_write_profile_root_view);
         View dialogsView = inflater.inflate(R.layout.dialog_write_profile, viewGroup);
-        textNameInputField = dialogsView.findViewById(R.id.profile_new_name);
-        textDescriptionInputField = dialogsView.findViewById(R.id.profile_new_description);
         builder.setView(dialogsView);
         builder.setTitle(title);
         builder.setNegativeButton(R.string.dialog_button_cancel, (dialog, id) -> dialog.cancel());
         builder.setPositiveButton(R.string.dialog_button_save, listener);
         AlertDialog dialog = builder.create();
         dialog.show();
-        dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+
+        textNameInputField = dialogsView.findViewById(R.id.profile_new_name);
+        textDescriptionInputField = dialogsView.findViewById(R.id.profile_new_description);
+        saveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
 
         // if an field is an obligation field we have to do 2 steps
         // 1. deactivate the save button at the beginning
@@ -108,22 +108,21 @@ public abstract class AbstractActivity extends AppCompatActivity {
 
         // 1. set the field to red because it is obligation field
         if(textNameInputField.getText().toString().isEmpty()) {
-            textNameInputField.setBackgroundColor(Color.RED);
-            // deactivate the button
-            saveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            textNameInputField.setError(getString(R.string.field_name_error_required));
             saveButton.setEnabled(false);
         }
 
-        // this is called when the first text input is done
+        // 2. This is called when the first text input is done
         textNameInputField.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                textNameInputField.setBackgroundColor(Color.WHITE);
-                saveButton.setEnabled(true);
                 String s = textNameInputField.getText().toString();
                 if(s.isEmpty()) {
+                    textNameInputField.setError(getString(R.string.field_name_error_required));
                     saveButton.setEnabled(false);
-                    textNameInputField.setBackgroundColor(Color.RED);
+                } else {
+                    textNameInputField.setError(null);
+                    saveButton.setEnabled(true);
                 }
                 return false;
             }
@@ -146,6 +145,7 @@ public abstract class AbstractActivity extends AppCompatActivity {
             description = textDescriptionInputField.getText().toString();
             if ((TextUtils.isEmpty(name))) {
                 textNameInputField.setError(getString(R.string.field_name_error_required));
+                saveButton.setEnabled(false);
             }
         }
     }

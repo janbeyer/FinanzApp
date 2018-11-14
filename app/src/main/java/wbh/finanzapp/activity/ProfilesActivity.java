@@ -60,7 +60,7 @@ public class ProfilesActivity extends AbstractActivity {
      */
     public void showAllListEntries() {
         Log.d(LOG_TAG, "--> Show all list entries.");
-        ListView profilesListView = showAllListEntries(profileDataSource.getBeans(), android.R.layout.simple_list_item_activated_1, R.id.list_view_profiles);
+        ListView profilesListView = createListView(profileDataSource.getBeans(), android.R.layout.simple_list_item_activated_1, R.id.list_view_profiles);
         profilesListView.setOnItemClickListener((adapterView, view, position, id) -> {
             ProfileBean selectedProfile = (ProfileBean)adapterView.getItemAtPosition(position);
             ActivityMemory.setCurProfileBean(selectedProfile);
@@ -163,7 +163,6 @@ public class ProfilesActivity extends AbstractActivity {
             groupsDataSource.insert(groupName, groupDescription);
         });
         Log.d(LOG_TAG, "--> Insert new entry: " + newProfile.toString());
-        showAllListEntries();
     }
 
     /**
@@ -173,7 +172,6 @@ public class ProfilesActivity extends AbstractActivity {
         ProfileBean updatedProfile = profileDataSource.update(profile.getId(), name, description);
         Log.d(LOG_TAG, "--> Update old entry: " + profile.toString());
         Log.d(LOG_TAG, "--> Update new entry: " + updatedProfile.toString());
-        showAllListEntries();
     }
 
     /**
@@ -184,6 +182,7 @@ public class ProfilesActivity extends AbstractActivity {
         public void onClick(DialogInterface dialog, int which) {
             super.onClick(dialog, which);
             addProfile(name, description);
+            showAllListEntries();
             dialog.dismiss();
         }
     }
@@ -202,6 +201,7 @@ public class ProfilesActivity extends AbstractActivity {
         public void onClick(DialogInterface dialog, int which) {
             super.onClick(dialog, which);
             editProfile(profile, name, description);
+            showAllListEntries();
             dialog.dismiss();
         }
     }
@@ -211,22 +211,16 @@ public class ProfilesActivity extends AbstractActivity {
      */
     @SuppressWarnings({ "CodeBlock2Expr" })
     public void createAddProfileDialog() {
-        // Add specific listener
-        AlertDialog dialog = createDialog(R.string.profile_add_title, new AddListener());
-        // Button button = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-        // builder.setPositiveButton(R.string.dialog_button_save, new AddListener());
-        // dialog.setButton(DialogInterface.BUTTON_POSITIVE, new AddListener());
-
+        createDialog(R.string.profile_add_title, new AddListener());
     }
 
     /**
      * Create a new edit profile dialog.
      */
     public void createEditProfileDialog(final ProfileBean profile) {
-        AlertDialog dialog = createDialog(R.string.profile_edit_title, new EditListener(profile));
+        createDialog(R.string.profile_edit_title, new EditListener(profile));
         textNameInputField.setText(profile.getName());
         textDescriptionInputField.setText(profile.getDescription());
-        // builder.setPositiveButton(R.string.dialog_button_save, new EditListener(profile));
     }
 
     private Map<String, String> getBasicGroups(Context context) {

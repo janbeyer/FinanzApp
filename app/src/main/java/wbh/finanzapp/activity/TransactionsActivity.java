@@ -2,7 +2,6 @@ package wbh.finanzapp.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
@@ -17,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import java.util.HashMap;
@@ -27,7 +25,6 @@ import wbh.finanzapp.R;
 import wbh.finanzapp.access.GroupsDataSource;
 import wbh.finanzapp.access.TransactionsDataSource;
 import wbh.finanzapp.business.AbstractBean;
-import wbh.finanzapp.business.GroupBean;
 import wbh.finanzapp.business.TransactionBean;
 
 public class TransactionsActivity extends AbstractActivity {
@@ -69,7 +66,7 @@ public class TransactionsActivity extends AbstractActivity {
      */
     public void showAllListEntries() {
         Log.d(LOG_TAG, "--> Show all list entries.");
-        showAllListEntries(transactionsDataSource.getBeans(), android.R.layout.simple_list_item_activated_1,
+        createListView(transactionsDataSource.getBeans(), android.R.layout.simple_list_item_activated_1,
                 R.id.list_view_transactions);
     }
 
