@@ -44,8 +44,7 @@ public class TransactionsActivity extends AbstractActivity {
         Button buttonAddTransaction = findViewById(R.id.button_add_transaction);
 
         buttonAddTransaction.setOnClickListener(view -> {
-            AlertDialog addTransactionDialog = createAddDialog();
-            addTransactionDialog.show();
+            createAddDialog();
         });
         initializeContextualActionBar();
     }
@@ -148,7 +147,7 @@ public class TransactionsActivity extends AbstractActivity {
         });
     }
 
-    private AlertDialog createAddDialog() {
+    private void createAddDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
 
@@ -167,38 +166,34 @@ public class TransactionsActivity extends AbstractActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
+
+        EditText editTextName = dialogsView.findViewById(R.id.transaction_new_name);
+        EditText editTextDesc = dialogsView.findViewById(R.id.transaction_new_description);
+        EditText editTextAmount = dialogsView.findViewById(R.id.transaction_new_amount);
+        RadioButton radioButtonExpenditure = dialogsView.findViewById(R.id.transaction_new_expenditure);
+        RadioButton rbStateUnique = dialogsView.findViewById(R.id.transaction_new_state_unique);
+        RadioButton rbStateDaily = dialogsView.findViewById(R.id.transaction_new_state_daily);
+        RadioButton rbStateWeekly = dialogsView.findViewById(R.id.transaction_new_state_weekly);
+        RadioButton rbStateMonthly = dialogsView.findViewById(R.id.transaction_new_state_monthly);
+        RadioButton rbStateYearly = dialogsView.findViewById(R.id.transaction_new_state_yearly);
+
+
         builder.setView(dialogsView)
                 .setTitle(R.string.transaction_add_title)
                 .setPositiveButton(R.string.dialog_button_save, (dialog, id) -> {
 
-                    EditText editTextName = dialogsView.findViewById(R.id.transaction_new_name);
-                    final String name = editTextName.getText().toString();
-
-                    EditText editTextDesc = dialogsView.findViewById(R.id.transaction_new_description);
-                    final String descr = editTextDesc.getText().toString();
-
-                    EditText editTextAmount = dialogsView.findViewById(R.id.transaction_new_amount);
-                    final Integer amount = Integer.parseInt(editTextAmount.getText().toString());
-
-                    RadioButton radioButtonExpenditure = dialogsView.findViewById(R.id.transaction_new_expenditure);
+                    String name = editTextName.getText().toString();
+                    String descr = editTextDesc.getText().toString();
+                    Integer amount = Integer.parseInt(editTextAmount.getText().toString());
                     boolean expenditure = radioButtonExpenditure.isChecked();
-
                     String groupName = spinner.getSelectedItem().toString();
                     Long groupId = spinnerMap.get(spinner.getSelectedItemPosition());
-
                     Integer state = null;
                     Long uniqueDate = null;
                     Integer dayOfWeek = null;
                     Integer monthlyDay = null;
                     Integer yearlyMonth = null;
                     Integer yearlyDay = null;
-
-                    RadioButton rbStateUnique = dialogsView.findViewById(R.id.transaction_new_state_unique);
-                    RadioButton rbStateDaily = dialogsView.findViewById(R.id.transaction_new_state_daily);
-                    RadioButton rbStateWeekly = dialogsView.findViewById(R.id.transaction_new_state_weekly);
-                    RadioButton rbStateMonthly = dialogsView.findViewById(R.id.transaction_new_state_monthly);
-                    RadioButton rbStateYearly = dialogsView.findViewById(R.id.transaction_new_state_yearly);
-
                     if(rbStateUnique.isChecked()) {
                         state = 1;
                         EditText editTextUniqueDate = dialogsView.findViewById(R.id.transaction_new_state_unique_date);
@@ -238,7 +233,7 @@ public class TransactionsActivity extends AbstractActivity {
                 })
                 .setNegativeButton(R.string.dialog_button_cancel, (dialog, id) -> dialog.cancel());
 
-        return builder.create();
+        builder.create().show();
     }
 
     private AlertDialog createEditDialog(final TransactionBean transaction) {

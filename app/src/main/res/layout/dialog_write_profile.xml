@@ -13,14 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10sp">
-
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5sp"
+            android:text="@string/field_name"
             android:layout_weight="1"
             android:gravity="end"
-            android:text="@string/field_name" />
+            android:layout_marginEnd="5sp" />
         <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -32,25 +31,23 @@
     </LinearLayout>
 
     <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10sp"
-        android:orientation="horizontal">
-
+        android:layout_marginTop="10sp">
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5sp"
+            android:text="@string/field_description"
             android:layout_weight="1"
             android:gravity="end"
-            android:text="@string/field_description" />
-
+            android:layout_marginEnd="5sp" />
         <EditText
             android:id="@+id/profile_new_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
             android:inputType="text"
+            android:layout_weight="3"
             android:text=""
             tools:ignore="Autofill,LabelFor"/>
     </LinearLayout>

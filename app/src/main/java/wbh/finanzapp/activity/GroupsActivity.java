@@ -1,19 +1,14 @@
 package wbh.finanzapp.activity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 
 import wbh.finanzapp.R;
@@ -26,6 +21,7 @@ public class GroupsActivity extends AbstractActivity {
 
     private GroupsDataSource groupsDataSource;
 
+    @SuppressWarnings("CodeBlock2Expr")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,8 +31,7 @@ public class GroupsActivity extends AbstractActivity {
         Button buttonAddGroup = findViewById(R.id.button_add_group);
 
         buttonAddGroup.setOnClickListener(view -> {
-            AlertDialog addGroupDialog = createAddGroupDialog();
-            addGroupDialog.show();
+            createDialog(R.string.group_add_title, new AddListener(), false);
         });
         initializeContextualActionBar();
     }
@@ -118,8 +113,7 @@ public class GroupsActivity extends AbstractActivity {
                                 int positionInListView = touchedGroupPositions.keyAt(i);
                                 GroupBean group = (GroupBean) groupsListView.getItemAtPosition(positionInListView);
                                 Log.d(LOG_TAG, "--> Position in ListView: " + positionInListView + " Content: " + group.toString());
-                                AlertDialog editGroupDialog = createEditGroupDialog(group);
-                                editGroupDialog.show();
+                                createEditGroupDialog(group);
                             }
                         }
                         showAllListEntries();
@@ -139,74 +133,59 @@ public class GroupsActivity extends AbstractActivity {
         });
     }
 
-    private AlertDialog createAddGroupDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = getLayoutInflater();
-
-        ViewGroup viewGroup = findViewById(R.id.dialog_write_group_root_view);
-        View dialogsView = inflater.inflate(R.layout.dialog_write_group, viewGroup);
-
-        builder.setView(dialogsView)
-                .setTitle(R.string.group_add_title)
-                .setPositiveButton(R.string.dialog_button_save, (dialog, id) -> {
-                    EditText editTextName = dialogsView.findViewById(R.id.group_new_name);
-                    final String groupName = editTextName.getText().toString();
-
-                    EditText editTextDescr = dialogsView.findViewById(R.id.group_new_description);
-                    final String groupDescr = editTextDescr.getText().toString();
-
-                    if ((TextUtils.isEmpty(groupName))) {
-                        editTextName.setError(getString(R.string.field_name_error_required));
-                        return;
-                    }
-
-                    GroupBean newGroup = (GroupBean) groupsDataSource.insert(groupName, groupDescr);
-
-                    Log.d(LOG_TAG, "--> Insert new entry: " + newGroup.toString());
-
-                    showAllListEntries();
-                    dialog.dismiss();
-                })
-                .setNegativeButton(R.string.dialog_button_cancel, (dialog, id) -> dialog.cancel());
-
-        return builder.create();
+    /**
+     * Add a new Group.
+     */
+    public void addGroup(String name, String description) {
+        GroupBean newGroup = groupsDataSource.insert(name, description);
+        Log.d(LOG_TAG, "--> Insert new entry: " + newGroup.toString());
+        showAllListEntries();
     }
 
-    private AlertDialog createEditGroupDialog(final GroupBean group) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = getLayoutInflater();
+    /**
+     * Edit a group.
+     */
+    public void editGroup(GroupBean group, String name, String description) {
+        GroupBean updatedGroup = groupsDataSource.update(group.getId(), name, description);
+        Log.d(LOG_TAG, "--> Update old entry: " + group.toString());
+        Log.d(LOG_TAG, "--> Update new entry: " + updatedGroup.toString());
+        showAllListEntries();
+    }
 
-        ViewGroup viewGroup = findViewById(R.id.dialog_write_group_root_view);
-        View dialogsView = inflater.inflate(R.layout.dialog_write_group, viewGroup);
+    /**
+     * Add listener class.
+     */
+    class AddListener extends CustomListener {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            super.onClick(dialog, which);
+            addGroup(name, description);
+            dialog.dismiss();
+        }
+    }
 
-        final EditText editTextNewName = dialogsView.findViewById(R.id.group_new_name);
-        editTextNewName.setText(group.getName());
+    /**
+     * Edit listener class.
+     */
+    class EditListener extends CustomListener {
+        GroupBean group;
 
-        final EditText editTextNewDescription = dialogsView.findViewById(R.id.group_new_description);
-        editTextNewDescription.setText(group.getDescription());
+        EditListener(GroupBean group) {
+            this.group = group;
+        }
 
-        builder.setView(dialogsView)
-                .setTitle(R.string.group_edit_title)
-                .setPositiveButton(R.string.dialog_button_save, (dialog, id) -> {
-                    String name = editTextNewName.getText().toString();
-                    String description = editTextNewDescription.getText().toString();
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            super.onClick(dialog, which);
+            editGroup(group, name, description);
+            dialog.dismiss();
+        }
+    }
 
-                    if ((TextUtils.isEmpty(name))) {
-                        editTextNewName.setError(getString(R.string.field_name_error_required));
-                        return;
-                    }
-
-                    GroupBean updatedGroup = (GroupBean) groupsDataSource.update(group.getId(), name, description);
-
-                    Log.d(LOG_TAG, "--> Update old entry: " + group.toString());
-                    Log.d(LOG_TAG, "--> Update new entry: " + updatedGroup.toString());
-
-                    showAllListEntries();
-                    dialog.dismiss();
-                })
-                .setNegativeButton(R.string.dialog_button_cancel, (dialog, id) -> dialog.cancel());
-
-        return builder.create();
+    public void createEditGroupDialog(final GroupBean group) {
+        createDialog(R.string.group_edit_title, new EditListener(group), true);
+        textNameInputField.setText(group.getName());
+        textDescriptionInputField.setText(group.getDescription());
     }
 
     protected int getHelpText() {

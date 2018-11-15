@@ -2,7 +2,7 @@
     <!-- Common properties -->
     <string name="app_name">FinancialApp</string>
     <string name="cab_checked_string">selected</string>
-    <string name="dialog_button_ok">Ok</string>
+    <string name="dialog_button_ok">OK</string>
     <string name="dialog_button_save">Save</string>
     <string name="dialog_button_cancel">Cancel</string>
 

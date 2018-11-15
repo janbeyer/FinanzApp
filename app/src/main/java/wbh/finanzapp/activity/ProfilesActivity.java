@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
@@ -28,6 +27,7 @@ public class ProfilesActivity extends AbstractActivity {
 
     private ProfilesDataSource profileDataSource;
 
+    @SuppressWarnings("CodeBlock2Expr")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(LOG_TAG, "--> Create ProfilesActivity");
@@ -36,7 +36,7 @@ public class ProfilesActivity extends AbstractActivity {
         profileDataSource = new ProfilesDataSource(this);
         Button buttonAddProfile = findViewById(R.id.button_add_profile);
         buttonAddProfile.setOnClickListener(view -> {
-            createAddProfileDialog();
+            createDialog(R.string.profile_add_title, new AddListener(), false);
         });
         initializeContextualActionBar();
     }
@@ -154,7 +154,7 @@ public class ProfilesActivity extends AbstractActivity {
     /**
      * Add a new profile to the profile view.
      */
-    @SuppressWarnings("Convert2MethodRef")
+    @SuppressWarnings({"Convert2MethodRef", "CodeBlock2Expr"})
     public void addProfile(String profileName, String profileDescription) {
         Map<String, String> basicGroups = getBasicGroups(this);
         ProfileBean newProfile = profileDataSource.insert(profileName, profileDescription);
@@ -207,18 +207,10 @@ public class ProfilesActivity extends AbstractActivity {
     }
 
     /**
-     * Create a new add profile dialog.
-     */
-    @SuppressWarnings({ "CodeBlock2Expr" })
-    public void createAddProfileDialog() {
-        createDialog(R.string.profile_add_title, new AddListener());
-    }
-
-    /**
      * Create a new edit profile dialog.
      */
     public void createEditProfileDialog(final ProfileBean profile) {
-        createDialog(R.string.profile_edit_title, new EditListener(profile));
+        createDialog(R.string.profile_edit_title, new EditListener(profile), true);
         textNameInputField.setText(profile.getName());
         textDescriptionInputField.setText(profile.getDescription());
     }

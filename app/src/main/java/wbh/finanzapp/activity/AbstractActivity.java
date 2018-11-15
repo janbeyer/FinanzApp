@@ -1,7 +1,6 @@
 package wbh.finanzapp.activity;
 
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -86,7 +85,7 @@ public abstract class AbstractActivity extends AppCompatActivity {
     /**
      * Return a new AlertDialog.
      */
-    public AlertDialog createDialog(int title, CustomListener listener) {
+    public AlertDialog createDialog(int title, CustomListener listener, boolean edit) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         ViewGroup viewGroup = findViewById(R.id.dialog_write_profile_root_view);
@@ -107,7 +106,9 @@ public abstract class AbstractActivity extends AppCompatActivity {
         // 2. add an OnKeyListener to activate the button, if an valid input is done
 
         // 1. set the field to red because it is obligation field
-        if(textNameInputField.getText().toString().isEmpty()) {
+        // in edit dialogs the text is set to the previous data
+        // in that case the text is not empty
+        if(!edit && textNameInputField.getText().toString().isEmpty()) {
             textNameInputField.setError(getString(R.string.field_name_error_required));
             saveButton.setEnabled(false);
         }
