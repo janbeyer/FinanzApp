@@ -23,8 +23,19 @@
                                         Möchten Sie den Vorgang abbrechen, drücken Sie im „Neues Profil anlegen“ Dialog auf ABBRECHEN.\n\n
                                         Sie können das Profil durch gedrückt halten auf das Profil, jederzeit wieder bearbeiten oder löschen, in dem sie darauf hin auf den Mülleimer zum Löschen oder den Stift zum Bearbeiten klicken.\n\n
                                         Sie können beliebig viele Profile erstellen.</string>
-    <string name="help_menu_text">TODO: Hilfe Menu Text</string>
-    <string name="help_group_text">TODO: Hilfe Gruppen Text</string>
+    <string name="help_menu_text">Sie befinden sich hier im Hauptmenü. Von hier aus können Sie zu den gewünschten Unterpunkten navigieren.\n\n
+                                    Wählen Sie, durch Drücken auf einen der Buttons, eine gewünschte Aktion aus.\n\n
+                                    Diese Buttons bringen sie in die Untermenüs, in welchen Ihnen weitere Informationen bereitgestellt werden.</string>
+    <string name="help_group_text">Die Gruppierungen dienen dazu die Transaktionen in für Sie logische Gruppen zu ordnen.\n
+                                    Dies dient dazu einen optimalen Überblick zu behalten und eine aussagekräftigere Analyse durchzuführen.\n\n
+                                    Es gibt eine Menge vorgebebener Gruppen, die Sie nach persönlichen Präferenzen erweitern oder bearbeiten können. Sie können ebenso eigene Gruppen anlegen.\n\n
+                                    Um eine neue Gruppe anzulegen drücken Sie auf NEUE GRUPPE HINZUFÜGEN und geben den Namen und eine für Sie eindeutige Beschreibung der Gruppe ein.\n\n
+                                    <b>Name:</b> „Freizeit“\n
+                                    <b>Beschreibung:</b> „Freizeitausgaben“\n\n
+                                    Anschließend drücken sie auf den SPEICHERN Button und die Gruppe wird angelegt.\n\n
+                                    Möchten Sie den Vorgang abbrechen, drücken Sie im „Neue Gruppe hinzufügen“ Dialog auf ABBRECHEN.\n\n
+                                    Sie können die Gruppe durch gedrückt halten auf die Gruppe, jederzeit wieder bearbeiten oder löschen, in dem sie darauf hin auf den Mülleimer zum Löschen oder den Stift zum Bearbeiten klicken.\n\n
+                                    Um Transaktionen zu Gruppierungen zusammen zu fassen gehen sie wie folgt vor [#TODO].</string>
     <string name="help_transaction_text">TODO: Hilfe Gruppen Text</string>
 
     <!-- Profile properties -->
