@@ -16,7 +16,13 @@
     <!-- Help properties -->
     <string name="help_title">Hilfe</string>
 
-    <string name="help_profile_text">TODO: Hilfe Profil Text</string>
+    <string name="help_profile_text">Bevor Sie die App benutzen können, legen Sie bitte ein Profil an. Dazu drücken Sie auf NEUES PROFIL HINZUFÜGEN und geben Ihren Namen und eine für Sie eindeutige Beschreibung des Profils ein.\n\n
+                                        <b>Name:</b> „Max Mustermann“\n
+                                        <b>Beschreigung:</b> „Geschäftlich“\n\n
+                                        Anschließend drücken sie auf den SPEICHERN Button und das Profil wird angelegt.\n\n
+                                        Möchten Sie den Vorgang abbrechen, drücken Sie im „Neues Profil anlegen“ Dialog auf ABBRECHEN.\n\n
+                                        Sie können das Profil durch gedrückt halten auf das Profil, jederzeit wieder bearbeiten oder löschen, in dem sie darauf hin auf den Mülleimer zum Löschen oder den Stift zum Bearbeiten klicken.\n\n
+                                        Sie können beliebig viele Profile erstellen.</string>
     <string name="help_menu_text">TODO: Hilfe Menu Text</string>
     <string name="help_group_text">TODO: Hilfe Gruppen Text</string>
     <string name="help_transaction_text">TODO: Hilfe Gruppen Text</string>
