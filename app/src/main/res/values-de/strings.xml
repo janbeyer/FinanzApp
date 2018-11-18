@@ -18,7 +18,7 @@
 
     <string name="help_profile_text">Bevor Sie die App benutzen können, legen Sie bitte ein Profil an. Dazu drücken Sie auf NEUES PROFIL HINZUFÜGEN und geben Ihren Namen und eine für Sie eindeutige Beschreibung des Profils ein.\n\n
                                         <b>Name:</b> „Max Mustermann“\n
-                                        <b>Beschreigung:</b> „Geschäftlich“\n\n
+                                        <b>Beschreibung:</b> „Geschäftlich“\n\n
                                         Anschließend drücken sie auf den SPEICHERN Button und das Profil wird angelegt.\n\n
                                         Möchten Sie den Vorgang abbrechen, drücken Sie im „Neues Profil anlegen“ Dialog auf ABBRECHEN.\n\n
                                         Sie können das Profil durch gedrückt halten auf das Profil, jederzeit wieder bearbeiten oder löschen, in dem sie darauf hin auf den Mülleimer zum Löschen oder den Stift zum Bearbeiten klicken.\n\n
@@ -36,7 +36,15 @@
                                     Möchten Sie den Vorgang abbrechen, drücken Sie im „Neue Gruppe hinzufügen“ Dialog auf ABBRECHEN.\n\n
                                     Sie können die Gruppe durch gedrückt halten auf die Gruppe, jederzeit wieder bearbeiten oder löschen, in dem sie darauf hin auf den Mülleimer zum Löschen oder den Stift zum Bearbeiten klicken.\n\n
                                     Um Transaktionen zu Gruppierungen zusammen zu fassen gehen sie wie folgt vor [#TODO].</string>
-    <string name="help_transaction_text">TODO: Hilfe Gruppen Text</string>
+    <string name="help_transaction_text">Transaktionen dienen dazu Geldein- oder ausgänge zu Buchen und für die Analyse verfügbar zu machen.\n\n
+                                            Um eine neue Transaktion anzulegen drücken Sie auf NEUE TRANSAKTION HINZUFÜGEN und geben den Namen, eine für Sie eindeutige Beschreibung der Transaktion und einen Betrag ein.\n\n
+                                            <b>Name:</b> „Gehalt“\n
+                                            <b>Beschreibung:</b> „Arbeit“\n
+                                            <b>Betrag:</b> „3000“\n\n
+                                            Danach folgen Sie den weiteren Eingabemöglichkeiten und entscheiden ob es sich um einen Geldein- oder -ausgang handelt und wählen aus den möglichen Zeitpunkten aus, ob die Transaktion einmalig oder wiederkehrend ist.\n\n
+                                            Anschließend drücken sie auf den SPEICHERN Button und die Transaktion wird angelegt.\n\n
+                                            Möchten Sie den Vorgang abbrechen, drücken Sie im „Neue Transaktion hinzufügen“ Dialog auf ABBRECHEN.\n\n
+                                            Sie können die Transaktion durch gedrückt halten auf die Transaktion, jederzeit wieder bearbeiten oder löschen, in dem sie darauf hin auf den Mülleimer zum Löschen oder den Stift zum Bearbeiten klicken.</string>
 
     <!-- Profile properties -->
     <string name="profile_add_title">Neues Profil hinzufügen</string>

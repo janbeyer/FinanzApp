@@ -36,7 +36,15 @@
                                     If you want to cancel the process, press CANCEL on the bottom of the “Add a new group” dialogue.\n\n
                                     You can always change the Profile or delete it by holding on it and either using the trash can to delete it or the pencil to change it.\n\n
                                     To create the groups from your transactions, do as follows [#TODO].</string>
-    <string name="help_transaction_text">TODO: Help transaction text</string>
+    <string name="help_transaction_text">The purpose of transactions it to book new expenditures or revenues and to make them available for the analysis.\n\n
+                                            To create a new transaction you have to push ADD A NEW TRANSACTION, type in a name, a description and an amount for the transaction.\n\n
+                                            <b>Name:</b> “Income”\n
+                                            <b>Description:</b> “Work”\n
+                                            <b>Amount:</b> “3000”\n\n
+                                            After that, just follow the given choices and decide if it is an expenditure or revenue and choose if it is a single transaction or if it is a recurrent transaction.\n\n
+                                            Next step is to click on the SAVE button and your transaction will be created.\n\n
+                                            If you want to cancel the process, press CANCEL on the bottom of the “Add a new transaction” dialogue.\n\n
+                                            You can always change the transaction or delete it by holding on it and either using the trash can to delete it or the pencil to change it.</string>
 
     <!-- Profile properties -->
     <string name="profile_add_title">Add a new profile</string>
