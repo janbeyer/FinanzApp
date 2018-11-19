@@ -31,12 +31,12 @@
         These buttons will lead you to the submenus where you will find further information.
     </string>
     <string name="help_group_text">
-        The purpose of groups is to sort your transactions logically an sum them up.\n
+        The purpose of groups is to sort your transactions logically and sum them up.\n
         This makes the analysis of you data more easy an you can gather an optimal view on the result.\n\n
         There are some given groups which you can extend or change to adapt them to your personal preferences. You can also add new groups.\n\n
         To create a new group you have to push ADD A NEW GROUP, type in a name and a description for the group.\n\n
         <b>Name:</b> “Sparetime”\n
-        <b>Description:</b> “Spartime expenditure”\n\n
+        <b>Description:</b> “Sparetime expenditure”\n\n
         Next step is to click on the SAVE button and your group will be created.\n\n
         If you want to cancel the process, press CANCEL on the bottom of the “Add a new group” dialogue.\n\n
         You can always change the Profile or delete it by holding on it and either using the trash can to delete it or the pencil to change it.\n\n
