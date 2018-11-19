@@ -26,7 +26,7 @@
             android:inputType="text"
             android:layout_weight="3"
             android:text=""
-            android:id="@+id/profile_new_name"
+            android:id="@+id/basic_name"
             tools:ignore="Autofill,LabelFor"/>
     </LinearLayout>
 
@@ -43,7 +43,7 @@
             android:gravity="end"
             android:layout_marginEnd="5sp" />
         <EditText
-            android:id="@+id/profile_new_description"
+            android:id="@+id/basic_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:inputType="text"

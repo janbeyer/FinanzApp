@@ -2,49 +2,57 @@
     <!-- Common properties -->
     <string name="app_name">FinancialApp</string>
     <string name="cab_checked_string">selected</string>
-    <string name="dialog_button_ok">OK</string>
+    <string name="dialog_button_ok">Ok</string>
     <string name="dialog_button_save">Save</string>
     <string name="dialog_button_cancel">Cancel</string>
 
-    <string name="action_help">Hilfe</string>
+    <string name="action_help">Help</string>
 
     <string name="field_name">Name</string>
-    <string name="field_description">Descr.</string>
-
     <string name="field_name_error_required">The name can not be empty</string>
+
+    <string name="field_description">Descr.</string>
 
     <!-- Help properties -->
     <string name="help_title">Help</string>
-
-    <string name="help_profile_text">Before you can use this application, you have to create a profile. To do so, you have to push ADD NEW PROFILE, type in your name and a description for the profile.\n\n
-                                        <b>Name:</b> “Max Mustermann”\n
-                                        <b>Description:</b> “Business”\n\n
-                                        Next step is to click on the SAVE button and your profile will be created.\n\n
-                                        If you want to cancel the process, press CANCEL on the bottom of the “Add new profile” dialogue.\n\n
-                                        You can always change the Profile or delete it by holding on it and either using the trash can to delete it or the pencil to change it.\n\n
-                                        You can create as many profiles as you want.</string>
-    <string name="help_menu_text">This is the main menu. Here you can navigate to the different activities.\n\n
-                                    Choose an action by just pushing on one of the buttons below.\n\n
-                                    These buttons will lead you to the submenus where you will find further information.</string>
-    <string name="help_group_text">The purpose of groups is to sort your transactions logically an sum them up.\n
-                                    This makes the analysis of you data more easy an you can gather an optimal view on the result.\n\n
-                                    There are some given groups which you can extend or change to adapt them to your personal preferences. You can also add new groups.\n\n
-                                    To create a new group you have to push ADD A NEW GROUP, type in a name and a description for the group.\n\n
-                                    <b>Name:</b> “Sparetime”\n
-                                    <b>Description:</b> “Spartime expenditure”\n\n
-                                    Next step is to click on the SAVE button and your group will be created.\n\n
-                                    If you want to cancel the process, press CANCEL on the bottom of the “Add a new group” dialogue.\n\n
-                                    You can always change the Profile or delete it by holding on it and either using the trash can to delete it or the pencil to change it.\n\n
-                                    To create the groups from your transactions, do as follows [#TODO].</string>
-    <string name="help_transaction_text">The purpose of transactions it to book new expenditures or revenues and to make them available for the analysis.\n\n
-                                            To create a new transaction you have to push ADD A NEW TRANSACTION, type in a name, a description and an amount for the transaction.\n\n
-                                            <b>Name:</b> “Income”\n
-                                            <b>Description:</b> “Work”\n
-                                            <b>Amount:</b> “3000”\n\n
-                                            After that, just follow the given choices and decide if it is an expenditure or revenue and choose if it is a single transaction or if it is a recurrent transaction.\n\n
-                                            Next step is to click on the SAVE button and your transaction will be created.\n\n
-                                            If you want to cancel the process, press CANCEL on the bottom of the “Add a new transaction” dialogue.\n\n
-                                            You can always change the transaction or delete it by holding on it and either using the trash can to delete it or the pencil to change it.</string>
+    <string name="help_profile_text">
+        Before you can use this application, you have to create a profile.
+        To do so, you have to push ADD NEW PROFILE, type in your name and a description for the profile.\n\n
+        <b>Name:</b> “Max Mustermann”\n
+        <b>Description:</b> “Business”\n\n
+        Next step is to click on the SAVE button and your profile will be created.\n\n
+        If you want to cancel the process, press CANCEL on the bottom of the “Add new profile” dialogue.\n\n
+        You can always change the Profile or delete it by holding on it and either using the trash can to delete it or the pencil to change it.\n\n
+        You can create as many profiles as you want.
+    </string>
+    <string name="help_menu_text">
+        This is the main menu. Here you can navigate to the different activities.\n\n
+        Choose an action by just pushing on one of the buttons below.\n\n
+        These buttons will lead you to the submenus where you will find further information.
+    </string>
+    <string name="help_group_text">
+        The purpose of groups is to sort your transactions logically an sum them up.\n
+        This makes the analysis of you data more easy an you can gather an optimal view on the result.\n\n
+        There are some given groups which you can extend or change to adapt them to your personal preferences. You can also add new groups.\n\n
+        To create a new group you have to push ADD A NEW GROUP, type in a name and a description for the group.\n\n
+        <b>Name:</b> “Sparetime”\n
+        <b>Description:</b> “Spartime expenditure”\n\n
+        Next step is to click on the SAVE button and your group will be created.\n\n
+        If you want to cancel the process, press CANCEL on the bottom of the “Add a new group” dialogue.\n\n
+        You can always change the Profile or delete it by holding on it and either using the trash can to delete it or the pencil to change it.\n\n
+        To create the groups from your transactions, do as follows [#TODO].
+    </string>
+    <string name="help_transaction_text">
+        The purpose of transactions it to book new expenditures or revenues and to make them available for the analysis.\n\n
+        To create a new transaction you have to push ADD A NEW TRANSACTION, type in a name, a description and an amount for the transaction.\n\n
+        <b>Name:</b> “Income”\n
+        <b>Description:</b> “Work”\n
+        <b>Amount:</b> “3000”\n\n
+        After that, just follow the given choices and decide if it is an expenditure or revenue and choose if it is a single transaction or if it is a recurrent transaction.\n\n
+        Next step is to click on the SAVE button and your transaction will be created.\n\n
+        If you want to cancel the process, press CANCEL on the bottom of the “Add a new transaction” dialogue.\n\n
+        You can always change the transaction or delete it by holding on it and either using the trash can to delete it or the pencil to change it.
+    </string>
 
     <!-- Profile properties -->
     <string name="profile_add_title">Add a new profile</string>
@@ -113,7 +121,5 @@
     <string name="transaction_state_weekly">Weekly</string>
     <string name="transaction_state_monthly">Monthly at</string>
     <string name="transaction_state_yearly">Yearly at</string>
-    <string name="analysis_add_title">Add Analysis</string>
-    <string name="analysis_title">Analysis</string>
 
 </resources>

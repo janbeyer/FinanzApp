@@ -25,12 +25,6 @@
         </activity>
 
         <activity
-            android:name=".activity.AnalysisActivity"
-            android:parentActivityName=".activity.MenuActivity"
-            android:label="@string/analysis_title" >
-        </activity>
-
-        <activity
             android:name=".activity.GroupsActivity"
             android:parentActivityName=".activity.MenuActivity"
             android:label="@string/group_title" >

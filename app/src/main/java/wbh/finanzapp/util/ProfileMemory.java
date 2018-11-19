@@ -1,8 +1,8 @@
-package wbh.finanzapp.activity;
+package wbh.finanzapp.util;
 
 import wbh.finanzapp.business.ProfileBean;
 
-public class ActivityMemory {
+public class ProfileMemory {
 
     private static ProfileBean curProfileBean;
 
@@ -11,6 +11,6 @@ public class ActivityMemory {
     }
 
     public static void setCurProfileBean(ProfileBean curProfileBean) {
-        ActivityMemory.curProfileBean = curProfileBean;
+        ProfileMemory.curProfileBean = curProfileBean;
     }
 }

@@ -14,6 +14,7 @@ import android.widget.ListView;
 import wbh.finanzapp.R;
 import wbh.finanzapp.access.GroupsDataSource;
 import wbh.finanzapp.business.GroupBean;
+import wbh.finanzapp.util.ProfileMemory;
 
 public class GroupsActivity extends AbstractActivity {
 
@@ -27,7 +28,7 @@ public class GroupsActivity extends AbstractActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_groups);
 
-        groupsDataSource = new GroupsDataSource(this, ActivityMemory.getCurProfileBean().getId());
+        groupsDataSource = new GroupsDataSource(this, ProfileMemory.getCurProfileBean().getId());
         Button buttonAddGroup = findViewById(R.id.button_add_group);
 
         buttonAddGroup.setOnClickListener(view -> {

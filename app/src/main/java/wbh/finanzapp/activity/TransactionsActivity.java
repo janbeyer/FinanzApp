@@ -26,6 +26,7 @@ import wbh.finanzapp.access.GroupsDataSource;
 import wbh.finanzapp.access.TransactionsDataSource;
 import wbh.finanzapp.business.AbstractBean;
 import wbh.finanzapp.business.TransactionBean;
+import wbh.finanzapp.util.ProfileMemory;
 
 public class TransactionsActivity extends AbstractActivity {
 
@@ -39,8 +40,8 @@ public class TransactionsActivity extends AbstractActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transactions);
 
-        groupsDataSource = new GroupsDataSource(this, ActivityMemory.getCurProfileBean().getId());
-        transactionsDataSource = new TransactionsDataSource(this, ActivityMemory.getCurProfileBean().getId());
+        groupsDataSource = new GroupsDataSource(this, ProfileMemory.getCurProfileBean().getId());
+        transactionsDataSource = new TransactionsDataSource(this, ProfileMemory.getCurProfileBean().getId());
         Button buttonAddTransaction = findViewById(R.id.button_add_transaction);
 
         buttonAddTransaction.setOnClickListener(view -> {

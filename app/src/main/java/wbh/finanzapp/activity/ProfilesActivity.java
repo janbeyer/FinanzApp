@@ -20,6 +20,7 @@ import wbh.finanzapp.R;
 import wbh.finanzapp.access.GroupsDataSource;
 import wbh.finanzapp.access.ProfilesDataSource;
 import wbh.finanzapp.business.ProfileBean;
+import wbh.finanzapp.util.ProfileMemory;
 
 public class ProfilesActivity extends AbstractActivity {
 
@@ -63,7 +64,7 @@ public class ProfilesActivity extends AbstractActivity {
         ListView profilesListView = createListView(profileDataSource.getBeans(), android.R.layout.simple_list_item_activated_1, R.id.list_view_profiles);
         profilesListView.setOnItemClickListener((adapterView, view, position, id) -> {
             ProfileBean selectedProfile = (ProfileBean)adapterView.getItemAtPosition(position);
-            ActivityMemory.setCurProfileBean(selectedProfile);
+            ProfileMemory.setCurProfileBean(selectedProfile);
             profileDataSource.update(selectedProfile.getId(), null, null);
             Intent myIntent = new Intent(this, MenuActivity.class);
             Log.d(LOG_TAG, "--> Start the menu activity for the profile: " + selectedProfile.toString());
