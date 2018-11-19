@@ -1,30 +1,20 @@
 package wbh.finanzapp.activity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.Spinner;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.Date;
 
 import wbh.finanzapp.R;
-import wbh.finanzapp.access.GroupsDataSource;
 import wbh.finanzapp.access.TransactionsDataSource;
-import wbh.finanzapp.business.AbstractBean;
 import wbh.finanzapp.business.TransactionBean;
 import wbh.finanzapp.util.ProfileMemory;
 
@@ -32,38 +22,37 @@ public class TransactionsActivity extends AbstractActivity {
 
     private static final String LOG_TAG = TransactionsActivity.class.getSimpleName();
 
-    private GroupsDataSource groupsDataSource;
     private TransactionsDataSource transactionsDataSource;
 
+    @SuppressWarnings("CodeBlock2Expr")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(LOG_TAG, "--> Create TransactionsActivity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transactions);
 
-        groupsDataSource = new GroupsDataSource(this, ProfileMemory.getCurProfileBean().getId());
         transactionsDataSource = new TransactionsDataSource(this, ProfileMemory.getCurProfileBean().getId());
         Button buttonAddTransaction = findViewById(R.id.button_add_transaction);
 
         buttonAddTransaction.setOnClickListener(view -> {
-            createAddDialog();
+            createDialog(R.string.transaction_add_title, new AddListener(), false);
         });
         initializeContextualActionBar();
     }
 
     @Override
     protected void onResume() {
+        Log.d(LOG_TAG, "--> Resume TransactionsActivity");
         super.onResume();
         showAllListEntries();
     }
 
     @Override
     protected void onPause() {
+        Log.d(LOG_TAG, "--> Pause TransactionsActivity");
         super.onPause();
     }
 
-    /**
-     * Show all transaction list entries in the TransactionActivity.
-     */
     public void showAllListEntries() {
         Log.d(LOG_TAG, "--> Show all list entries.");
         createListView(transactionsDataSource.getBeans(), android.R.layout.simple_list_item_activated_1,
@@ -125,10 +114,9 @@ public class TransactionsActivity extends AbstractActivity {
                             boolean isChecked = touchedPositions.valueAt(i);
                             if (isChecked) {
                                 int positionInListView = touchedPositions.keyAt(i);
-                                TransactionBean transaction = (TransactionBean) transactionsListView.getItemAtPosition(positionInListView);
-                                Log.d(LOG_TAG, "--> Position in ListView: " + positionInListView + " Content: " + transaction.toString());
-                                AlertDialog editDialog = createEditDialog(transaction);
-                                editDialog.show();
+                                TransactionBean transactionBean = (TransactionBean) transactionsListView.getItemAtPosition(positionInListView);
+                                Log.d(LOG_TAG, "--> Position in ListView: " + positionInListView + " Content: " + transactionBean.toString());
+                                createEditTransactionDialog(transactionBean);
                             }
                         }
                         showAllListEntries();
@@ -148,119 +136,61 @@ public class TransactionsActivity extends AbstractActivity {
         });
     }
 
-    private void createAddDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = getLayoutInflater();
+    public void addTransaction(String name, String description) {
+        // MOCK DATA.
+        long groupId = 1; // must exists -> else error!
+        long amount = 1000;
+        boolean expenditure = true;
+        int state = 1;
+        long uniqueDate = new Date().getTime();
 
-        ViewGroup viewGroup = findViewById(R.id.dialog_write_transaction_root_view);
-        View dialogsView = inflater.inflate(R.layout.dialog_write_transaction, viewGroup);
-
-        Spinner spinner = dialogsView.findViewById(R.id.transaction_new_group);
-        List<AbstractBean> groups = groupsDataSource.getBeans();
-        String[] spinnerArray = new String[groups.size()];
-        HashMap<Integer,Long> spinnerMap = new HashMap<Integer, Long>();
-        for (int i = 0; i < groups.size(); i++) {
-            spinnerMap.put(i, groups.get(i).getId());
-            spinnerArray[i] = groups.get(i).getName();
-        }
-        ArrayAdapter<String> adapter =new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerArray);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-
-
-        EditText editTextName = dialogsView.findViewById(R.id.transaction_new_name);
-        EditText editTextDesc = dialogsView.findViewById(R.id.transaction_new_description);
-        EditText editTextAmount = dialogsView.findViewById(R.id.transaction_new_amount);
-        RadioButton radioButtonExpenditure = dialogsView.findViewById(R.id.transaction_new_expenditure);
-        RadioButton rbStateUnique = dialogsView.findViewById(R.id.transaction_new_state_unique);
-        RadioButton rbStateDaily = dialogsView.findViewById(R.id.transaction_new_state_daily);
-        RadioButton rbStateWeekly = dialogsView.findViewById(R.id.transaction_new_state_weekly);
-        RadioButton rbStateMonthly = dialogsView.findViewById(R.id.transaction_new_state_monthly);
-        RadioButton rbStateYearly = dialogsView.findViewById(R.id.transaction_new_state_yearly);
-
-
-        builder.setView(dialogsView)
-                .setTitle(R.string.transaction_add_title)
-                .setPositiveButton(R.string.dialog_button_save, (dialog, id) -> {
-
-                    String name = editTextName.getText().toString();
-                    String descr = editTextDesc.getText().toString();
-                    Integer amount = Integer.parseInt(editTextAmount.getText().toString());
-                    boolean expenditure = radioButtonExpenditure.isChecked();
-                    String groupName = spinner.getSelectedItem().toString();
-                    Long groupId = spinnerMap.get(spinner.getSelectedItemPosition());
-                    Integer state = null;
-                    Long uniqueDate = null;
-                    Integer dayOfWeek = null;
-                    Integer monthlyDay = null;
-                    Integer yearlyMonth = null;
-                    Integer yearlyDay = null;
-                    if(rbStateUnique.isChecked()) {
-                        state = 1;
-                        EditText editTextUniqueDate = dialogsView.findViewById(R.id.transaction_new_state_unique_date);
-                        uniqueDate = Long.parseLong(editTextUniqueDate.getText().toString());
-                    }
-
-                    if(rbStateDaily.isChecked()) {
-                        state = 2;
-                    }
-
-                    if(rbStateWeekly.isChecked()) {
-                        state = 3;
-                        EditText editTextDayOfWeek = dialogsView.findViewById(R.id.transaction_new_state_weekly_day);
-                        dayOfWeek = Integer.parseInt(editTextDayOfWeek.getText().toString());
-                    }
-
-                    if(rbStateMonthly.isChecked()) {
-                        state = 4;
-                        EditText editTextMonthlyDay = dialogsView.findViewById(R.id.transaction_new_state_monthly_day);
-                        monthlyDay = Integer.parseInt(editTextMonthlyDay.getText().toString());
-                    }
-
-                    if(rbStateYearly.isChecked()) {
-                        state = 5;
-                        EditText editTextYearlyMonth = dialogsView.findViewById(R.id.transaction_new_state_yearly_month);
-                        yearlyMonth = Integer.parseInt(editTextYearlyMonth.getText().toString());
-                        EditText editTextYearlyDay = dialogsView.findViewById(R.id.transaction_new_state_yearly_day);
-                        yearlyDay = Integer.parseInt(editTextYearlyDay.getText().toString());
-                    }
-
-                    transactionsDataSource.insert(name, descr, groupId, amount, expenditure, state, uniqueDate, dayOfWeek, monthlyDay, yearlyMonth, yearlyDay);
-
-                    // TODO: Validation.
-
-                    showAllListEntries();
-                    dialog.dismiss();
-                })
-                .setNegativeButton(R.string.dialog_button_cancel, (dialog, id) -> dialog.cancel());
-
-        builder.create().show();
+        TransactionBean newTransaction = transactionsDataSource.insert(name, description, groupId, amount, expenditure, state, uniqueDate, null, null, null, null);
+        Log.d(LOG_TAG, "--> Insert new entry: " + newTransaction.toString());
     }
 
-    private AlertDialog createEditDialog(final TransactionBean transaction) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = getLayoutInflater();
+    public void editTransaction(TransactionBean transaction, String name, String description) {
+        // MOCK DATA.
+        long groupId = 1; // must exists -> else error!
+        long amount = 1000;
+        boolean expenditure = true;
+        int state = 1;
+        long uniqueDate = new Date().getTime();
 
-        ViewGroup viewGroup = findViewById(R.id.dialog_write_transaction_root_view);
-        View dialogsView = inflater.inflate(R.layout.dialog_write_transaction, viewGroup);
+        TransactionBean updatedTransaction = transactionsDataSource.update(transaction.getId(), name, description, groupId, amount, expenditure, state, uniqueDate, null, null, null, null);
+        Log.d(LOG_TAG, "--> Update old entry: " + transaction.toString());
+        Log.d(LOG_TAG, "--> Update new entry: " + updatedTransaction.toString());
+    }
 
-        final EditText editTextNewName = dialogsView.findViewById(R.id.transaction_new_name);
-        editTextNewName.setText(transaction.getName());
+    class AddListener extends CustomListener {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            super.onClick(dialog, which);
+            addTransaction(name, description);
+            showAllListEntries();
+            dialog.dismiss();
+        }
+    }
 
-        final EditText editTextNewDescription = dialogsView.findViewById(R.id.transaction_new_description);
-        editTextNewDescription.setText(transaction.getDescription());
+    class EditListener extends CustomListener {
+        TransactionBean transaction;
 
-        builder.setView(dialogsView)
-                .setTitle(R.string.group_edit_title)
-                .setPositiveButton(R.string.dialog_button_save, (dialog, id) -> {
-                    // TODO: Validation.
-                    // TODO: Update the validation
-                    showAllListEntries();
-                    dialog.dismiss();
-                })
-                .setNegativeButton(R.string.dialog_button_cancel, (dialog, id) -> dialog.cancel());
+        EditListener(TransactionBean transaction) {
+            this.transaction = transaction;
+        }
 
-        return builder.create();
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            super.onClick(dialog, which);
+            editTransaction(transaction, name, description);
+            showAllListEntries();
+            dialog.dismiss();
+        }
+    }
+
+    public void createEditTransactionDialog(final TransactionBean transaction) {
+        createDialog(R.string.transaction_edit_title, new EditListener(transaction), true);
+        textNameInputField.setText(transaction.getName());
+        textDescriptionInputField.setText(transaction.getDescription());
     }
 
     protected int getHelpText() {

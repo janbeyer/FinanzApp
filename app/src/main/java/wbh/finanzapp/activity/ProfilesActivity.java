@@ -46,7 +46,6 @@ public class ProfilesActivity extends AbstractActivity {
     protected void onResume() {
         Log.d(LOG_TAG, "--> Resume ProfilesActivity");
         super.onResume();
-        Log.d(LOG_TAG, "--> Open the data source.");
         showAllListEntries();
     }
 
@@ -56,9 +55,6 @@ public class ProfilesActivity extends AbstractActivity {
         super.onPause();
     }
 
-    /**
-     * Show all profile list entries in the ProfileActivity.
-     */
     public void showAllListEntries() {
         Log.d(LOG_TAG, "--> Show all list entries.");
         ListView profilesListView = createListView(profileDataSource.getBeans(), android.R.layout.simple_list_item_activated_1, R.id.list_view_profiles);
@@ -152,9 +148,6 @@ public class ProfilesActivity extends AbstractActivity {
         });
     }
 
-    /**
-     * Add a new profile to the profile view.
-     */
     @SuppressWarnings({"Convert2MethodRef", "CodeBlock2Expr"})
     public void addProfile(String profileName, String profileDescription) {
         Map<String, String> basicGroups = getBasicGroups(this);

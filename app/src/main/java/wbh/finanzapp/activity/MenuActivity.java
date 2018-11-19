@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.Toast;
 
 import wbh.finanzapp.R;
 
@@ -59,9 +60,10 @@ public class MenuActivity extends AbstractActivity {
         });
         Button buttonAnalyze = findViewById(R.id.menu_button_analyze);
         buttonAnalyze.setOnClickListener(view -> {
-            Intent myIntent = new Intent(this, AnalysisActivity.class);
+            // Intent myIntent = new Intent(this, AnalysisActivity.class);
+            Toast.makeText(this, "TODO: Analyse", Toast.LENGTH_SHORT).show();
             Log.d(LOG_TAG, "--> Start the analysis activity.");
-            startActivity(myIntent);
+            // startActivity(myIntent);
         });
         Button buttonGroups = findViewById(R.id.menu_button_groups);
         buttonGroups.setOnClickListener(view -> {

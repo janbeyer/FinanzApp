@@ -25,6 +25,7 @@ public class GroupsActivity extends AbstractActivity {
     @SuppressWarnings("CodeBlock2Expr")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(LOG_TAG, "--> Create GroupsActivity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_groups);
 
@@ -39,18 +40,17 @@ public class GroupsActivity extends AbstractActivity {
 
     @Override
     protected void onResume() {
+        Log.d(LOG_TAG, "--> Resume GroupsActivity");
         super.onResume();
         showAllListEntries();
     }
 
     @Override
     protected void onPause() {
+        Log.d(LOG_TAG, "--> Pause GroupsActivity");
         super.onPause();
     }
 
-    /**
-     * Show all profile list entries in the GroupsActivity.
-     */
     public void showAllListEntries() {
         Log.d(LOG_TAG, "--> Show all list entries.");
         createListView(groupsDataSource.getBeans(), android.R.layout.simple_list_item_activated_1,
@@ -134,13 +134,9 @@ public class GroupsActivity extends AbstractActivity {
         });
     }
 
-    /**
-     * Add a new Group.
-     */
     public void addGroup(String name, String description) {
         GroupBean newGroup = groupsDataSource.insert(name, description);
         Log.d(LOG_TAG, "--> Insert new entry: " + newGroup.toString());
-        showAllListEntries();
     }
 
     /**
@@ -150,24 +146,18 @@ public class GroupsActivity extends AbstractActivity {
         GroupBean updatedGroup = groupsDataSource.update(group.getId(), name, description);
         Log.d(LOG_TAG, "--> Update old entry: " + group.toString());
         Log.d(LOG_TAG, "--> Update new entry: " + updatedGroup.toString());
-        showAllListEntries();
     }
 
-    /**
-     * Add listener class.
-     */
     class AddListener extends CustomListener {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             super.onClick(dialog, which);
             addGroup(name, description);
+            showAllListEntries();
             dialog.dismiss();
         }
     }
 
-    /**
-     * Edit listener class.
-     */
     class EditListener extends CustomListener {
         GroupBean group;
 
@@ -179,6 +169,7 @@ public class GroupsActivity extends AbstractActivity {
         public void onClick(DialogInterface dialog, int which) {
             super.onClick(dialog, which);
             editGroup(group, name, description);
+            showAllListEntries();
             dialog.dismiss();
         }
     }

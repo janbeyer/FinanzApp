@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:focusableInTouchMode="true"
-    android:id="@+id/dialog_write_profile_root_view">
+    android:id="@+id/dialog_write_basic_root_view">
 
     <LinearLayout
         android:orientation="horizontal"

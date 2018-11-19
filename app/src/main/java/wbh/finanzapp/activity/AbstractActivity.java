@@ -88,8 +88,8 @@ public abstract class AbstractActivity extends AppCompatActivity {
     public void createDialog(int title, CustomListener listener, boolean edit) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
-        ViewGroup viewGroup = findViewById(R.id.dialog_write_profile_root_view);
-        View dialogsView = inflater.inflate(R.layout.dialog_write_profile, viewGroup);
+        ViewGroup viewGroup = findViewById(R.id.dialog_write_basic_root_view);
+        View dialogsView = inflater.inflate(R.layout.dialog_write_basic, viewGroup);
         builder.setView(dialogsView);
         builder.setTitle(title);
         builder.setNegativeButton(R.string.dialog_button_cancel, (dialog, id) -> dialog.cancel());
@@ -97,8 +97,8 @@ public abstract class AbstractActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
 
-        textNameInputField = dialogsView.findViewById(R.id.profile_new_name);
-        textDescriptionInputField = dialogsView.findViewById(R.id.profile_new_description);
+        textNameInputField = dialogsView.findViewById(R.id.basic_name);
+        textDescriptionInputField = dialogsView.findViewById(R.id.basic_description);
         saveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
 
         // if an field is an obligation field we have to do 2 steps
