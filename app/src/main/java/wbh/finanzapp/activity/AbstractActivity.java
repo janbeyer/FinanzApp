@@ -3,7 +3,9 @@ package wbh.finanzapp.activity;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,24 +25,12 @@ import wbh.finanzapp.business.AbstractBean;
 
 public abstract class AbstractActivity extends AppCompatActivity {
 
-    /**
-     * Returns the text to show in the online help.
-     */
     protected abstract int getHelpText();
 
-    /**
-     * Text name input field.
-     */
     protected EditText textNameInputField;
 
-    /**
-     * Text description input field.
-     */
     protected EditText textDescriptionInputField;
 
-    /**
-     * The save button.
-     */
     protected Button saveButton;
 
     @Override
@@ -72,9 +62,6 @@ public abstract class AbstractActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * Create the list view and set the array adapter.
-     */
     public ListView createListView(List<AbstractBean> list, int layoutType, int listViewId) {
         ArrayAdapter<AbstractBean> arrayAdapter = new ArrayAdapter<>(this, layoutType, list);
         ListView listView = findViewById(listViewId);
@@ -82,9 +69,6 @@ public abstract class AbstractActivity extends AppCompatActivity {
         return listView;
     }
 
-    /**
-     * Return a new AlertDialog.
-     */
     public void createDialog(int title, CustomListener listener, boolean edit) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -114,25 +98,27 @@ public abstract class AbstractActivity extends AppCompatActivity {
         }
 
         // 2. This is called when the first text input is done
-        textNameInputField.setOnKeyListener(new View.OnKeyListener() {
+        textNameInputField.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                String s = textNameInputField.getText().toString();
-                if(s.isEmpty()) {
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                String name = charSequence.toString();
+                if(name.isEmpty()) {
                     textNameInputField.setError(getString(R.string.field_name_error_required));
                     saveButton.setEnabled(false);
                 } else {
                     textNameInputField.setError(null);
                     saveButton.setEnabled(true);
                 }
-                return false;
             }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
         });
     }
 
-    /**
-     * A custom OnClickListener base class.
-     */
     class CustomListener implements DialogInterface.OnClickListener {
 
         protected String name;
