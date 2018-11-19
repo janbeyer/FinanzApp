@@ -85,7 +85,7 @@ public abstract class AbstractActivity extends AppCompatActivity {
     /**
      * Return a new AlertDialog.
      */
-    public AlertDialog createDialog(int title, CustomListener listener, boolean edit) {
+    public void createDialog(int title, CustomListener listener, boolean edit) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         ViewGroup viewGroup = findViewById(R.id.dialog_write_profile_root_view);
@@ -128,8 +128,6 @@ public abstract class AbstractActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-        return dialog;
     }
 
     /**

@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * A helper class for SQLite. Encapsulate the raw database access.
  */
-class DBHelper extends SQLiteOpenHelper {
+class DBHelper extends SQLiteOpenHelper implements AbstractDbHelper{
 
     private static final String LOG_TAG = DBHelper.class.getSimpleName();
 
@@ -73,10 +73,8 @@ class DBHelper extends SQLiteOpenHelper {
         // Check the version of each module and upgrade the tables ...
     }
 
-    /**
-     * Open the SQLite database.
-     */
-    void open() {
+    @Override
+    public void open() {
         Log.d(LOG_TAG, "--> Try to open the SQLite database.");
 
         // Create and/or open a database that will be used for reading and writing.
@@ -88,18 +86,14 @@ class DBHelper extends SQLiteOpenHelper {
         Log.d(LOG_TAG, "--> Db Path: " + database.getPath());
     }
 
-    /**
-     * Close the SQLite database.
-     */
+    @Override
     public void close() {
         super.close();
         Log.d(LOG_TAG, "--> Close the db with the help of the DBHelper.");
     }
 
-    /**
-     * @return the handle to the SQLite database.
-     */
-    SQLiteDatabase getDatabase() {
+    @Override
+    public SQLiteDatabase getDatabase() {
         return database;
     }
 }
