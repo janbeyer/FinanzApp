@@ -113,5 +113,7 @@
     <string name="transaction_state_weekly">Weekly</string>
     <string name="transaction_state_monthly">Monthly at</string>
     <string name="transaction_state_yearly">Yearly at</string>
+    <string name="analysis_add_title">Add Analysis</string>
+    <string name="analysis_title">Analysis</string>
 
 </resources>
