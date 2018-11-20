@@ -2,13 +2,17 @@ package wbh.finanzapp.activity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AbsListView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.Date;
@@ -24,6 +28,8 @@ public class TransactionsActivity extends AbstractActivity {
 
     private TransactionsDataSource transactionsDataSource;
 
+    protected EditText textAmountInputField;
+
     @SuppressWarnings("CodeBlock2Expr")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +41,8 @@ public class TransactionsActivity extends AbstractActivity {
         Button buttonAddTransaction = findViewById(R.id.button_add_transaction);
 
         buttonAddTransaction.setOnClickListener(view -> {
-            createDialog(R.string.transaction_add_title, new AddListener(), false);
+            View addView = super.createView(R.id.dialog_write_transaction_root_view, R.layout.dialog_write_transaction);
+            createDialog(addView, R.string.transaction_add_title, new AddListener(), false);
         });
         initializeContextualActionBar();
     }
@@ -136,44 +143,99 @@ public class TransactionsActivity extends AbstractActivity {
         });
     }
 
-    public void addTransaction(String name, String description) {
+    public void addTransaction(String name, String description, double amount) {
         // MOCK DATA.
         long groupId = 1; // must exists -> else error!
-        long amount = 1000;
-        boolean expenditure = true;
         int state = 1;
         long uniqueDate = new Date().getTime();
 
-        TransactionBean newTransaction = transactionsDataSource.insert(name, description, groupId, amount, expenditure, state, uniqueDate, null, null, null, null);
+        TransactionBean newTransaction = transactionsDataSource.insert(name, description, groupId, amount, state, uniqueDate, null, null, null, null);
         Log.d(LOG_TAG, "--> Insert new entry: " + newTransaction.toString());
     }
 
-    public void editTransaction(TransactionBean transaction, String name, String description) {
+    public void editTransaction(TransactionBean transaction, String name, String description, double amount) {
         // MOCK DATA.
         long groupId = 1; // must exists -> else error!
-        long amount = 1000;
-        boolean expenditure = true;
         int state = 1;
         long uniqueDate = new Date().getTime();
 
-        TransactionBean updatedTransaction = transactionsDataSource.update(transaction.getId(), name, description, groupId, amount, expenditure, state, uniqueDate, null, null, null, null);
+        TransactionBean updatedTransaction = transactionsDataSource.update(transaction.getId(), name, description, groupId, amount, state, uniqueDate, null, null, null, null);
         Log.d(LOG_TAG, "--> Update old entry: " + transaction.toString());
         Log.d(LOG_TAG, "--> Update new entry: " + updatedTransaction.toString());
     }
 
+    @Override
+    public void createDialog(View view, int title, CustomListener listener, boolean edit) {
+        super.createDialog(view, title, listener, edit);
+
+        textAmountInputField = view.findViewById(R.id.transaction_amount);
+
+        // Initial validation by create a new bean.
+        if(!edit) {
+            textAmountInputField.setError(getString(R.string.transaction_amount_validation_error));
+        }
+
+        // Validation of the amount.
+        textAmountInputField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                String amountStr = charSequence.toString();
+                Double amount = null;
+                try {
+                    amount = Double.parseDouble(amountStr);
+                } catch (NumberFormatException e) {}
+
+                if(amountStr == null || amountStr.isEmpty() || amountStr.equals("-") || amountStr.endsWith(".") || (amount != null && amount == 0.0)) {
+                    textAmountInputField.setError(getString(R.string.transaction_amount_validation_error));
+                    saveButton.setEnabled(false);
+                } else {
+                    textAmountInputField.setError(null);
+                    enableButtonIfErrorFree(view);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String amountStr = editable.toString();
+                Double amount = null;
+                try {
+                    amount = Double.parseDouble(amountStr);
+                } catch (NumberFormatException e) {}
+
+                if(amount != null) {
+                    int decimalAmount = (int) (amount * 100);
+                    if((amount * 100) != ((double) decimalAmount)) {
+                        String newText = "" + ((double) decimalAmount / 100);
+                        textAmountInputField.setText(newText);
+                        textAmountInputField.setSelection(newText.length());
+                    }
+                }
+            }
+        });
+    }
+
     class AddListener extends CustomListener {
+
+        protected double amount;
+
         @Override
         public void onClick(DialogInterface dialog, int which) {
             super.onClick(dialog, which);
-            addTransaction(name, description);
+            amount = Double.parseDouble(textAmountInputField.getText().toString());
+            addTransaction(name, description, amount);
             showAllListEntries();
             dialog.dismiss();
         }
     }
 
     class EditListener extends CustomListener {
-        TransactionBean transaction;
 
+        protected double amount;
+
+        TransactionBean transaction;
         EditListener(TransactionBean transaction) {
             this.transaction = transaction;
         }
@@ -181,16 +243,20 @@ public class TransactionsActivity extends AbstractActivity {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             super.onClick(dialog, which);
-            editTransaction(transaction, name, description);
+            amount = Double.parseDouble(textAmountInputField.getText().toString());
+            editTransaction(transaction, name, description, amount);
             showAllListEntries();
             dialog.dismiss();
         }
     }
 
     public void createEditTransactionDialog(final TransactionBean transaction) {
-        createDialog(R.string.transaction_edit_title, new EditListener(transaction), true);
+        View editView = super.createView(R.id.dialog_write_transaction_root_view, R.layout.dialog_write_transaction);
+        createDialog(editView, R.string.transaction_edit_title, new EditListener(transaction), true);
         textNameInputField.setText(transaction.getName());
         textDescriptionInputField.setText(transaction.getDescription());
+        textAmountInputField.setText("" + transaction.getAmount());
+
     }
 
     protected int getHelpText() {

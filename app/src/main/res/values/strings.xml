@@ -9,7 +9,7 @@
     <string name="action_help">Help</string>
 
     <string name="field_name">Name</string>
-    <string name="field_name_error_required">The name can not be empty</string>
+    <string name="field_name_validation_error">The name must not be empty</string>
 
     <string name="field_description">Descr.</string>
 
@@ -113,8 +113,8 @@
     <string name="transaction_delete_title">Delete a transaction</string>
 
     <string name="transaction_amount">Amount</string>
-    <string name="transaction_expenture">Expenditure</string>
-    <string name="transaction_revenue">Revenue</string>
+    <string name="transaction_amount_unit">Euro</string>
+    <string name="transaction_amount_validation_error">Amount must not be empty or 0</string>
     <string name="transaction_group">Group</string>
     <string name="transaction_state_unique">Uniquely at</string>
     <string name="transaction_state_daily">Daily</string>

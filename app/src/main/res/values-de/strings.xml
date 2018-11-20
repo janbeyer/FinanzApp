@@ -9,7 +9,7 @@
     <string name="action_help">Hilfe</string>
 
     <string name="field_name">Name</string>
-    <string name="field_name_error_required">Der Name darf nicht leer sein</string>
+    <string name="field_name_validation_error">Der Name darf nicht leer sein</string>
     <string name="field_description">Beschr.</string>
 
     <!-- Help properties -->
@@ -111,8 +111,8 @@
     <string name="transaction_delete_title">Transaktion löschen</string>
 
     <string name="transaction_amount">Betrag</string>
-    <string name="transaction_expenture">Ausgabe</string>
-    <string name="transaction_revenue">Einnahme</string>
+    <string name="transaction_amount_unit">Euro</string>
+    <string name="transaction_amount_validation_error">Der Betrag darf nicht leer oder 0 sein</string>
     <string name="transaction_group">Gruppe</string>
     <string name="transaction_state_unique">Einmalig am</string>
     <string name="transaction_state_daily">Täglich</string>

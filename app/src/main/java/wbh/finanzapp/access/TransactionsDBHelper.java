@@ -19,8 +19,6 @@ class TransactionsDBHelper {
     static final String COLUMN_PROFILE_ID = "_profileId";
     static final String COLUMN_GROUP_ID = "_groupId";
     static final String COLUMN_AMOUNT = "amount";
-    // 1=expenditure;2=revenue
-    static final String COLUMN_EXPENDITURE = "expenditure";
     // 1=unique;2=daily;3=weekly;4=monthly;5=yearly
     static final String COLUMN_STATE = "state";
     static final String COLUMN_UNIQUE_DATE = "uniqueDate";
@@ -40,7 +38,6 @@ class TransactionsDBHelper {
             COLUMN_PROFILE_ID,
             COLUMN_GROUP_ID,
             COLUMN_AMOUNT,
-            COLUMN_EXPENDITURE,
             COLUMN_STATE,
             COLUMN_UNIQUE_DATE,
             COLUMN_DAY_OF_WEEK,
@@ -59,8 +56,7 @@ class TransactionsDBHelper {
                     COLUMN_DESCRIPTION + " TEXT, " +
                     COLUMN_PROFILE_ID + " INTEGER NOT NULL, " +
                     COLUMN_GROUP_ID + " INTEGER NOT NULL, " +
-                    COLUMN_AMOUNT + " INTEGER NOT NULL, " +
-                    COLUMN_EXPENDITURE + " INTEGER NOT NULL, " +
+                    COLUMN_AMOUNT + " REAL NOT NULL, " +
                     COLUMN_STATE + " INTEGER NOT NULL, " +
                     COLUMN_UNIQUE_DATE + " INTEGER, " +
                     COLUMN_DAY_OF_WEEK + " INTEGER, " +

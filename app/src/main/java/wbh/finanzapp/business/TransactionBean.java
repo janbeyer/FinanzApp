@@ -1,78 +1,67 @@
 package wbh.finanzapp.business;
 
-/**
- * A GroupBean class store every properties of a single Group.
- */
 public class TransactionBean extends AbstractBean {
 
-    /**
-     * A reference to the Profile ID.
-     */
     private final long profileId;
-
-    /**
-     * A reference to the Group ID.
-     */
     private final long groupId;
 
-    /**
-     * The amount of the transaction.
-     */
-    private final long amount;
+    private final double amount;
 
-    /**
-     * true for expenditures and false for revenues.
-     */
-    private final boolean expenditure;
+    private final int state;            // 1=unique;2=daily;3=weekly;4=monthly;5=yearly.
+    private final Long uniqueDate;      // Set if state is 1 = unique.
+    private final Integer dayOfWeek;    // Set if state is 3 = weekly.
+    private final Integer monthlyDay;   // Set if state is 4 = monthly.
+    private final Integer yearlyMonth;  // Set if state is 5 = yearly.
+    private final Integer yearlyDay;    // Set if state is 5 = yearly.
 
-    /**
-     * The state of the transaction.
-     * 1=unique;2=daily;3=weekly;4=monthly;5=yearly.
-     */
-    private final int state;
-
-    /**
-     * The unique date for a unique transaction.
-     */
-    private final Long uniqueDate;
-
-    /**
-     * The day of week for a weeky transaction.
-     */
-    private final Integer dayOfWeek;
-
-    /**
-     * The monthly day for a monthly transaction.
-     */
-    private final Integer monthlyDay;
-
-    /**
-     * The yearly month for a yearly transaction.
-     */
-    private final Integer yearlyMonth;
-
-    /**
-     * The yearly day for a yearly transaction.
-     */
-    private final Integer yearlyDay;
-
-    /**
-     * Create a new GroupBean.
-     */
     public TransactionBean(long id, String name, String description, long profileId, long groupId,
-                           long amount, boolean expenditure, int state, Long uniqueDate,
-                           Integer dayOfWeek, Integer monthlyDay, Integer yearlyMonth,
-                           Integer yearlyDay) {
+                           double amount, int state, Long uniqueDate, Integer dayOfWeek,
+                           Integer monthlyDay, Integer yearlyMonth, Integer yearlyDay) {
         super(id, name, description);
         this.profileId = profileId;
         this.groupId = groupId;
         this.amount = amount;
-        this.expenditure = expenditure;
         this.state = state;
         this.uniqueDate = uniqueDate;
         this.dayOfWeek = dayOfWeek;
         this.monthlyDay = monthlyDay;
         this.yearlyMonth = yearlyMonth;
         this.yearlyDay = yearlyDay;
+    }
+
+    public long getProfileId() {
+        return profileId;
+    }
+
+    public long getGroupId() {
+        return groupId;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public Long getUniqueDate() {
+        return uniqueDate;
+    }
+
+    public Integer getDayOfWeek() {
+        return dayOfWeek;
+    }
+
+    public Integer getMonthlyDay() {
+        return monthlyDay;
+    }
+
+    public Integer getYearlyMonth() {
+        return yearlyMonth;
+    }
+
+    public Integer getYearlyDay() {
+        return yearlyDay;
     }
 }

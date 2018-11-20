@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -69,35 +68,38 @@ public abstract class AbstractActivity extends AppCompatActivity {
         return listView;
     }
 
-    public void createDialog(int title, CustomListener listener, boolean edit) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    public View createView(int viewId, int layoutId) {
         LayoutInflater inflater = getLayoutInflater();
-        ViewGroup viewGroup = findViewById(R.id.dialog_write_basic_root_view);
-        View dialogsView = inflater.inflate(R.layout.dialog_write_basic, viewGroup);
-        builder.setView(dialogsView);
-        builder.setTitle(title);
-        builder.setNegativeButton(R.string.dialog_button_cancel, (dialog, id) -> dialog.cancel());
+        ViewGroup viewGroup = findViewById(viewId);
+        return inflater.inflate(layoutId, viewGroup);
+    }
+
+    private AlertDialog.Builder createBuilder(View view, int titleId, CustomListener listener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(view);
+        builder.setTitle(titleId);
         builder.setPositiveButton(R.string.dialog_button_save, listener);
+        builder.setNegativeButton(R.string.dialog_button_cancel, (dialog, id) -> dialog.cancel());
+        return builder;
+    }
+
+    public void createDialog(View view, int titleId, CustomListener listener, boolean edit) {
+        AlertDialog.Builder builder = createBuilder(view, titleId, listener);
+
         AlertDialog dialog = builder.create();
         dialog.show();
 
-        textNameInputField = dialogsView.findViewById(R.id.basic_name);
-        textDescriptionInputField = dialogsView.findViewById(R.id.basic_description);
+        textNameInputField = view.findViewById(R.id.basic_name);
+        textDescriptionInputField = view.findViewById(R.id.basic_description);
         saveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
 
-        // if an field is an obligation field we have to do 2 steps
-        // 1. deactivate the save button at the beginning
-        // 2. add an OnKeyListener to activate the button, if an valid input is done
-
-        // 1. set the field to red because it is obligation field
-        // in edit dialogs the text is set to the previous data
-        // in that case the text is not empty
-        if(!edit && textNameInputField.getText().toString().isEmpty()) {
-            textNameInputField.setError(getString(R.string.field_name_error_required));
+        // Initial validation by create a new bean.
+        if(!edit) {
+            textNameInputField.setError(getString(R.string.field_name_validation_error));
             saveButton.setEnabled(false);
         }
 
-        // 2. This is called when the first text input is done
+        // Validation of the name.
         textNameInputField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
@@ -106,17 +108,41 @@ public abstract class AbstractActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
                 String name = charSequence.toString();
                 if(name.isEmpty()) {
-                    textNameInputField.setError(getString(R.string.field_name_error_required));
+                    textNameInputField.setError(getString(R.string.field_name_validation_error));
                     saveButton.setEnabled(false);
                 } else {
                     textNameInputField.setError(null);
-                    saveButton.setEnabled(true);
+                    enableButtonIfErrorFree(view);
                 }
             }
 
             @Override
             public void afterTextChanged(Editable editable) {}
         });
+    }
+
+    public void enableButtonIfErrorFree(View view) {
+        if(checkIfViewIsErrorFree(view)) {
+            saveButton.setEnabled(true);
+        }
+    }
+
+    private boolean checkIfViewIsErrorFree(View view) {
+        ViewGroup viewGroup = null;
+        try {
+            viewGroup = (ViewGroup) view;
+        } catch (ClassCastException e) {}
+        if(viewGroup == null || viewGroup.getChildCount() == 0) return true;
+        for(int i = 0; i < viewGroup.getChildCount(); ++i) {
+            View curView = viewGroup.getChildAt(i);
+            if(curView instanceof EditText) {
+                EditText curTextField = (EditText) curView;
+                if(!TextUtils.isEmpty(curTextField.getError())) return false;
+            } else if(!checkIfViewIsErrorFree(curView)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     class CustomListener implements DialogInterface.OnClickListener {
@@ -129,7 +155,7 @@ public abstract class AbstractActivity extends AppCompatActivity {
             name = textNameInputField.getText().toString();
             description = textDescriptionInputField.getText().toString();
             if ((TextUtils.isEmpty(name))) {
-                textNameInputField.setError(getString(R.string.field_name_error_required));
+                textNameInputField.setError(getString(R.string.field_name_validation_error));
                 saveButton.setEnabled(false);
             }
         }

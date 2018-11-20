@@ -11,28 +11,14 @@ import java.util.List;
 import wbh.finanzapp.business.AbstractBean;
 import wbh.finanzapp.business.GroupBean;
 
-/**
- * GroupsDataSource class.
- */
 public class GroupsDataSource extends AbstractDataSource {
 
     private static final String LOG_TAG = GroupsDataSource.class.getSimpleName();
 
-    /**
-     * The DBHelper instance.
-     */
     private DBHelper dbHelper;
 
-    /**
-     * The profile id to identify the Profile.
-     */
     private long profileId;
 
-    /**
-     * Create a new GroupsDataSource.
-     *
-     * @param context the application context.
-     */
     public GroupsDataSource(Context context, long profileId) {
         Log.d(LOG_TAG, "--> Create GroupsDataSource.");
         this.profileId = profileId;
@@ -40,9 +26,6 @@ public class GroupsDataSource extends AbstractDataSource {
         dbHelper.open();
     }
 
-    /**
-     * Returns a GroupBean.
-     */
     public GroupBean getBean(long id) {
         GroupBean group = null;
         Cursor cursor = dbHelper.getDatabase().query(GroupsDBHelper.TABLE_NAME, GroupsDBHelper.COLUMNS,
@@ -54,9 +37,6 @@ public class GroupsDataSource extends AbstractDataSource {
         return group;
     }
 
-    /**
-     * Iterate over all database elements and store it to a List.
-     */
     @Override
     public List<AbstractBean> getBeans() {
         List<AbstractBean> groupList = new ArrayList<>();

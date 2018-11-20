@@ -11,32 +11,18 @@ import java.util.List;
 import wbh.finanzapp.business.AbstractBean;
 import wbh.finanzapp.business.ProfileBean;
 
-/**
- * ProfilesDataSource class.
- */
 public class ProfilesDataSource extends AbstractDataSource {
 
     private static final String LOG_TAG = ProfilesDataSource.class.getSimpleName();
 
-    /**
-     * The DBHelper instance.
-     */
     private final DBHelper dbHelper;
 
-    /**
-     * Create a new ProfilesDataSource.
-     *
-     * @param context the application context.
-     */
     public ProfilesDataSource(Context context) {
         Log.d(LOG_TAG, "--> Create ProfilesDataSource.");
         dbHelper = new DBHelper(context);
         dbHelper.open();
     }
 
-    /**
-     * Returns a ProfileBean.
-     */
     public ProfileBean getBean(long id) {
         ProfileBean profile = null;
         Cursor cursor = dbHelper.getDatabase().query(ProfilesDBHelper.TABLE_NAME, ProfilesDBHelper.COLUMNS,
@@ -48,9 +34,6 @@ public class ProfilesDataSource extends AbstractDataSource {
         return profile;
     }
 
-    /**
-     * Iterate over all database elements and store it to a List.
-     */
     @Override
     public List<AbstractBean> getBeans() {
         List<AbstractBean> profileList = new ArrayList<>();

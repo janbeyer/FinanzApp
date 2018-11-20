@@ -52,5 +52,34 @@
             tools:ignore="Autofill,LabelFor"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10sp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/transaction_amount"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:layout_marginEnd="5sp" />
+        <EditText
+            android:id="@+id/transaction_amount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal|numberSigned"
+            android:layout_weight="3"
+            android:text="0"
+            tools:ignore="Autofill,LabelFor"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/transaction_amount_unit"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:layout_marginEnd="5sp" />
+    </LinearLayout>
+
 
 </LinearLayout>

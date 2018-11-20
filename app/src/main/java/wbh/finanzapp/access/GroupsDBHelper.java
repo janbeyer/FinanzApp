@@ -1,6 +1,5 @@
 package wbh.finanzapp.access;
 
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 

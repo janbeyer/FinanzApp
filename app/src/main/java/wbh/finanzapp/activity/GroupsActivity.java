@@ -7,6 +7,7 @@ import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -33,7 +34,8 @@ public class GroupsActivity extends AbstractActivity {
         Button buttonAddGroup = findViewById(R.id.button_add_group);
 
         buttonAddGroup.setOnClickListener(view -> {
-            createDialog(R.string.group_add_title, new AddListener(), false);
+            View addView = super.createView(R.id.dialog_write_basic_root_view, R.layout.dialog_write_basic);
+            createDialog(addView, R.string.group_add_title, new AddListener(), false);
         });
         initializeContextualActionBar();
     }
@@ -139,9 +141,6 @@ public class GroupsActivity extends AbstractActivity {
         Log.d(LOG_TAG, "--> Insert new entry: " + newGroup.toString());
     }
 
-    /**
-     * Edit a group.
-     */
     public void editGroup(GroupBean group, String name, String description) {
         GroupBean updatedGroup = groupsDataSource.update(group.getId(), name, description);
         Log.d(LOG_TAG, "--> Update old entry: " + group.toString());
@@ -175,7 +174,8 @@ public class GroupsActivity extends AbstractActivity {
     }
 
     public void createEditGroupDialog(final GroupBean group) {
-        createDialog(R.string.group_edit_title, new EditListener(group), true);
+        View editView = super.createView(R.id.dialog_write_basic_root_view, R.layout.dialog_write_basic);
+        createDialog(editView, R.string.group_edit_title, new EditListener(group), true);
         textNameInputField.setText(group.getName());
         textDescriptionInputField.setText(group.getDescription());
     }

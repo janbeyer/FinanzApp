@@ -1,20 +1,15 @@
 package wbh.finanzapp.business;
 
-/**
- * The ProfileBean class store every properties of a single Profile.
- */
 public class ProfileBean extends AbstractBean {
 
-    /**
-     * The last use time stamp.
-     */
-    private final long lastUse;
+    private final long lastUse; // Date value.
 
-    /**
-     * Create a new ProfileBean.
-     */
     public ProfileBean(long id, String name, String description, long lastUse) {
         super(id, name, description);
         this.lastUse = lastUse;
+    }
+
+    public long getLastUse() {
+        return lastUse;
     }
 }

@@ -4,11 +4,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -37,7 +40,8 @@ public class ProfilesActivity extends AbstractActivity {
         profileDataSource = new ProfilesDataSource(this);
         Button buttonAddProfile = findViewById(R.id.button_add_profile);
         buttonAddProfile.setOnClickListener(view -> {
-            createDialog(R.string.profile_add_title, new AddListener(), false);
+            View addView = super.createView(R.id.dialog_write_basic_root_view, R.layout.dialog_write_basic);
+            createDialog(addView, R.string.profile_add_title, new AddListener(), false);
         });
         initializeContextualActionBar();
     }
@@ -159,18 +163,12 @@ public class ProfilesActivity extends AbstractActivity {
         Log.d(LOG_TAG, "--> Insert new entry: " + newProfile.toString());
     }
 
-    /**
-     * Edit an existing profile in the profile view.
-     */
     public void editProfile(ProfileBean profile, String name, String description) {
         ProfileBean updatedProfile = profileDataSource.update(profile.getId(), name, description);
         Log.d(LOG_TAG, "--> Update old entry: " + profile.toString());
         Log.d(LOG_TAG, "--> Update new entry: " + updatedProfile.toString());
     }
 
-    /**
-     * Add listener class.
-     */
     class AddListener extends CustomListener {
         @Override
         public void onClick(DialogInterface dialog, int which) {
@@ -181,9 +179,6 @@ public class ProfilesActivity extends AbstractActivity {
         }
     }
 
-    /**
-     * Edit listener class.
-     */
     class EditListener extends CustomListener {
         ProfileBean profile;
 
@@ -200,11 +195,9 @@ public class ProfilesActivity extends AbstractActivity {
         }
     }
 
-    /**
-     * Create a new edit profile dialog.
-     */
     public void createEditProfileDialog(final ProfileBean profile) {
-        createDialog(R.string.profile_edit_title, new EditListener(profile), true);
+        View editView = super.createView(R.id.dialog_write_basic_root_view, R.layout.dialog_write_basic);
+        createDialog(editView, R.string.profile_edit_title, new EditListener(profile), true);
         textNameInputField.setText(profile.getName());
         textDescriptionInputField.setText(profile.getDescription());
     }
