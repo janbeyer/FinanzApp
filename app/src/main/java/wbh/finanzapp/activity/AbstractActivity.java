@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.List;
@@ -138,6 +139,9 @@ public abstract class AbstractActivity extends AppCompatActivity {
             if(curView instanceof EditText) {
                 EditText curTextField = (EditText) curView;
                 if(!TextUtils.isEmpty(curTextField.getError())) return false;
+            } else if(curView instanceof Spinner) {
+                Spinner curSpinner = (Spinner) curView;
+                if(curSpinner.getSelectedItem().equals(getString(R.string.group_default_empty))) return false;
             } else if(!checkIfViewIsErrorFree(curView)) {
                 return false;
             }

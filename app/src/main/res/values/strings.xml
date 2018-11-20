@@ -76,6 +76,7 @@
     <string name="group_edit_title">Edit a group</string>
     <string name="group_delete_title">Delete a group</string>
 
+    <string name="group_default_empty">&lt;No groups available&gt;</string>
     <string name="group_default_housekeeping_name">Housekeeping</string>
     <string name="group_default_housekeeping_descr">Housekeeping transactions</string>
     <string name="group_default_groceries_name">Grocerie</string>
@@ -116,6 +117,7 @@
     <string name="transaction_amount_unit">Euro</string>
     <string name="transaction_amount_validation_error">Amount must not be empty or 0</string>
     <string name="transaction_group">Group</string>
+    <string name="transaction_group_validation_error">There must exist at least one group</string>
     <string name="transaction_state_unique">Uniquely at</string>
     <string name="transaction_state_daily">Daily</string>
     <string name="transaction_state_weekly">Weekly</string>
