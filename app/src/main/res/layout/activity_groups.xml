@@ -15,6 +15,7 @@
     <Button android:id="@+id/button_add_group"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/button_main"
         android:layout_alignParentBottom="true"
         android:text="@string/group_add_title" />
 

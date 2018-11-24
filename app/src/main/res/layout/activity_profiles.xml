@@ -12,15 +12,22 @@
     android:id="@+id/activity_profile_root_element"
     tools:context=".activity.ProfilesActivity">
 
-    <Button android:id="@+id/button_add_profile"
+    <Button
+        android:id="@+id/button_add_profile"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/profile_add_title" />
+        android:background="@drawable/button_main"
+        android:text="@string/profile_add_title"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
 
     <ListView
+        android:id="@+id/list_view_profiles"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/list_view_profiles"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:scrollbars="vertical" />
 
 </LinearLayout>
