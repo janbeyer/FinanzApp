@@ -113,6 +113,7 @@
     <string name="transaction_edit_title">Edit a transaction</string>
     <string name="transaction_delete_title">Delete a transaction</string>
 
+    <string name="transaction_state">Transaction state</string>
     <string name="transaction_amount">Amount</string>
     <string name="transaction_amount_unit">Euro</string>
     <string name="transaction_amount_validation_error">Amount must not be empty or 0</string>
@@ -123,5 +124,10 @@
     <string name="transaction_state_weekly">Weekly</string>
     <string name="transaction_state_monthly">Monthly at</string>
     <string name="transaction_state_yearly">Yearly at</string>
+
+    <string name="analysis_start_button">Start analysis</string>
+    <string name="analysis_activity_title">Analysis</string>
+    <string name="transaction_date_init">2000:01:01</string>
+
 
 </resources>

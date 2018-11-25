@@ -1,6 +1,8 @@
 package wbh.finanzapp.activity;
 
 import android.annotation.SuppressLint;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
@@ -16,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
@@ -53,6 +56,8 @@ public class TransactionsActivity extends AbstractActivity {
      */
     private RadioGroup radioGroup;
 
+    private TransactionStates transactionStates;
+
     @SuppressWarnings("CodeBlock2Expr")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +67,8 @@ public class TransactionsActivity extends AbstractActivity {
 
         transactionsDataSource = new TransactionsDataSource(this, ProfileMemory.getCurProfileBean().getId());
         groupsDataSource = new GroupsDataSource(this, ProfileMemory.getCurProfileBean().getId());
+
+        transactionStates = new TransactionStates();
 
         Button buttonAddTransaction = findViewById(R.id.button_add_transaction);
         buttonAddTransaction.setOnClickListener(view -> {
@@ -170,9 +177,9 @@ public class TransactionsActivity extends AbstractActivity {
 
 
     /**
-     * Add an Transaction.
+     * Helper class for Transaction date states.
      */
-    public void addTransaction(String name, String description, double amount, long groupId) {
+    class TransactionStates {
         // state can be: 1=unique; 2=daily; 3=weekly;  4=monthly;  5=yearly
         int state = 0;
 
@@ -192,31 +199,42 @@ public class TransactionsActivity extends AbstractActivity {
         int yearlyMonth = 0;
         int yearlyDay = 0;
 
+        void checkStates(int rbDateMode) {
+            if(rbDateMode == R.id.rb_unique) {
+                Log.d(LOG_TAG, "--> The selected rb state: unique");
+                state = 1;
+            } else if(rbDateMode == R.id.rb_daily) {
+                Log.d(LOG_TAG, "--> The selected rb state: daily");
+                state = 2;
+            } else if(rbDateMode == R.id.rb_weekly) {
+                Log.d(LOG_TAG, "--> The selected rb state: weekly");
+                state = 3;
+                dayOfWeek = 1;
+            } else if(rbDateMode == R.id.rb_monthly) {
+                Log.d(LOG_TAG, "--> The selected rb state: monthly");
+                state = 4;
+                monthlyDay = 1;
+            } else if(rbDateMode == R.id.rb_yearly) {
+                Log.d(LOG_TAG, "--> The selected rb state: yearly");
+                state = 5;
+                yearlyMonth = 1;
+                yearlyDay = 1;
+            }
+        }
+    }
+
+    /**
+     * Add an Transaction.
+     */
+    public void addTransaction(String name, String description, double amount, long groupId) {
+
         // Check the radio button state
         int rbDateMode = radioGroup.getCheckedRadioButtonId();
-        if(rbDateMode == R.id.rb_unique) {
-            Log.d(LOG_TAG, "--> The selected rb state: unique");
-            state = 1;
-            uniqueDate = new Date().getTime();
-        } else if(rbDateMode == R.id.rb_daily) {
-            Log.d(LOG_TAG, "--> The selected rb state: daily");
-            state = 2;
-        } else if(rbDateMode == R.id.rb_weekly) {
-            Log.d(LOG_TAG, "--> The selected rb state: weekly");
-            state = 3;
-            dayOfWeek = 1;
-        } else if(rbDateMode == R.id.rb_monthly) {
-            Log.d(LOG_TAG, "--> The selected rb state: monthly");
-            state = 4;
-            monthlyDay = 1;
-        } else if(rbDateMode == R.id.rb_yearly) {
-            Log.d(LOG_TAG, "--> The selected rb state: yearly");
-            state = 5;
-            yearlyMonth = 1;
-            yearlyDay = 1;
-        }
+        transactionStates.checkStates(rbDateMode);
+        Date date = new Date(transactionStates.uniqueDate);
+        Log.d(LOG_TAG, "--> Date: " + date);
 
-        TransactionBean newTransaction = transactionsDataSource.insert(name, description, groupId, amount, state, uniqueDate, dayOfWeek, monthlyDay, yearlyMonth, yearlyDay);
+        TransactionBean newTransaction = transactionsDataSource.insert(name, description, groupId, amount, transactionStates.state, transactionStates.uniqueDate, transactionStates.dayOfWeek, transactionStates.monthlyDay, transactionStates.yearlyMonth, transactionStates.yearlyDay);
         Log.d(LOG_TAG, "--> Insert new entry: " + newTransaction.toString());
     }
 
@@ -261,8 +279,6 @@ public class TransactionsActivity extends AbstractActivity {
         // activate the first radio button in the group which is daily because
         // in this state no date picker is needed
         radioGroup.check(R.id.rb_daily);
-
-
 
         // Fill the spinner drop down box with the groups
         fillGroupSpinner();
@@ -317,6 +333,43 @@ public class TransactionsActivity extends AbstractActivity {
                 }
             }
         });
+    }
+
+    /**
+     * Called when an Transaction RadioButton is clicked
+     */
+    public void onRadioButtonClicked(View view) {
+        // 1 = Unique --> DatePicker    --> Default current date
+        // 3 = Weekly --> Dropdown box (1 ...  7) --> Default is Monday
+        // 4 = Monthly--> Dropdown box (1 ... 31) --> Default is 1
+        // 5 = Yearly --> Dropdown box (1 ... 12) --> Default is 1
+        //            --> Dropdown box (1 ... 31) --> Default is 1
+        boolean checked = ((RadioButton) view).isChecked();
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.rb_unique:
+                if (checked) {
+                    DateDialog dateDialog = new DateDialog();
+                    dateDialog.setTransactionStates(transactionStates);
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    dateDialog.show(transaction, "Date Dialog");
+                    break;
+                }
+            case R.id.rb_weekly:
+                if (checked) {
+                    break;
+                }
+            case R.id.rb_monthly:
+                if (checked) {
+                    break;
+                }
+            case R.id.rb_yearly:
+                if (checked) {
+                    break;
+                }
+        }
+
     }
 
     public void createEditTransactionDialog(final TransactionBean transaction) {

@@ -107,7 +107,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/transaction_add_title"
+            android:text="@string/transaction_state"
             android:layout_weight="1"
             android:layout_marginEnd="5sp" />
         <RadioGroup
@@ -121,36 +121,48 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/transaction_state_unique" />
+                android:text="@string/transaction_state_unique"
+                android:onClick="onRadioButtonClicked"/>
 
             <RadioButton
                 android:id="@+id/rb_daily"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/transaction_state_daily" />
+                android:text="@string/transaction_state_daily"
+                android:onClick="onRadioButtonClicked"/>
 
             <RadioButton
                 android:id="@+id/rb_weekly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/transaction_state_weekly" />
+                android:text="@string/transaction_state_weekly"
+                android:onClick="onRadioButtonClicked"/>
 
             <RadioButton
                 android:id="@+id/rb_monthly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/transaction_state_monthly" />
+                android:text="@string/transaction_state_monthly"
+                android:onClick="onRadioButtonClicked"/>
 
             <RadioButton
                 android:id="@+id/rb_yearly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/transaction_state_yearly" />
+                android:text="@string/transaction_state_yearly"
+                android:onClick="onRadioButtonClicked"/>
         </RadioGroup>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/transaction_date_init"
+            android:layout_weight="1"
+            android:layout_marginEnd="5sp" />
 
     </LinearLayout>
 
