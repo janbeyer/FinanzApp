@@ -14,3 +14,5 @@ local.properties
 .idea/runConfigurations.xml
 .externalNativeBuild
 .idea/caches/build_file_checksums.ser
+.idea/codeStyles/Project.xml
+.idea/inspectionProfiles/Project_Default.xml
