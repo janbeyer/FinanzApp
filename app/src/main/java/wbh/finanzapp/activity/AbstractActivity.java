@@ -85,6 +85,13 @@ public abstract class AbstractActivity extends AppCompatActivity {
     }
 
     public void createDialog(View view, int titleId, CustomListener listener, boolean edit) {
+        // if an field is an obligation field we have to do 2 steps
+        // 1. deactivate the save button at the beginning
+        // 2. add an OnKeyListener to activate the button, if an valid input is done
+
+        // 1. set the field to red because it is obligation field
+        // in edit dialogs the text is set to the previous data
+        // in that case the text is not empty
         AlertDialog.Builder builder = createBuilder(view, titleId, listener);
 
         AlertDialog dialog = builder.create();

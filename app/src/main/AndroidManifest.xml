@@ -36,6 +36,12 @@
             android:label="@string/transaction_title" >
         </activity>
 
+        <activity
+            android:name=".activity.AnalysisActivity"
+            android:parentActivityName=".activity.MenuActivity"
+            android:label="@string/analysis_activity_title">
+        </activity>
+
     </application>
 
 </manifest>

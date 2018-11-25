@@ -1,5 +1,8 @@
 package wbh.finanzapp.activity;
 
+import android.annotation.SuppressLint;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,6 +18,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import java.util.Date;
@@ -30,6 +35,7 @@ import wbh.finanzapp.business.GroupBean;
 import wbh.finanzapp.business.TransactionBean;
 import wbh.finanzapp.util.ProfileMemory;
 
+@SuppressWarnings("Convert2Diamond")
 public class TransactionsActivity extends AbstractActivity {
 
     private static final String LOG_TAG = TransactionsActivity.class.getSimpleName();
@@ -37,10 +43,20 @@ public class TransactionsActivity extends AbstractActivity {
     private TransactionsDataSource transactionsDataSource;
     private GroupsDataSource groupsDataSource;
 
-    protected EditText textAmountInputField;
+    private EditText textAmountInputField;
 
-    protected Map<Integer, Long> spinnerGroupMap;
-    protected Spinner spinnerGroups;
+    /**
+     * Contains all the defined Groups
+     */
+    private Map<Integer, Long> spinnerGroupMap;
+    private Spinner spinnerGroups;
+
+    /**
+     * Contains the radio group with the Transaction date options.
+     */
+    private RadioGroup radioGroup;
+
+    private TransactionStates transactionStates;
 
     @SuppressWarnings("CodeBlock2Expr")
     @Override
@@ -51,6 +67,8 @@ public class TransactionsActivity extends AbstractActivity {
 
         transactionsDataSource = new TransactionsDataSource(this, ProfileMemory.getCurProfileBean().getId());
         groupsDataSource = new GroupsDataSource(this, ProfileMemory.getCurProfileBean().getId());
+
+        transactionStates = new TransactionStates();
 
         Button buttonAddTransaction = findViewById(R.id.button_add_transaction);
         buttonAddTransaction.setOnClickListener(view -> {
@@ -157,12 +175,66 @@ public class TransactionsActivity extends AbstractActivity {
         });
     }
 
-    public void addTransaction(String name, String description, double amount, long groupId) {
-        // MOCK DATA.
-        int state = 1;
+
+    /**
+     * Helper class for Transaction date states.
+     */
+    class TransactionStates {
+        // state can be: 1=unique; 2=daily; 3=weekly;  4=monthly;  5=yearly
+        int state = 0;
+
+        // 1 = Unique --> DatePicker    --> Default current date
         long uniqueDate = new Date().getTime();
 
-        TransactionBean newTransaction = transactionsDataSource.insert(name, description, groupId, amount, state, uniqueDate, null, null, null, null);
+        // 2 = Daily
+
+        // 3 = Weekly --> Dropdown box (1 ...  7) --> Default is Monday
+        int dayOfWeek = 0;
+
+        // 4 = Monthly--> Dropdown box (1 ... 31) --> Default is 1
+        int monthlyDay = 0;
+
+        // 5 = Yearly --> Dropdown box (1 ... 12) --> Default is 1
+        //            --> Dropdown box (1 ... 31) --> Default is 1
+        int yearlyMonth = 0;
+        int yearlyDay = 0;
+
+        void checkStates(int rbDateMode) {
+            if(rbDateMode == R.id.rb_unique) {
+                Log.d(LOG_TAG, "--> The selected rb state: unique");
+                state = 1;
+            } else if(rbDateMode == R.id.rb_daily) {
+                Log.d(LOG_TAG, "--> The selected rb state: daily");
+                state = 2;
+            } else if(rbDateMode == R.id.rb_weekly) {
+                Log.d(LOG_TAG, "--> The selected rb state: weekly");
+                state = 3;
+                dayOfWeek = 1;
+            } else if(rbDateMode == R.id.rb_monthly) {
+                Log.d(LOG_TAG, "--> The selected rb state: monthly");
+                state = 4;
+                monthlyDay = 1;
+            } else if(rbDateMode == R.id.rb_yearly) {
+                Log.d(LOG_TAG, "--> The selected rb state: yearly");
+                state = 5;
+                yearlyMonth = 1;
+                yearlyDay = 1;
+            }
+        }
+    }
+
+    /**
+     * Add an Transaction.
+     */
+    public void addTransaction(String name, String description, double amount, long groupId) {
+
+        // Check the radio button state
+        int rbDateMode = radioGroup.getCheckedRadioButtonId();
+        transactionStates.checkStates(rbDateMode);
+        Date date = new Date(transactionStates.uniqueDate);
+        Log.d(LOG_TAG, "--> Date: " + date);
+
+        TransactionBean newTransaction = transactionsDataSource.insert(name, description, groupId, amount, transactionStates.state, transactionStates.uniqueDate, transactionStates.dayOfWeek, transactionStates.monthlyDay, transactionStates.yearlyMonth, transactionStates.yearlyDay);
         Log.d(LOG_TAG, "--> Insert new entry: " + newTransaction.toString());
     }
 
@@ -176,11 +248,12 @@ public class TransactionsActivity extends AbstractActivity {
         Log.d(LOG_TAG, "--> Update new entry: " + updatedTransaction.toString());
     }
 
+    @SuppressLint("UseSparseArrays")
     private void fillGroupSpinner() {
         List<AbstractBean> groups = groupsDataSource.getBeans();
         spinnerGroupMap = new HashMap<Integer, Long>();
         String[] spinnerArray;
-        if(groups.size() == 0) {
+        if (groups.size() == 0) {
             spinnerArray = new String[1];
             spinnerArray[0] = getString(R.string.group_default_empty);
         } else {
@@ -191,7 +264,7 @@ public class TransactionsActivity extends AbstractActivity {
                 spinnerArray[i] = curGroup.getName();
             }
         }
-        ArrayAdapter<String> groupsAdapter =new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
+        ArrayAdapter<String> groupsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
         spinnerGroups.setAdapter(groupsAdapter);
     }
 
@@ -201,19 +274,25 @@ public class TransactionsActivity extends AbstractActivity {
 
         textAmountInputField = view.findViewById(R.id.transaction_amount);
         spinnerGroups = view.findViewById(R.id.transaction_group);
+        radioGroup = view.findViewById(R.id.transaction_rb);
 
-        // Fill inputs.
+        // activate the first radio button in the group which is daily because
+        // in this state no date picker is needed
+        radioGroup.check(R.id.rb_daily);
+
+        // Fill the spinner drop down box with the groups
         fillGroupSpinner();
 
         // Initial validation by create a new bean.
-        if(!edit) {
+        if (!edit) {
             textAmountInputField.setError(getString(R.string.transaction_amount_validation_error));
         }
 
         // Validation of the amount.
         textAmountInputField.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+            }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
@@ -221,9 +300,11 @@ public class TransactionsActivity extends AbstractActivity {
                 Double amount = null;
                 try {
                     amount = Double.parseDouble(amountStr);
-                } catch (NumberFormatException e) {}
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
 
-                if(amountStr == null || amountStr.isEmpty() || amountStr.equals("-") || amountStr.endsWith(".") || (amount != null && amount == 0.0)) {
+                if (amountStr.isEmpty() || amountStr.equals("-") || amountStr.endsWith(".") || (amount != null && amount == 0.0)) {
                     textAmountInputField.setError(getString(R.string.transaction_amount_validation_error));
                     saveButton.setEnabled(false);
                 } else {
@@ -238,11 +319,13 @@ public class TransactionsActivity extends AbstractActivity {
                 Double amount = null;
                 try {
                     amount = Double.parseDouble(amountStr);
-                } catch (NumberFormatException e) {}
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
 
-                if(amount != null) {
+                if (amount != null) {
                     int decimalAmount = (int) (amount * 100);
-                    if((amount * 100) != ((double) decimalAmount)) {
+                    if ((amount * 100) != ((double) decimalAmount)) {
                         String newText = "" + ((double) decimalAmount / 100);
                         textAmountInputField.setText(newText);
                         textAmountInputField.setSelection(newText.length());
@@ -252,14 +335,53 @@ public class TransactionsActivity extends AbstractActivity {
         });
     }
 
+    /**
+     * Called when an Transaction RadioButton is clicked
+     */
+    public void onRadioButtonClicked(View view) {
+        // 1 = Unique --> DatePicker    --> Default current date
+        // 3 = Weekly --> Dropdown box (1 ...  7) --> Default is Monday
+        // 4 = Monthly--> Dropdown box (1 ... 31) --> Default is 1
+        // 5 = Yearly --> Dropdown box (1 ... 12) --> Default is 1
+        //            --> Dropdown box (1 ... 31) --> Default is 1
+        boolean checked = ((RadioButton) view).isChecked();
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.rb_unique:
+                if (checked) {
+                    DateDialog dateDialog = new DateDialog();
+                    dateDialog.setTransactionStates(transactionStates);
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    dateDialog.show(transaction, "Date Dialog");
+                    break;
+                }
+            case R.id.rb_weekly:
+                if (checked) {
+                    break;
+                }
+            case R.id.rb_monthly:
+                if (checked) {
+                    break;
+                }
+            case R.id.rb_yearly:
+                if (checked) {
+                    break;
+                }
+        }
+
+    }
+
     public void createEditTransactionDialog(final TransactionBean transaction) {
         View editView = super.createView(R.id.dialog_write_transaction_root_view, R.layout.dialog_write_transaction);
         createDialog(editView, R.string.transaction_edit_title, new EditListener(transaction), true);
         textNameInputField.setText(transaction.getName());
         textDescriptionInputField.setText(transaction.getDescription());
-        textAmountInputField.setText("" + transaction.getAmount());
+        double d = transaction.getAmount();
+        textAmountInputField.setText(String.valueOf(d));
+
         spinnerGroups.setSelection(
-            spinnerGroupMap.entrySet().stream().filter(e -> e.getValue() == transaction.getGroupId()).findFirst().get().getKey()
+                spinnerGroupMap.entrySet().stream().filter(e -> e.getValue() == transaction.getGroupId()).findFirst().get().getKey()
         );
     }
 
@@ -269,8 +391,8 @@ public class TransactionsActivity extends AbstractActivity {
 
     class AddListener extends CustomListener {
 
-        protected double amount;
-        protected long groupId;
+        double amount;
+        long groupId;
 
         @Override
         public void onClick(DialogInterface dialog, int which) {
@@ -285,10 +407,11 @@ public class TransactionsActivity extends AbstractActivity {
 
     class EditListener extends CustomListener {
 
-        protected double amount;
-        protected long groupId;
+        double amount;
+        long groupId;
 
         TransactionBean transaction;
+
         EditListener(TransactionBean transaction) {
             this.transaction = transaction;
         }

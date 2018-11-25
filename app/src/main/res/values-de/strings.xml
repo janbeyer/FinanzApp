@@ -111,6 +111,7 @@
     <string name="transaction_edit_title">Transaktion editieren</string>
     <string name="transaction_delete_title">Transaktion löschen</string>
 
+    <string name="transaction_state">Transaktionen Status</string>
     <string name="transaction_amount">Betrag</string>
     <string name="transaction_amount_unit">Euro</string>
     <string name="transaction_amount_validation_error">Der Betrag darf nicht leer oder 0 sein</string>
@@ -121,5 +122,9 @@
     <string name="transaction_state_weekly">Wöchentlich am</string>
     <string name="transaction_state_monthly">Monatlich am</string>
     <string name="transaction_state_yearly">Jährlich am</string>
+
+    <string name="analysis_start_button">Analyse starten</string>
+    <string name="analysis_activity_title">Analyse</string>
+    <string name="transaction_date_init">01.01.2000</string>
 
 </resources>
