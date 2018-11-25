@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import java.util.Date;
@@ -47,7 +48,10 @@ public class TransactionsActivity extends AbstractActivity {
     private Map<Integer, Long> spinnerGroupMap;
     private Spinner spinnerGroups;
 
-//    private RadioGroup radioGroup;
+    /**
+     * Contains the radio group with the Transaction date options.
+     */
+    private RadioGroup radioGroup;
 
     @SuppressWarnings("CodeBlock2Expr")
     @Override
@@ -164,19 +168,55 @@ public class TransactionsActivity extends AbstractActivity {
         });
     }
 
+
     /**
      * Add an Transaction.
      */
     public void addTransaction(String name, String description, double amount, long groupId) {
-        // MOCK DATA.
-        int state = 1;
-        long uniqueDate = new Date().getTime();
-//        long dayOfWeek = new Date().getTime();
-//        long monthlyDay = new Date().getTime();
-//        long yearlyMonth = new Date().getTime();
-//        long yearlyDay = new Date().getTime();
+        // state can be: 1=unique; 2=daily; 3=weekly;  4=monthly;  5=yearly
+        int state = 0;
 
-        TransactionBean newTransaction = transactionsDataSource.insert(name, description, groupId, amount, state, uniqueDate, null, null, null, null);
+        // 1 = Unique --> DatePicker    --> Default current date
+        long uniqueDate = new Date().getTime();
+
+        // 2 = Daily
+
+        // 3 = Weekly --> Dropdown box (1 ...  7) --> Default is Monday
+        int dayOfWeek = 0;
+
+        // 4 = Monthly--> Dropdown box (1 ... 31) --> Default is 1
+        int monthlyDay = 0;
+
+        // 5 = Yearly --> Dropdown box (1 ... 12) --> Default is 1
+        //            --> Dropdown box (1 ... 31) --> Default is 1
+        int yearlyMonth = 0;
+        int yearlyDay = 0;
+
+        // Check the radio button state
+        int rbDateMode = radioGroup.getCheckedRadioButtonId();
+        if(rbDateMode == R.id.rb_unique) {
+            Log.d(LOG_TAG, "--> The selected rb state: unique");
+            state = 1;
+            uniqueDate = new Date().getTime();
+        } else if(rbDateMode == R.id.rb_daily) {
+            Log.d(LOG_TAG, "--> The selected rb state: daily");
+            state = 2;
+        } else if(rbDateMode == R.id.rb_weekly) {
+            Log.d(LOG_TAG, "--> The selected rb state: weekly");
+            state = 3;
+            dayOfWeek = 1;
+        } else if(rbDateMode == R.id.rb_monthly) {
+            Log.d(LOG_TAG, "--> The selected rb state: monthly");
+            state = 4;
+            monthlyDay = 1;
+        } else if(rbDateMode == R.id.rb_yearly) {
+            Log.d(LOG_TAG, "--> The selected rb state: yearly");
+            state = 5;
+            yearlyMonth = 1;
+            yearlyDay = 1;
+        }
+
+        TransactionBean newTransaction = transactionsDataSource.insert(name, description, groupId, amount, state, uniqueDate, dayOfWeek, monthlyDay, yearlyMonth, yearlyDay);
         Log.d(LOG_TAG, "--> Insert new entry: " + newTransaction.toString());
     }
 
@@ -216,8 +256,15 @@ public class TransactionsActivity extends AbstractActivity {
 
         textAmountInputField = view.findViewById(R.id.transaction_amount);
         spinnerGroups = view.findViewById(R.id.transaction_group);
+        radioGroup = view.findViewById(R.id.transaction_rb);
 
-        // Fill inputs.
+        // activate the first radio button in the group which is daily because
+        // in this state no date picker is needed
+        radioGroup.check(R.id.rb_daily);
+
+
+
+        // Fill the spinner drop down box with the groups
         fillGroupSpinner();
 
         // Initial validation by create a new bean.

@@ -39,7 +39,7 @@
         <activity
             android:name=".activity.AnalysisActivity"
             android:parentActivityName=".activity.MenuActivity"
-            android:label="@string/analysis_title">
+            android:label="@string/analysis_activity_title">
         </activity>
 
     </application>

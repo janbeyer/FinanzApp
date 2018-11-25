@@ -7,7 +7,9 @@ public class TransactionBean extends AbstractBean {
 
     private final double amount;
 
-    private final int state;            // 1=unique;2=daily;3=weekly;4=monthly;5=yearly.
+    // 1=unique;2=daily;3=weekly;4=monthly;5=yearly.
+    private final int state;
+
     private final Long uniqueDate;      // Set if state is 1 = unique.
     private final Integer dayOfWeek;    // Set if state is 3 = weekly.
     private final Integer monthlyDay;   // Set if state is 4 = monthly.
@@ -63,5 +65,10 @@ public class TransactionBean extends AbstractBean {
 
     public Integer getYearlyDay() {
         return yearlyDay;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + ": " + amount + " Date: " + state;
     }
 }
