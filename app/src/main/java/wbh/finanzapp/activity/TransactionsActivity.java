@@ -1,5 +1,6 @@
 package wbh.finanzapp.activity;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
@@ -30,6 +31,7 @@ import wbh.finanzapp.business.GroupBean;
 import wbh.finanzapp.business.TransactionBean;
 import wbh.finanzapp.util.ProfileMemory;
 
+@SuppressWarnings("Convert2Diamond")
 public class TransactionsActivity extends AbstractActivity {
 
     private static final String LOG_TAG = TransactionsActivity.class.getSimpleName();
@@ -37,10 +39,15 @@ public class TransactionsActivity extends AbstractActivity {
     private TransactionsDataSource transactionsDataSource;
     private GroupsDataSource groupsDataSource;
 
-    protected EditText textAmountInputField;
+    private EditText textAmountInputField;
 
-    protected Map<Integer, Long> spinnerGroupMap;
-    protected Spinner spinnerGroups;
+    /**
+     * Contains all the defined Groups
+     */
+    private Map<Integer, Long> spinnerGroupMap;
+    private Spinner spinnerGroups;
+
+//    private RadioGroup radioGroup;
 
     @SuppressWarnings("CodeBlock2Expr")
     @Override
@@ -157,10 +164,17 @@ public class TransactionsActivity extends AbstractActivity {
         });
     }
 
+    /**
+     * Add an Transaction.
+     */
     public void addTransaction(String name, String description, double amount, long groupId) {
         // MOCK DATA.
         int state = 1;
         long uniqueDate = new Date().getTime();
+//        long dayOfWeek = new Date().getTime();
+//        long monthlyDay = new Date().getTime();
+//        long yearlyMonth = new Date().getTime();
+//        long yearlyDay = new Date().getTime();
 
         TransactionBean newTransaction = transactionsDataSource.insert(name, description, groupId, amount, state, uniqueDate, null, null, null, null);
         Log.d(LOG_TAG, "--> Insert new entry: " + newTransaction.toString());
@@ -176,11 +190,12 @@ public class TransactionsActivity extends AbstractActivity {
         Log.d(LOG_TAG, "--> Update new entry: " + updatedTransaction.toString());
     }
 
+    @SuppressLint("UseSparseArrays")
     private void fillGroupSpinner() {
         List<AbstractBean> groups = groupsDataSource.getBeans();
         spinnerGroupMap = new HashMap<Integer, Long>();
         String[] spinnerArray;
-        if(groups.size() == 0) {
+        if (groups.size() == 0) {
             spinnerArray = new String[1];
             spinnerArray[0] = getString(R.string.group_default_empty);
         } else {
@@ -191,7 +206,7 @@ public class TransactionsActivity extends AbstractActivity {
                 spinnerArray[i] = curGroup.getName();
             }
         }
-        ArrayAdapter<String> groupsAdapter =new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
+        ArrayAdapter<String> groupsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
         spinnerGroups.setAdapter(groupsAdapter);
     }
 
@@ -206,14 +221,15 @@ public class TransactionsActivity extends AbstractActivity {
         fillGroupSpinner();
 
         // Initial validation by create a new bean.
-        if(!edit) {
+        if (!edit) {
             textAmountInputField.setError(getString(R.string.transaction_amount_validation_error));
         }
 
         // Validation of the amount.
         textAmountInputField.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+            }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
@@ -221,9 +237,11 @@ public class TransactionsActivity extends AbstractActivity {
                 Double amount = null;
                 try {
                     amount = Double.parseDouble(amountStr);
-                } catch (NumberFormatException e) {}
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
 
-                if(amountStr == null || amountStr.isEmpty() || amountStr.equals("-") || amountStr.endsWith(".") || (amount != null && amount == 0.0)) {
+                if (amountStr.isEmpty() || amountStr.equals("-") || amountStr.endsWith(".") || (amount != null && amount == 0.0)) {
                     textAmountInputField.setError(getString(R.string.transaction_amount_validation_error));
                     saveButton.setEnabled(false);
                 } else {
@@ -238,11 +256,13 @@ public class TransactionsActivity extends AbstractActivity {
                 Double amount = null;
                 try {
                     amount = Double.parseDouble(amountStr);
-                } catch (NumberFormatException e) {}
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
 
-                if(amount != null) {
+                if (amount != null) {
                     int decimalAmount = (int) (amount * 100);
-                    if((amount * 100) != ((double) decimalAmount)) {
+                    if ((amount * 100) != ((double) decimalAmount)) {
                         String newText = "" + ((double) decimalAmount / 100);
                         textAmountInputField.setText(newText);
                         textAmountInputField.setSelection(newText.length());
@@ -257,9 +277,11 @@ public class TransactionsActivity extends AbstractActivity {
         createDialog(editView, R.string.transaction_edit_title, new EditListener(transaction), true);
         textNameInputField.setText(transaction.getName());
         textDescriptionInputField.setText(transaction.getDescription());
-        textAmountInputField.setText("" + transaction.getAmount());
+        double d = transaction.getAmount();
+        textAmountInputField.setText(String.valueOf(d));
+
         spinnerGroups.setSelection(
-            spinnerGroupMap.entrySet().stream().filter(e -> e.getValue() == transaction.getGroupId()).findFirst().get().getKey()
+                spinnerGroupMap.entrySet().stream().filter(e -> e.getValue() == transaction.getGroupId()).findFirst().get().getKey()
         );
     }
 
@@ -269,8 +291,8 @@ public class TransactionsActivity extends AbstractActivity {
 
     class AddListener extends CustomListener {
 
-        protected double amount;
-        protected long groupId;
+        double amount;
+        long groupId;
 
         @Override
         public void onClick(DialogInterface dialog, int which) {
@@ -285,10 +307,11 @@ public class TransactionsActivity extends AbstractActivity {
 
     class EditListener extends CustomListener {
 
-        protected double amount;
-        protected long groupId;
+        double amount;
+        long groupId;
 
         TransactionBean transaction;
+
         EditListener(TransactionBean transaction) {
             this.transaction = transaction;
         }

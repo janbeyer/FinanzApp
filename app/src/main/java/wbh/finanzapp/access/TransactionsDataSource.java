@@ -65,6 +65,10 @@ public class TransactionsDataSource extends AbstractDataSource {
         return transaction;
     }
 
+    /**
+     * Update the Transaction entry in the Database.
+     * @return the updated Transaction as TransactionBean.
+     */
     public TransactionBean update(long id, String newName, String newDescription, long newGroupId, double newAmount, int newState, Long newUniqueDate, Integer newDayOfWeek, Integer newMonthlyDay, Integer newYearlyMonth, Integer newYearlyDay) {
         ContentValues values = createValues(id, newName, newDescription, profileId, newGroupId, newAmount, newState, newUniqueDate, newDayOfWeek, newMonthlyDay, newYearlyMonth, newYearlyDay);
         dbHelper.getDatabase().update(TransactionsDBHelper.TABLE_NAME, values, TransactionsDBHelper.COLUMN_ID + "=" + id, null);
@@ -81,7 +85,7 @@ public class TransactionsDataSource extends AbstractDataSource {
     public void delete(long transactionId) {
         dbHelper.getDatabase().delete(TransactionsDBHelper.TABLE_NAME, TransactionsDBHelper.COLUMN_ID + "=" + transactionId, null);
     }
-    
+
     @Override
     public TransactionBean cursorToBean(Cursor cursor) {
         int idIndex = cursor.getColumnIndex(TransactionsDBHelper.COLUMN_ID);
@@ -113,7 +117,7 @@ public class TransactionsDataSource extends AbstractDataSource {
         return new TransactionBean(id, name, description, profileId, groupId, amount, state, uniqueDate, dayOfWeek, monthlyDay, yearlyMonth, yearlyDay);
     }
 
-    public ContentValues createValues(Long id, String name, String description, long profileId, long groupId, double amount, int state, Long uniqueDate, Integer dayOfWeek, Integer monthlyDay, Integer yearlyMonth, Integer yearlyDay) {
+    private ContentValues createValues(Long id, String name, String description, long profileId, long groupId, double amount, int state, Long uniqueDate, Integer dayOfWeek, Integer monthlyDay, Integer yearlyMonth, Integer yearlyDay) {
         ContentValues values = new ContentValues();
         if (id != null) values.put(TransactionsDBHelper.COLUMN_ID, id);
         if (name != null) values.put(TransactionsDBHelper.COLUMN_NAME, name);
