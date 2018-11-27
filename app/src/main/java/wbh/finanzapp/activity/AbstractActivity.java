@@ -137,18 +137,13 @@ public abstract class AbstractActivity extends AppCompatActivity {
 
     private boolean checkIfViewIsErrorFree(View view) {
         ViewGroup viewGroup = null;
-        try {
-            viewGroup = (ViewGroup) view;
-        } catch (ClassCastException e) {}
+        try { viewGroup = (ViewGroup) view; } catch (ClassCastException e) {}
         if(viewGroup == null || viewGroup.getChildCount() == 0) return true;
         for(int i = 0; i < viewGroup.getChildCount(); ++i) {
             View curView = viewGroup.getChildAt(i);
             if(curView instanceof EditText) {
                 EditText curTextField = (EditText) curView;
                 if(!TextUtils.isEmpty(curTextField.getError())) return false;
-            } else if(curView instanceof Spinner) {
-                Spinner curSpinner = (Spinner) curView;
-                if(curSpinner.getSelectedItem().equals(getString(R.string.group_default_empty))) return false;
             } else if(!checkIfViewIsErrorFree(curView)) {
                 return false;
             }

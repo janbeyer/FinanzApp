@@ -77,7 +77,6 @@
     <string name="group_edit_title">Edit a group</string>
     <string name="group_delete_title">Delete a group</string>
 
-    <string name="group_default_empty">&lt;No groups available&gt;</string>
     <string name="group_default_housekeeping_name">Housekeeping</string>
     <string name="group_default_housekeeping_descr">Housekeeping transactions</string>
     <string name="group_default_groceries_name">Grocerie</string>

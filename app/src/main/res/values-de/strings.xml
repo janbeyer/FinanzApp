@@ -75,7 +75,6 @@
     <string name="group_edit_title">Gruppe bearbeiten</string>
     <string name="group_delete_title">Gruppe löschen</string>
 
-    <string name="group_default_empty">&lt;No groups available&gt;</string>
     <string name="group_default_housekeeping_name">Haushalt</string>
     <string name="group_default_housekeeping_descr">Transaktionen des Haushalts</string>
     <string name="group_default_groceries_name">Lebensmittel</string>

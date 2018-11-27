@@ -33,6 +33,7 @@ import wbh.finanzapp.access.TransactionsDataSource;
 import wbh.finanzapp.business.AbstractBean;
 import wbh.finanzapp.business.GroupBean;
 import wbh.finanzapp.business.TransactionBean;
+import wbh.finanzapp.util.DateDialog;
 import wbh.finanzapp.util.ProfileMemory;
 
 @SuppressWarnings("Convert2Diamond")
@@ -179,7 +180,7 @@ public class TransactionsActivity extends AbstractActivity {
     /**
      * Helper class for Transaction date states.
      */
-    class TransactionStates {
+    public class TransactionStates {
         // state can be: 1=unique; 2=daily; 3=weekly;  4=monthly;  5=yearly
         int state = 0;
 
@@ -221,6 +222,10 @@ public class TransactionsActivity extends AbstractActivity {
                 yearlyDay = 1;
             }
         }
+
+        public void setUniqueDate(long uniqueDate) {
+            this.uniqueDate = uniqueDate;
+        }
     }
 
     /**
@@ -252,17 +257,11 @@ public class TransactionsActivity extends AbstractActivity {
     private void fillGroupSpinner() {
         List<AbstractBean> groups = groupsDataSource.getBeans();
         spinnerGroupMap = new HashMap<Integer, Long>();
-        String[] spinnerArray;
-        if (groups.size() == 0) {
-            spinnerArray = new String[1];
-            spinnerArray[0] = getString(R.string.group_default_empty);
-        } else {
-            spinnerArray = new String[groups.size()];
-            for (int i = 0; i < groups.size(); i++) {
-                GroupBean curGroup = (GroupBean) groups.get(i);
-                spinnerGroupMap.put(i, curGroup.getId());
-                spinnerArray[i] = curGroup.getName();
-            }
+        String[] spinnerArray = new String[groups.size()];
+        for (int i = 0; i < groups.size(); i++) {
+            GroupBean curGroup = (GroupBean) groups.get(i);
+            spinnerGroupMap.put(i, curGroup.getId());
+            spinnerArray[i] = curGroup.getName();
         }
         ArrayAdapter<String> groupsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
         spinnerGroups.setAdapter(groupsAdapter);

@@ -6,17 +6,26 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.util.List;
+
 import wbh.finanzapp.R;
+import wbh.finanzapp.access.GroupsDataSource;
+import wbh.finanzapp.business.AbstractBean;
+import wbh.finanzapp.business.GroupBean;
+import wbh.finanzapp.util.ProfileMemory;
 
 public class MenuActivity extends AbstractActivity {
 
     private static final String LOG_TAG = MenuActivity.class.getSimpleName();
+
+    private GroupsDataSource groupsDataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(LOG_TAG, "--> onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        groupsDataSource = new GroupsDataSource(this, ProfileMemory.getCurProfileBean().getId());
         activateButtons();
     }
 
@@ -52,7 +61,9 @@ public class MenuActivity extends AbstractActivity {
 
     @SuppressWarnings("CodeBlock2Expr")
     private void activateButtons() {
+        List<AbstractBean> groupBeans = groupsDataSource.getBeans();
         Button buttonTransaction = findViewById(R.id.menu_button_transaction);
+        if(groupBeans.size() == 0) buttonTransaction.setEnabled(false);
         buttonTransaction.setOnClickListener(view -> {
             Intent myIntent = new Intent(this, TransactionsActivity.class);
             Log.d(LOG_TAG, "--> Start the groups activity.");
