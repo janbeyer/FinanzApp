@@ -15,7 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.List;
@@ -120,7 +119,7 @@ public abstract class AbstractActivity extends AppCompatActivity {
                     saveButton.setEnabled(false);
                 } else {
                     textNameInputField.setError(null);
-                    enableButtonIfErrorFree(view);
+                    enableSaveButtonIfErrorFree(view);
                 }
             }
 
@@ -129,13 +128,13 @@ public abstract class AbstractActivity extends AppCompatActivity {
         });
     }
 
-    public void enableButtonIfErrorFree(View view) {
+    public void enableSaveButtonIfErrorFree(View view) {
         if(checkIfViewIsErrorFree(view)) {
             saveButton.setEnabled(true);
         }
     }
 
-    private boolean checkIfViewIsErrorFree(View view) {
+    public boolean checkIfViewIsErrorFree(View view) {
         ViewGroup viewGroup = null;
         try { viewGroup = (ViewGroup) view; } catch (ClassCastException e) {}
         if(viewGroup == null || viewGroup.getChildCount() == 0) return true;

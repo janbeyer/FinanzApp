@@ -5,7 +5,7 @@
     <string name="dialog_button_ok">Ok</string>
     <string name="dialog_button_save">Speichern</string>
     <string name="dialog_button_cancel">Abbrechen</string>
-    <string name="dialog_button_start">Analyse starten</string>
+    <string name="dialog_button_start">Start</string>
 
     <string name="action_help">Hilfe</string>
 
@@ -51,6 +51,9 @@
         Anschließend drücken sie auf den SPEICHERN Button und die Transaktion wird angelegt.\n\n
         Möchten Sie den Vorgang abbrechen, drücken Sie im „Neue Transaktion hinzufügen“ Dialog auf ABBRECHEN.\n\n
         Sie können die Transaktion durch gedrückt halten auf die Transaktion, jederzeit wieder bearbeiten oder löschen, in dem sie darauf hin auf den Mülleimer zum Löschen oder den Stift zum Bearbeiten klicken.
+    </string>
+    <string name="help_analysis_text">
+        TODO: Definition des Hilfe Texts hier.
     </string>
 
     <!-- Profile properties -->
@@ -127,4 +130,7 @@
 
     <!-- Analysis properties -->
     <string name="analysis_title">Analyse</string>
+
+    <string name="analysis_startValue">Startbetrag</string>
+    <string name="analysis_startValue_validation_error">Der Startbetrag darf nicht leer sein</string>
 </resources>

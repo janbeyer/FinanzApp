@@ -296,19 +296,16 @@ public class TransactionsActivity extends AbstractActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
                 String amountStr = charSequence.toString();
+
                 Double amount = null;
-                try {
-                    amount = Double.parseDouble(amountStr);
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                }
+                try { amount = Double.parseDouble(amountStr); } catch (NumberFormatException e) { e.printStackTrace(); }
 
                 if (amountStr.isEmpty() || amountStr.equals("-") || amountStr.endsWith(".") || (amount != null && amount == 0.0)) {
                     textAmountInputField.setError(getString(R.string.transaction_amount_validation_error));
                     saveButton.setEnabled(false);
                 } else {
                     textAmountInputField.setError(null);
-                    enableButtonIfErrorFree(view);
+                    enableSaveButtonIfErrorFree(view);
                 }
             }
 
