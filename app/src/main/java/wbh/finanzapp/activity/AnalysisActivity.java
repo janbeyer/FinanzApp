@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.Date;
+
 import wbh.finanzapp.R;
 import wbh.finanzapp.access.TransactionsDataSource;
 import wbh.finanzapp.util.ProfileMemory;
@@ -26,6 +28,8 @@ public class AnalysisActivity extends AbstractActivity {
 
     private Button startButton;
     private EditText textStartValue;
+    private Long startDate = 1514761200000L; // 01.01.2018.
+    private Long endDate = 1609369200000L; // 31.12.2020.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +40,7 @@ public class AnalysisActivity extends AbstractActivity {
         transactionsDataSource = new TransactionsDataSource(this, ProfileMemory.getCurProfileBean().getId());
         startButton = findViewById(R.id.button_start_analysis);
         startButton.setOnClickListener(view -> {
-            Toast.makeText(this, "Start the analysis", Toast.LENGTH_LONG).show();
+            createAnalysisBean(startDate, endDate);
         });
 
         prepareFormElements();
@@ -102,4 +106,7 @@ public class AnalysisActivity extends AbstractActivity {
         }
     }
 
+    private void createAnalysisBean(long startDate, long endDate) {
+        // ToDo: Create the analysis bean here.
+    }
 }

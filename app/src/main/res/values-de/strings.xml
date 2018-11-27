@@ -133,4 +133,6 @@
 
     <string name="analysis_startValue">Startbetrag</string>
     <string name="analysis_startValue_validation_error">Der Startbetrag darf nicht leer sein</string>
+    <string name="analysis_startDate">Startdatum</string>
+    <string name="analysis_endDate">Enddatum</string>
 </resources>
