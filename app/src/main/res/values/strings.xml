@@ -5,6 +5,7 @@
     <string name="dialog_button_ok">Ok</string>
     <string name="dialog_button_save">Save</string>
     <string name="dialog_button_cancel">Cancel</string>
+    <string name="dialog_button_start">Start analysis</string>
 
     <string name="action_help">Help</string>
 
@@ -125,9 +126,8 @@
     <string name="transaction_state_monthly">Monthly at</string>
     <string name="transaction_state_yearly">Yearly at</string>
 
-    <string name="analysis_start_button">Start analysis</string>
-    <string name="analysis_activity_title">Analysis</string>
     <string name="transaction_date_init">2000:01:01</string>
 
-
+    <!-- Analysis properties -->
+    <string name="analysis_title">Analysis</string>
 </resources>

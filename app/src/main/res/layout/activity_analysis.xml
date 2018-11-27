@@ -15,7 +15,7 @@
     <Button android:id="@+id/button_start_analysis"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/start_analysis" />
+        android:text="@string/dialog_button_start" />
 
     <ListView
         android:layout_width="match_parent"
