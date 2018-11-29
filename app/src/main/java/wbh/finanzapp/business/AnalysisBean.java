@@ -1,16 +1,14 @@
 package wbh.finanzapp.business;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class AnalysisBean {
 
-    private CashFlow total;
-    private Map<Integer, CashFlow> groups;
+    private CashFlow total = new CashFlow();
+    private Map<Long, CashFlow> groups = new HashMap<>();
 
-    public AnalysisBean(CashFlow total, Map<Integer, CashFlow> groups) {
-        this.total = total;
-        this.groups = groups;
-    }
+    public AnalysisBean() {}
 
     public CashFlow getTotal() {
         return total;
@@ -20,22 +18,19 @@ public class AnalysisBean {
         this.total = total;
     }
 
-    public Map<Integer, CashFlow> getGroups() {
+    public Map<Long, CashFlow> getGroups() {
         return groups;
     }
 
-    public void setGroups(Map<Integer, CashFlow> groups) {
+    public void setGroups(Map<Long, CashFlow> groups) {
         this.groups = groups;
     }
 
-    class CashFlow {
-        private Statistic income;
-        private Statistic expenses;
+    public static class CashFlow {
+        private Statistic income = new Statistic();
+        private Statistic expenses = new Statistic();
 
-        public CashFlow(Statistic income, Statistic expenses) {
-            this.income = income;
-            this.expenses = expenses;
-        }
+        public CashFlow() {}
 
         public Statistic getIncome() {
             return income;
@@ -54,18 +49,11 @@ public class AnalysisBean {
         }
     }
 
-    class Statistic {
+    public static class Statistic {
         private int count;
-        private int sum;
-        private int average;
-        private int median;
+        private double sum ;
 
-        public Statistic(int count, int sum, int average, int median) {
-            this.count = count;
-            this.sum = sum;
-            this.average = average;
-            this.median = median;
-        }
+        public Statistic() {}
 
         public int getCount() {
             return count;
@@ -75,28 +63,16 @@ public class AnalysisBean {
             this.count = count;
         }
 
-        public int getSum() {
+        public double getSum() {
             return sum;
         }
 
-        public void setSum(int sum) {
+        public void setSum(double sum) {
             this.sum = sum;
         }
 
-        public int getAverage() {
-            return average;
-        }
-
-        public void setAverage(int average) {
-            this.average = average;
-        }
-
-        public int getMedian() {
-            return median;
-        }
-
-        public void setMedian(int median) {
-            this.median = median;
+        public double getAverage() {
+            return sum / count;
         }
     }
 }

@@ -10,10 +10,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import wbh.finanzapp.R;
 import wbh.finanzapp.access.TransactionsDataSource;
+import wbh.finanzapp.business.AbstractBean;
+import wbh.finanzapp.business.AnalysisBean;
+import wbh.finanzapp.business.TransactionBean;
 import wbh.finanzapp.util.ProfileMemory;
 
 /**
@@ -28,8 +35,8 @@ public class AnalysisActivity extends AbstractActivity {
 
     private Button startButton;
     private EditText textStartValue;
-    private Long startDate = 1514761200000L; // 01.01.2018.
-    private Long endDate = 1609369200000L; // 31.12.2020.
+    private Date startDate = new Date(1514761200000L); // 01.01.2018.
+    private Date endDate = new Date(1609369200000L); // 31.12.2020.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +47,8 @@ public class AnalysisActivity extends AbstractActivity {
         transactionsDataSource = new TransactionsDataSource(this, ProfileMemory.getCurProfileBean().getId());
         startButton = findViewById(R.id.button_start_analysis);
         startButton.setOnClickListener(view -> {
-            createAnalysisBean(startDate, endDate);
+            AnalysisBean analysisBean = createAnalysisBean();
+            // TODO: Build tables and diagrams here with the input of the analysis bean ...
         });
 
         prepareFormElements();
@@ -106,7 +114,106 @@ public class AnalysisActivity extends AbstractActivity {
         }
     }
 
-    private void createAnalysisBean(long startDate, long endDate) {
-        // ToDo: Create the analysis bean here.
+    private AnalysisBean createAnalysisBean() {
+        AnalysisBean analysisBean = new AnalysisBean();
+        List<AbstractBean> transactions = transactionsDataSource.getBeans();
+
+        transactions.forEach(element -> {
+
+            Calendar startCalendar = Calendar.getInstance();
+            startCalendar.setTime(startDate);
+            Calendar endCalendar = Calendar.getInstance();
+            endCalendar.setTime(endDate);
+
+            TransactionBean transactionBean = (TransactionBean) element;
+
+            int state = transactionBean.getState();
+
+            if(state == 1) { // unique.
+                Calendar uniqueCalendar = Calendar.getInstance();
+                uniqueCalendar.setTime(new Date(transactionBean.getUniqueDate()));
+                if((uniqueCalendar.equals(startCalendar) || uniqueCalendar.after(startCalendar)) && (uniqueCalendar.before(endCalendar) || uniqueCalendar.equals(endCalendar))) {
+                    addTransactionsToAnalysisBean(analysisBean, transactionBean, 1);
+                }
+            } else if(state == 2) { // daily.
+                int days = (int) TimeUnit.DAYS.convert((endDate.getTime() - startDate.getTime()), TimeUnit.MILLISECONDS);
+                addTransactionsToAnalysisBean(analysisBean, transactionBean, days);
+            } else if(state == 3) { // weekly.
+                int dayOfWeek = transactionBean.getDayOfWeek();
+                int daysOfWeek = 0;
+                while(startCalendar.before(endCalendar) || startCalendar.equals(endCalendar)) {
+                    if(startCalendar.get(Calendar.DAY_OF_WEEK) == dayOfWeek) {
+                        daysOfWeek++;
+                        startCalendar.add(Calendar.DATE, 7);
+                    } else {
+                        startCalendar.add(Calendar.DATE, 1);
+                    }
+                }
+                addTransactionsToAnalysisBean(analysisBean, transactionBean, daysOfWeek);
+            } else if(state == 4) { // monthly.
+                int monthlyDay = transactionBean.getMonthlyDay();
+                int startMonthlyDay = startCalendar.get(Calendar.DAY_OF_MONTH);
+                int daysOfMonth = 0;
+                while(startCalendar.before(endCalendar) || startCalendar.equals(endCalendar)) {
+                    if(startMonthlyDay <= monthlyDay) {
+                        Calendar tmpDate = Calendar.getInstance();
+                        tmpDate.setTime(startCalendar.getTime());
+                        tmpDate.add(Calendar.DATE, monthlyDay - startMonthlyDay);
+                        if(tmpDate.before(endCalendar) || tmpDate.equals(endCalendar)) {
+                            daysOfMonth++;
+                            startCalendar.add(Calendar.MONTH, 1);
+                        }
+                    } else if(monthlyDay < startMonthlyDay) {
+                        startCalendar.add(Calendar.DATE, 1);
+                    }
+                }
+                addTransactionsToAnalysisBean(analysisBean, transactionBean, daysOfMonth);
+            } else if(state == 5) { // yearly.
+                int yearlyMonth = transactionBean.getYearlyMonth();
+                int yearlyDay = transactionBean.getYearlyDay();
+                int monthOfYear = 0;
+                while(startCalendar.before(endCalendar) || startCalendar.equals(endCalendar)) {
+                    if(startCalendar.get(Calendar.MONTH) < yearlyMonth) {
+                        startCalendar.add(Calendar.MONTH, 1);
+                    } else if(startCalendar.get(Calendar.DAY_OF_MONTH) < yearlyDay) {
+                        startCalendar.add(Calendar.DATE, 1);
+                    } else {
+                        monthOfYear++;
+                        startCalendar.add(Calendar.YEAR, 1);
+                    }
+                }
+                addTransactionsToAnalysisBean(analysisBean, transactionBean, monthOfYear);
+            }
+        });
+
+        return analysisBean;
+    }
+
+    private void addTransactionsToAnalysisBean(AnalysisBean analysisBean, TransactionBean transactionBean, int count) {
+        long groupId = transactionBean.getGroupId();
+        double amount = transactionBean.getAmount();
+
+        AnalysisBean.CashFlow totalCF = analysisBean.getTotal();
+        AnalysisBean.CashFlow groupCF = analysisBean.getGroups().get(groupId);
+        if(groupCF == null) groupCF = new AnalysisBean.CashFlow();
+
+        if(amount > 0) {
+            AnalysisBean.Statistic totalStatistic = totalCF.getIncome();
+            addStatisticToCashFlow(totalStatistic, count, amount);
+            AnalysisBean.Statistic groupStatistic = groupCF.getIncome();
+            addStatisticToCashFlow(groupStatistic, count, amount);
+        } else {
+            AnalysisBean.Statistic totalStatistic = totalCF.getExpenses();
+            addStatisticToCashFlow(totalStatistic, count, amount * -1);
+            AnalysisBean.Statistic groupStatistic = groupCF.getExpenses();
+            addStatisticToCashFlow(groupStatistic, count, amount * -1);
+        }
+
+        analysisBean.getGroups().put(groupId, groupCF);
+    }
+
+    private void addStatisticToCashFlow(AnalysisBean.Statistic statistic, int count, double sum) {
+        statistic.setCount(statistic.getCount() + count);
+        statistic.setSum(statistic.getSum() + (count * sum));
     }
 }
