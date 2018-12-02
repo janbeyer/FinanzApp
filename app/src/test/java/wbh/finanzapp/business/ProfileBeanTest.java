@@ -8,7 +8,14 @@ import static org.junit.Assert.*;
 
 public class ProfileBeanTest {
 
-    @Before
+    long id = 0;
+    String name = "Profile";
+    String description = "Description";
+    long lastUse = 0;
+
+    ProfileBean TestProfileBean = new ProfileBean(0, "Profile", "Description", 0);
+
+        @Before
     public void setUp() throws Exception {
     }
 
@@ -18,14 +25,22 @@ public class ProfileBeanTest {
 
     @Test
     public void getId() {
+        assertEquals(id, TestProfileBean.getId());
     }
 
     @Test
     public void getName() {
+        assertEquals(name, TestProfileBean.getName());
     }
 
     @Test
     public void getDescription() {
+        assertEquals(description, TestProfileBean.getDescription());
+    }
+
+    @Test
+    public void getLastUse() {
+        assertEquals(lastUse, TestProfileBean.getLastUse());
     }
 
     //@Test
