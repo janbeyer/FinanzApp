@@ -26,17 +26,6 @@ public class TransactionsDataSource extends AbstractDataSource {
         dbHelper.open();
     }
 
-    public TransactionBean getBean(long id) {
-        TransactionBean transaction = null;
-        Cursor cursor = dbHelper.getDatabase().query(TransactionsDBHelper.TABLE_NAME, TransactionsDBHelper.COLUMNS,
-                TransactionsDBHelper.COLUMN_ID + "=?", new String[]{String.valueOf(id)}, null, null, null);
-        if (cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            transaction = cursorToBean(cursor);
-        }
-        return transaction;
-    }
-
     @Override
     public List<AbstractBean> getBeans() {
         List<AbstractBean> transactionList = new ArrayList<>();

@@ -8,9 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -47,7 +45,8 @@ public class AnalysisActivity extends AbstractActivity {
         transactionsDataSource = new TransactionsDataSource(this, ProfileMemory.getCurProfileBean().getId());
         startButton = findViewById(R.id.button_start_analysis);
         startButton.setOnClickListener(view -> {
-            AnalysisBean analysisBean = createAnalysisBean();
+            // AnalysisBean analysisBean =
+            createAnalysisBean();
             // TODO: Build tables and diagrams here with the input of the analysis bean ...
         });
 
@@ -76,7 +75,9 @@ public class AnalysisActivity extends AbstractActivity {
         textStartValue = this.findViewById(R.id.analysis_startValue);
         textStartValue.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+            }
+
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
                 String startValueStr = charSequence.toString();
@@ -89,12 +90,17 @@ public class AnalysisActivity extends AbstractActivity {
                     enableStartButtonIfErrorFree(getWindow().getDecorView().getRootView());
                 }
             }
+
             @Override
             public void afterTextChanged(Editable editable) {
                 String startValueStr = editable.toString();
 
                 Double startValue = null;
-                try { startValue = Double.parseDouble(startValueStr); } catch (NumberFormatException e) { e.printStackTrace(); }
+                try {
+                    startValue = Double.parseDouble(startValueStr);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
 
                 if (startValue != null) {
                     int decimalAmount = (int) (startValue * 100);
@@ -109,7 +115,7 @@ public class AnalysisActivity extends AbstractActivity {
     }
 
     private void enableStartButtonIfErrorFree(View view) {
-        if(checkIfViewIsErrorFree(view)) {
+        if (checkIfViewIsErrorFree(view)) {
             startButton.setEnabled(true);
         }
     }
@@ -129,20 +135,20 @@ public class AnalysisActivity extends AbstractActivity {
 
             int state = transactionBean.getState();
 
-            if(state == 1) { // unique.
+            if (state == 1) { // unique.
                 Calendar uniqueCalendar = Calendar.getInstance();
                 uniqueCalendar.setTime(new Date(transactionBean.getUniqueDate()));
-                if((uniqueCalendar.equals(startCalendar) || uniqueCalendar.after(startCalendar)) && (uniqueCalendar.before(endCalendar) || uniqueCalendar.equals(endCalendar))) {
+                if ((uniqueCalendar.equals(startCalendar) || uniqueCalendar.after(startCalendar)) && (uniqueCalendar.before(endCalendar) || uniqueCalendar.equals(endCalendar))) {
                     addTransactionsToAnalysisBean(analysisBean, transactionBean, 1);
                 }
-            } else if(state == 2) { // daily.
+            } else if (state == 2) { // daily.
                 int days = (int) TimeUnit.DAYS.convert((endDate.getTime() - startDate.getTime()), TimeUnit.MILLISECONDS);
                 addTransactionsToAnalysisBean(analysisBean, transactionBean, days);
-            } else if(state == 3) { // weekly.
+            } else if (state == 3) { // weekly.
                 int dayOfWeek = transactionBean.getDayOfWeek();
                 int daysOfWeek = 0;
-                while(startCalendar.before(endCalendar) || startCalendar.equals(endCalendar)) {
-                    if(startCalendar.get(Calendar.DAY_OF_WEEK) == dayOfWeek) {
+                while (startCalendar.before(endCalendar) || startCalendar.equals(endCalendar)) {
+                    if (startCalendar.get(Calendar.DAY_OF_WEEK) == dayOfWeek) {
                         daysOfWeek++;
                         startCalendar.add(Calendar.DATE, 7);
                     } else {
@@ -150,32 +156,32 @@ public class AnalysisActivity extends AbstractActivity {
                     }
                 }
                 addTransactionsToAnalysisBean(analysisBean, transactionBean, daysOfWeek);
-            } else if(state == 4) { // monthly.
+            } else if (state == 4) { // monthly.
                 int monthlyDay = transactionBean.getMonthlyDay();
                 int startMonthlyDay = startCalendar.get(Calendar.DAY_OF_MONTH);
                 int daysOfMonth = 0;
-                while(startCalendar.before(endCalendar) || startCalendar.equals(endCalendar)) {
-                    if(startMonthlyDay <= monthlyDay) {
+                while (startCalendar.before(endCalendar) || startCalendar.equals(endCalendar)) {
+                    if (startMonthlyDay <= monthlyDay) {
                         Calendar tmpDate = Calendar.getInstance();
                         tmpDate.setTime(startCalendar.getTime());
                         tmpDate.add(Calendar.DATE, monthlyDay - startMonthlyDay);
-                        if(tmpDate.before(endCalendar) || tmpDate.equals(endCalendar)) {
+                        if (tmpDate.before(endCalendar) || tmpDate.equals(endCalendar)) {
                             daysOfMonth++;
                             startCalendar.add(Calendar.MONTH, 1);
                         }
-                    } else if(monthlyDay < startMonthlyDay) {
+                    } else if (monthlyDay < startMonthlyDay) {
                         startCalendar.add(Calendar.DATE, 1);
                     }
                 }
                 addTransactionsToAnalysisBean(analysisBean, transactionBean, daysOfMonth);
-            } else if(state == 5) { // yearly.
+            } else if (state == 5) { // yearly.
                 int yearlyMonth = transactionBean.getYearlyMonth();
                 int yearlyDay = transactionBean.getYearlyDay();
                 int monthOfYear = 0;
-                while(startCalendar.before(endCalendar) || startCalendar.equals(endCalendar)) {
-                    if(startCalendar.get(Calendar.MONTH) < yearlyMonth) {
+                while (startCalendar.before(endCalendar) || startCalendar.equals(endCalendar)) {
+                    if (startCalendar.get(Calendar.MONTH) < yearlyMonth) {
                         startCalendar.add(Calendar.MONTH, 1);
-                    } else if(startCalendar.get(Calendar.DAY_OF_MONTH) < yearlyDay) {
+                    } else if (startCalendar.get(Calendar.DAY_OF_MONTH) < yearlyDay) {
                         startCalendar.add(Calendar.DATE, 1);
                     } else {
                         monthOfYear++;
@@ -195,9 +201,9 @@ public class AnalysisActivity extends AbstractActivity {
 
         AnalysisBean.CashFlow totalCF = analysisBean.getTotal();
         AnalysisBean.CashFlow groupCF = analysisBean.getGroups().get(groupId);
-        if(groupCF == null) groupCF = new AnalysisBean.CashFlow();
+        if (groupCF == null) groupCF = new AnalysisBean.CashFlow();
 
-        if(amount > 0) {
+        if (amount > 0) {
             AnalysisBean.Statistic totalStatistic = totalCF.getIncome();
             addStatisticToCashFlow(totalStatistic, count, amount);
             AnalysisBean.Statistic groupStatistic = groupCF.getIncome();
