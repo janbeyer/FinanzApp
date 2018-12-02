@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -12,7 +11,6 @@ import wbh.finanzapp.R;
 import wbh.finanzapp.access.GroupsDataSource;
 import wbh.finanzapp.access.TransactionsDataSource;
 import wbh.finanzapp.business.AbstractBean;
-import wbh.finanzapp.business.GroupBean;
 import wbh.finanzapp.util.ProfileMemory;
 
 public class MenuActivity extends AbstractActivity {
@@ -66,7 +64,7 @@ public class MenuActivity extends AbstractActivity {
     private void activateButtons() {
         List<AbstractBean> groupBeans = groupsDataSource.getBeans();
         Button buttonTransaction = findViewById(R.id.menu_button_transaction);
-        if(groupBeans.size() == 0) buttonTransaction.setEnabled(false);
+        if (groupBeans.size() == 0) buttonTransaction.setEnabled(false);
         buttonTransaction.setOnClickListener(view -> {
             Intent myIntent = new Intent(this, TransactionsActivity.class);
             Log.d(LOG_TAG, "--> Start the groups activity.");
@@ -74,7 +72,7 @@ public class MenuActivity extends AbstractActivity {
         });
         List<AbstractBean> transactionBeans = transactionsDataSource.getBeans();
         Button buttonAnalyze = findViewById(R.id.menu_button_analyze);
-        if(transactionBeans.size() == 0) buttonAnalyze.setEnabled(false);
+        if (transactionBeans.size() == 0) buttonAnalyze.setEnabled(false);
         buttonAnalyze.setOnClickListener(view -> {
             Intent myIntent = new Intent(this, AnalysisActivity.class);
             Log.d(LOG_TAG, "--> Start the analysis activity.");

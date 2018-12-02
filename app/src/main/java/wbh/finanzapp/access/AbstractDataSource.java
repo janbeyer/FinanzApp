@@ -1,6 +1,5 @@
 package wbh.finanzapp.access;
 
-import android.content.ContentValues;
 import android.database.Cursor;
 
 import java.util.List;
@@ -11,11 +10,6 @@ import wbh.finanzapp.business.AbstractBean;
  * Parent class for all data source classes
  */
 public abstract class AbstractDataSource {
-
-    /**
-     * Return an AbstractBean.
-     */
-    public abstract AbstractBean getBean(long id);
 
     /**
      * Return a list with AbstractBean.

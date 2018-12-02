@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
@@ -59,11 +57,18 @@ public class ProfilesActivity extends AbstractActivity {
         super.onPause();
     }
 
+    @Override
+    protected void onDestroy() {
+        Log.d(LOG_TAG, "--> Destroy ProfilesActivity");
+        profileDataSource.close();
+        super.onDestroy();
+    }
+
     public void showAllListEntries() {
         Log.d(LOG_TAG, "--> Show all list entries.");
         ListView profilesListView = createListView(profileDataSource.getBeans(), android.R.layout.simple_list_item_activated_1, R.id.list_view_profiles);
         profilesListView.setOnItemClickListener((adapterView, view, position, id) -> {
-            ProfileBean selectedProfile = (ProfileBean)adapterView.getItemAtPosition(position);
+            ProfileBean selectedProfile = (ProfileBean) adapterView.getItemAtPosition(position);
             ProfileMemory.setCurProfileBean(selectedProfile);
             profileDataSource.update(selectedProfile.getId(), null, null);
             Intent myIntent = new Intent(this, MenuActivity.class);
@@ -117,7 +122,7 @@ public class ProfilesActivity extends AbstractActivity {
                             boolean isChecked = touchedProfilePositions.valueAt(i);
                             if (isChecked) {
                                 int positionInListView = touchedProfilePositions.keyAt(i);
-                                ProfileBean profile = (ProfileBean)profilesListView.getItemAtPosition(positionInListView);
+                                ProfileBean profile = (ProfileBean) profilesListView.getItemAtPosition(positionInListView);
                                 Log.d(LOG_TAG, "--> Position in ListView: " + positionInListView + " Content: " + profile.toString());
                                 profileDataSource.delete(profile.getId());
                                 Log.d(LOG_TAG, "--> Delete old entry: " + profile.toString());
@@ -131,7 +136,7 @@ public class ProfilesActivity extends AbstractActivity {
                             boolean isChecked = touchedProfilePositions.valueAt(i);
                             if (isChecked) {
                                 int positionInListView = touchedProfilePositions.keyAt(i);
-                                ProfileBean profile = (ProfileBean)profilesListView.getItemAtPosition(positionInListView);
+                                ProfileBean profile = (ProfileBean) profilesListView.getItemAtPosition(positionInListView);
                                 Log.d(LOG_TAG, "--> Position in ListView: " + positionInListView + " Content: " + profile.toString());
                                 createEditProfileDialog(profile);
                             }
@@ -224,4 +229,5 @@ public class ProfilesActivity extends AbstractActivity {
     protected int getHelpText() {
         return R.string.help_profile_text;
     }
+
 }

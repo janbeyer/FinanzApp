@@ -41,22 +41,39 @@ public class TransactionsActivity extends AbstractActivity {
 
     private static final String LOG_TAG = TransactionsActivity.class.getSimpleName();
 
+    /**
+     * The TransactionsDataSource store the transaction state in the database.
+     */
     private TransactionsDataSource transactionsDataSource;
+
+    /**
+     * The GroupsDataSource store the group state in the database.
+     */
     private GroupsDataSource groupsDataSource;
 
+    /**
+     * A text input field. The user can choose an amount for every transaction.
+     */
     private EditText textAmountInputField;
 
     /**
      * Contains all the defined Groups
      */
     private Map<Integer, Long> spinnerGroupMap;
+
+    /**
+     * A DropDown menu, so that the user can choose the group for a transaction.
+     */
     private Spinner spinnerGroups;
 
     /**
      * Contains the radio group with the Transaction date options.
      */
-    private RadioGroup radioGroup;
+    private RadioGroup radioGroupTransactionDate;
 
+    /**
+     * Contains the transaction states: unique, daily, weekly, monthly and yearly.
+     */
     private TransactionStates transactionStates;
 
     @SuppressWarnings("CodeBlock2Expr")
@@ -229,12 +246,12 @@ public class TransactionsActivity extends AbstractActivity {
     }
 
     /**
-     * Add an Transaction.
+     * Add an Transaction to the transaction database.
      */
     public void addTransaction(String name, String description, double amount, long groupId) {
 
         // Check the radio button state
-        int rbDateMode = radioGroup.getCheckedRadioButtonId();
+        int rbDateMode = radioGroupTransactionDate.getCheckedRadioButtonId();
         transactionStates.checkStates(rbDateMode);
         Date date = new Date(transactionStates.uniqueDate);
         Log.d(LOG_TAG, "--> Date: " + date);
@@ -243,6 +260,9 @@ public class TransactionsActivity extends AbstractActivity {
         Log.d(LOG_TAG, "--> Insert new entry: " + newTransaction.toString());
     }
 
+    /**
+     * Edit an existing transaction in the database.
+     */
     public void editTransaction(TransactionBean transaction, String name, String description, double amount, long groupId) {
         // MOCK DATA.
         int state = 1;
@@ -273,11 +293,11 @@ public class TransactionsActivity extends AbstractActivity {
 
         textAmountInputField = view.findViewById(R.id.transaction_amount);
         spinnerGroups = view.findViewById(R.id.transaction_group);
-        radioGroup = view.findViewById(R.id.transaction_rb);
+        radioGroupTransactionDate = view.findViewById(R.id.transaction_rb);
 
         // activate the first radio button in the group which is daily because
         // in this state no date picker is needed
-        radioGroup.check(R.id.rb_daily);
+        radioGroupTransactionDate.check(R.id.rb_daily);
 
         // Fill the spinner drop down box with the groups
         fillGroupSpinner();
@@ -368,6 +388,9 @@ public class TransactionsActivity extends AbstractActivity {
 
     }
 
+    /**
+     * Create the edit dialog for the transaction editing.
+     */
     public void createEditTransactionDialog(final TransactionBean transaction) {
         View editView = super.createView(R.id.dialog_write_transaction_root_view, R.layout.dialog_write_transaction);
         createDialog(editView, R.string.transaction_edit_title, new EditListener(transaction), true);
@@ -381,10 +404,17 @@ public class TransactionsActivity extends AbstractActivity {
         );
     }
 
+    /**
+     * Return the help text for the transaction activity.
+     */
     protected int getHelpText() {
         return R.string.help_transaction_text;
     }
 
+    /**
+     * If the add button in the transaction dialog is clicked this listener start
+     * the add action and refresh the transaction list view.
+     */
     class AddListener extends CustomListener {
 
         double amount;
@@ -401,6 +431,10 @@ public class TransactionsActivity extends AbstractActivity {
         }
     }
 
+    /**
+     * If the edit button is clicked this listener start the edit action and
+     * refresh the transaction list view.
+     */
     class EditListener extends CustomListener {
 
         double amount;

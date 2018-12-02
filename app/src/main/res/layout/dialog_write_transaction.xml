@@ -155,14 +155,8 @@
                 android:layout_weight="1"
                 android:text="@string/transaction_state_yearly"
                 android:onClick="onRadioButtonClicked"/>
-        </RadioGroup>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/transaction_date_init"
-            android:layout_weight="1"
-            android:layout_marginEnd="5sp" />
+        </RadioGroup>
 
     </LinearLayout>
 

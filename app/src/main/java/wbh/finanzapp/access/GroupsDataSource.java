@@ -26,17 +26,6 @@ public class GroupsDataSource extends AbstractDataSource {
         dbHelper.open();
     }
 
-    public GroupBean getBean(long id) {
-        GroupBean group = null;
-        Cursor cursor = dbHelper.getDatabase().query(GroupsDBHelper.TABLE_NAME, GroupsDBHelper.COLUMNS,
-                GroupsDBHelper.COLUMN_ID + "=?", new String[]{String.valueOf(id)}, null, null, null);
-        if (cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            group = cursorToBean(cursor);
-        }
-        return group;
-    }
-
     @Override
     public List<AbstractBean> getBeans() {
         List<AbstractBean> groupList = new ArrayList<>();
@@ -97,7 +86,7 @@ public class GroupsDataSource extends AbstractDataSource {
         return new GroupBean(id, name, description, profileId);
     }
 
-    public ContentValues createValues(Long id, String name, String description) {
+    private ContentValues createValues(Long id, String name, String description) {
         ContentValues values = new ContentValues();
         if (id != null) values.put(GroupsDBHelper.COLUMN_ID, id);
         values.put(GroupsDBHelper.COLUMN_PROFILE_ID, profileId);
