@@ -17,6 +17,7 @@ import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -34,7 +35,10 @@ import wbh.finanzapp.business.AbstractBean;
 import wbh.finanzapp.business.GroupBean;
 import wbh.finanzapp.business.TransactionBean;
 import wbh.finanzapp.util.DateDialog;
+import wbh.finanzapp.util.MonthPicker;
 import wbh.finanzapp.util.ProfileMemory;
+import wbh.finanzapp.util.WeekPicker;
+import wbh.finanzapp.util.YearPicker;
 
 @SuppressWarnings("Convert2Diamond")
 public class TransactionsActivity extends AbstractActivity {
@@ -75,6 +79,11 @@ public class TransactionsActivity extends AbstractActivity {
      * Contains the transaction states: unique, daily, weekly, monthly and yearly.
      */
     private TransactionStates transactionStates;
+
+    private ImageButton button_unique;
+    private ImageButton button_weekly;
+    private ImageButton button_monthly;
+    private ImageButton button_yearly;
 
     @SuppressWarnings("CodeBlock2Expr")
     @Override
@@ -195,9 +204,26 @@ public class TransactionsActivity extends AbstractActivity {
 
 
     /**
+     * This enum define the possible date mode.
+     */
+    enum DateMode {
+        daily,
+        unique,
+        weekly,
+        monthly,
+        yearly
+    }
+
+    /**
+     * The current selected date mode.
+     */
+    static DateMode dateMode = DateMode.daily;
+
+    /**
      * Helper class for Transaction date states.
      */
     public class TransactionStates {
+
         // state can be: 1=unique; 2=daily; 3=weekly;  4=monthly;  5=yearly
         int state = 0;
 
@@ -218,21 +244,21 @@ public class TransactionsActivity extends AbstractActivity {
         int yearlyDay = 0;
 
         void checkStates(int rbDateMode) {
-            if(rbDateMode == R.id.rb_unique) {
+            if (rbDateMode == R.id.rb_unique) {
                 Log.d(LOG_TAG, "--> The selected rb state: unique");
                 state = 1;
-            } else if(rbDateMode == R.id.rb_daily) {
+            } else if (rbDateMode == R.id.rb_daily) {
                 Log.d(LOG_TAG, "--> The selected rb state: daily");
                 state = 2;
-            } else if(rbDateMode == R.id.rb_weekly) {
+            } else if (rbDateMode == R.id.rb_weekly) {
                 Log.d(LOG_TAG, "--> The selected rb state: weekly");
                 state = 3;
                 dayOfWeek = 1;
-            } else if(rbDateMode == R.id.rb_monthly) {
+            } else if (rbDateMode == R.id.rb_monthly) {
                 Log.d(LOG_TAG, "--> The selected rb state: monthly");
                 state = 4;
                 monthlyDay = 1;
-            } else if(rbDateMode == R.id.rb_yearly) {
+            } else if (rbDateMode == R.id.rb_yearly) {
                 Log.d(LOG_TAG, "--> The selected rb state: yearly");
                 state = 5;
                 yearlyMonth = 1;
@@ -242,6 +268,10 @@ public class TransactionsActivity extends AbstractActivity {
 
         public void setUniqueDate(long uniqueDate) {
             this.uniqueDate = uniqueDate;
+        }
+
+        public void setDayOfWeek(int dayOfWeek) {
+            this.dayOfWeek = dayOfWeek;
         }
     }
 
@@ -318,7 +348,11 @@ public class TransactionsActivity extends AbstractActivity {
                 String amountStr = charSequence.toString();
 
                 Double amount = null;
-                try { amount = Double.parseDouble(amountStr); } catch (NumberFormatException e) { e.printStackTrace(); }
+                try {
+                    amount = Double.parseDouble(amountStr);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
 
                 if (amountStr.isEmpty() || amountStr.equals("-") || amountStr.endsWith(".") || (amount != null && amount == 0.0)) {
                     textAmountInputField.setError(getString(R.string.transaction_amount_validation_error));
@@ -349,6 +383,38 @@ public class TransactionsActivity extends AbstractActivity {
                 }
             }
         });
+
+        button_unique = view.findViewById(R.id.b_unique);
+        button_weekly = view.findViewById(R.id.b_weekly);
+        button_monthly = view.findViewById(R.id.b_monthly);
+        button_yearly = view.findViewById(R.id.b_yearly);
+    }
+
+    /**
+     * This function is called if an date button is clicked
+     */
+    public void onDateButtonClick(View view) {
+        if (dateMode == DateMode.unique) {
+            DateDialog dateDialog = new DateDialog();
+            dateDialog.setTransactionStates(transactionStates);
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            dateDialog.show(transaction, "Date Dialog");
+        } else if (dateMode == DateMode.weekly) {
+            WeekPicker weekPicker = new WeekPicker(this);
+            weekPicker.show();
+            weekPicker.setTransactionStates(transactionStates);
+        } else if (dateMode == DateMode.monthly) {
+            MonthPicker monthPicker = new MonthPicker(this);
+            monthPicker.show();
+            monthPicker.setTransactionStates(transactionStates);
+
+        } else if (dateMode == DateMode.yearly) {
+            YearPicker yearPicker = new YearPicker(this);
+            yearPicker.show();
+            yearPicker.setTransactionStates(transactionStates);
+
+        }
     }
 
     /**
@@ -361,31 +427,45 @@ public class TransactionsActivity extends AbstractActivity {
         // 5 = Yearly --> Dropdown box (1 ... 12) --> Default is 1
         //            --> Dropdown box (1 ... 31) --> Default is 1
         boolean checked = ((RadioButton) view).isChecked();
-        // Check which radio button was clicked
-        switch(view.getId()) {
-            case R.id.rb_unique:
-                if (checked) {
-                    DateDialog dateDialog = new DateDialog();
-                    dateDialog.setTransactionStates(transactionStates);
-                    FragmentManager fragmentManager = getFragmentManager();
-                    FragmentTransaction transaction = fragmentManager.beginTransaction();
-                    dateDialog.show(transaction, "Date Dialog");
-                    break;
-                }
-            case R.id.rb_weekly:
-                if (checked) {
-                    break;
-                }
-            case R.id.rb_monthly:
-                if (checked) {
-                    break;
-                }
-            case R.id.rb_yearly:
-                if (checked) {
-                    break;
-                }
-        }
+        // if unchecked return
+        if (!checked)
+            return;
+        int id = view.getId();
 
+        setButtonsInvisible();
+        // Check which radio button was clicked
+        switch (id) {
+            case R.id.rb_unique:
+                Log.d(LOG_TAG, "--> onRadioButtonClicked(): rb_unique");
+                dateMode = DateMode.unique;
+                button_unique.setVisibility(Button.VISIBLE);
+                break;
+            case R.id.rb_weekly:
+                Log.d(LOG_TAG, "--> onRadioButtonClicked(): rb_weekly");
+                dateMode = DateMode.weekly;
+                button_weekly.setVisibility(Button.VISIBLE);
+                break;
+            case R.id.rb_monthly:
+                Log.d(LOG_TAG, "--> onRadioButtonClicked(): rb_monthly");
+                dateMode = DateMode.monthly;
+                button_monthly.setVisibility(Button.VISIBLE);
+                break;
+            case R.id.rb_yearly:
+                Log.d(LOG_TAG, "--> onRadioButtonClicked(): rb_yearly");
+                dateMode = DateMode.yearly;
+                button_yearly.setVisibility(Button.VISIBLE);
+                break;
+        }
+    }
+
+    /**
+     * Make the date picker buttons invisible.
+     */
+    public void setButtonsInvisible() {
+        button_unique.setVisibility(Button.INVISIBLE);
+        button_weekly.setVisibility(Button.INVISIBLE);
+        button_monthly.setVisibility(Button.INVISIBLE);
+        button_yearly.setVisibility(Button.INVISIBLE);
     }
 
     /**

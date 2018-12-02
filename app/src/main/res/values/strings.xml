@@ -137,4 +137,6 @@
     <string name="analysis_startValue_validation_error">Start value must not be empty</string>
     <string name="analysis_startDate">Startdate</string>
     <string name="analysis_endDate">Enddate</string>
+    <string name="calendar">Calendar</string>
+    <string name="close">Close</string>
 </resources>

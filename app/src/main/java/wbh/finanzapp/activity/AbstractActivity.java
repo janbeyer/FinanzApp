@@ -141,7 +141,7 @@ public abstract class AbstractActivity extends AppCompatActivity {
         try {
             viewGroup = (ViewGroup) view;
         } catch (ClassCastException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         if (viewGroup == null || viewGroup.getChildCount() == 0) return true;
         for (int i = 0; i < viewGroup.getChildCount(); ++i) {
