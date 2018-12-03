@@ -53,11 +53,6 @@ public class MonthPicker extends Dialog {
         });
 
         Button button = findViewById(R.id.button_month_picker);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+        button.setOnClickListener(v -> dismiss());
     }
 }

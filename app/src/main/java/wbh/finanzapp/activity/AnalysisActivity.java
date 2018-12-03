@@ -45,8 +45,8 @@ public class AnalysisActivity extends AbstractActivity {
         transactionsDataSource = new TransactionsDataSource(this, ProfileMemory.getCurProfileBean().getId());
         startButton = findViewById(R.id.button_start_analysis);
         startButton.setOnClickListener(view -> {
-            // AnalysisBean analysisBean =
-            createAnalysisBean();
+            AnalysisBean analysisBean = createAnalysisBean();
+
             // TODO: Build tables and diagrams here with the input of the analysis bean ...
         });
 
@@ -120,7 +120,11 @@ public class AnalysisActivity extends AbstractActivity {
         }
     }
 
+    /**
+     * Create the analysis bean. Iterates over all transaction within an given start and end date.
+     */
     private AnalysisBean createAnalysisBean() {
+        Log.d(LOG_TAG, "--> createAnalysisBean()");
         AnalysisBean analysisBean = new AnalysisBean();
         List<AbstractBean> transactions = transactionsDataSource.getBeans();
 
@@ -192,6 +196,7 @@ public class AnalysisActivity extends AbstractActivity {
             }
         });
 
+        Log.d(LOG_TAG, "--> createAnalysisBean() " + analysisBean);
         return analysisBean;
     }
 

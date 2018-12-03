@@ -75,6 +75,12 @@ public class TransactionBean extends AbstractBean {
         if(state == 3)
             return super.toString() + ": " + amount + " Date: " + state + " " + dayOfWeek;
 
+        if(state == 4)
+            return super.toString() + ": " + amount + " Date: " + state + " " + monthlyDay;
+
+        if(state == 5)
+            return super.toString() + ": " + amount + " Date: " + state + " " + yearlyMonth + " " + yearlyDay;
+
         return super.toString();
     }
 }

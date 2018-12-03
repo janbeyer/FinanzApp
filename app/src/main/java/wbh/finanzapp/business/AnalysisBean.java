@@ -1,14 +1,22 @@
 package wbh.finanzapp.business;
 
+import android.annotation.SuppressLint;
+
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Represent an Analysis which contain the information of all transaction within an start and end date.
+ */
 public class AnalysisBean {
 
     private CashFlow total = new CashFlow();
+
+    @SuppressLint("UseSparseArrays")
     private Map<Long, CashFlow> groups = new HashMap<>();
 
-    public AnalysisBean() {}
+    public AnalysisBean() {
+    }
 
     public CashFlow getTotal() {
         return total;
@@ -26,11 +34,18 @@ public class AnalysisBean {
         this.groups = groups;
     }
 
+    @Override
+    public String toString() {
+        return "CashFlow: " + total;
+    }
+
+    /**
+     * The CashFlow class contains the statistics objects for the income and expenses.
+     */
     public static class CashFlow {
+
         private Statistic income = new Statistic();
         private Statistic expenses = new Statistic();
-
-        public CashFlow() {}
 
         public Statistic getIncome() {
             return income;
@@ -47,13 +62,20 @@ public class AnalysisBean {
         public void setExpenses(Statistic expenses) {
             this.expenses = expenses;
         }
+
+        @Override
+        public String toString() {
+            return "Income: " + income + " Expenses: " + expenses;
+        }
     }
 
+    /**
+     * Statistic class contains the sum over all transactions.
+     */
     public static class Statistic {
-        private int count;
-        private double sum ;
 
-        public Statistic() {}
+        private int count = 0;
+        private double sum = 0;
 
         public int getCount() {
             return count;
@@ -73,6 +95,11 @@ public class AnalysisBean {
 
         public double getAverage() {
             return sum / count;
+        }
+
+        @Override
+        public String toString() {
+            return "Count: " + count + " Sum: " + sum;
         }
     }
 }

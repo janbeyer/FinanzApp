@@ -79,11 +79,6 @@ public class YearPicker extends Dialog {
         });
 
         Button button = findViewById(R.id.button_year_picker);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+        button.setOnClickListener(v -> dismiss());
     }
 }
