@@ -37,6 +37,7 @@ import wbh.finanzapp.business.TransactionBean;
 import wbh.finanzapp.util.DateDialog;
 import wbh.finanzapp.util.MonthPicker;
 import wbh.finanzapp.util.ProfileMemory;
+import wbh.finanzapp.util.TransactionStates;
 import wbh.finanzapp.util.WeekPicker;
 import wbh.finanzapp.util.YearPicker;
 
@@ -220,72 +221,13 @@ public class TransactionsActivity extends AbstractActivity {
     static DateMode dateMode = DateMode.daily;
 
     /**
-     * Helper class for Transaction date states.
-     */
-    public class TransactionStates {
-
-        // state can be: 1=unique; 2=daily; 3=weekly;  4=monthly;  5=yearly
-        int state = 0;
-
-        // 1 = Unique --> DatePicker    --> Default current date
-        long uniqueDate = new Date().getTime();
-
-        // 2 = Daily
-
-        // 3 = Weekly --> Dropdown box (1 ...  7) --> Default is Monday
-        int dayOfWeek = 0;
-
-        // 4 = Monthly--> Dropdown box (1 ... 31) --> Default is 1
-        int monthlyDay = 0;
-
-        // 5 = Yearly --> Dropdown box (1 ... 12) --> Default is 1
-        //            --> Dropdown box (1 ... 31) --> Default is 1
-        int yearlyMonth = 0;
-        int yearlyDay = 0;
-
-        void checkStates(int rbDateMode) {
-            if (rbDateMode == R.id.rb_unique) {
-                Log.d(LOG_TAG, "--> The selected rb state: unique");
-                state = 1;
-            } else if (rbDateMode == R.id.rb_daily) {
-                Log.d(LOG_TAG, "--> The selected rb state: daily");
-                state = 2;
-            } else if (rbDateMode == R.id.rb_weekly) {
-                Log.d(LOG_TAG, "--> The selected rb state: weekly");
-                state = 3;
-                dayOfWeek = 1;
-            } else if (rbDateMode == R.id.rb_monthly) {
-                Log.d(LOG_TAG, "--> The selected rb state: monthly");
-                state = 4;
-                monthlyDay = 1;
-            } else if (rbDateMode == R.id.rb_yearly) {
-                Log.d(LOG_TAG, "--> The selected rb state: yearly");
-                state = 5;
-                yearlyMonth = 1;
-                yearlyDay = 1;
-            }
-        }
-
-        public void setUniqueDate(long uniqueDate) {
-            this.uniqueDate = uniqueDate;
-        }
-
-        public void setDayOfWeek(int dayOfWeek) {
-            this.dayOfWeek = dayOfWeek;
-        }
-    }
-
-    /**
      * Add an Transaction to the transaction database.
      */
     public void addTransaction(String name, String description, double amount, long groupId) {
-
         // Check the radio button state
         int rbDateMode = radioGroupTransactionDate.getCheckedRadioButtonId();
         transactionStates.checkStates(rbDateMode);
-        Date date = new Date(transactionStates.uniqueDate);
-        Log.d(LOG_TAG, "--> Date: " + date);
-
+        Log.d(LOG_TAG, "--> TransactionStates: " + transactionStates);
         TransactionBean newTransaction = transactionsDataSource.insert(name, description, groupId, amount, transactionStates.state, transactionStates.uniqueDate, transactionStates.dayOfWeek, transactionStates.monthlyDay, transactionStates.yearlyMonth, transactionStates.yearlyDay);
         Log.d(LOG_TAG, "--> Insert new entry: " + newTransaction.toString());
     }
@@ -401,19 +343,14 @@ public class TransactionsActivity extends AbstractActivity {
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             dateDialog.show(transaction, "Date Dialog");
         } else if (dateMode == DateMode.weekly) {
-            WeekPicker weekPicker = new WeekPicker(this);
+            WeekPicker weekPicker = new WeekPicker(this, transactionStates);
             weekPicker.show();
-            weekPicker.setTransactionStates(transactionStates);
         } else if (dateMode == DateMode.monthly) {
-            MonthPicker monthPicker = new MonthPicker(this);
+            MonthPicker monthPicker = new MonthPicker(this, transactionStates);
             monthPicker.show();
-            monthPicker.setTransactionStates(transactionStates);
-
         } else if (dateMode == DateMode.yearly) {
-            YearPicker yearPicker = new YearPicker(this);
+            YearPicker yearPicker = new YearPicker(this, transactionStates);
             yearPicker.show();
-            yearPicker.setTransactionStates(transactionStates);
-
         }
     }
 

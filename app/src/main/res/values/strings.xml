@@ -139,4 +139,7 @@
     <string name="analysis_endDate">Enddate</string>
     <string name="calendar">Calendar</string>
     <string name="close">Close</string>
+    <string name="weekpicker">WeekPicker</string>
+    <string name="monthpicker">MonthPicker</string>
+    <string name="year_picker">Year Picker</string>
 </resources>

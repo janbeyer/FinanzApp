@@ -10,8 +10,6 @@ import android.widget.DatePicker;
 import java.util.Calendar;
 import java.util.Date;
 
-import wbh.finanzapp.activity.TransactionsActivity;
-
 /**
  * A Date selection dialog implemented as fragment.
  */
@@ -19,9 +17,9 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
 
     private static final String LOG_TAG = DateDialog.class.getSimpleName();
 
-    private TransactionsActivity.TransactionStates transactionStates;
+    private TransactionStates transactionStates;
 
-    public void setTransactionStates(TransactionsActivity.TransactionStates transactionStates) {
+    public void setTransactionStates(TransactionStates transactionStates) {
         this.transactionStates = transactionStates;
     }
 

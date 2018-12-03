@@ -7,34 +7,34 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/month_picker"
+        android:id="@+id/week_picker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="TextView"
+        android:text="@string/weekpicker"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
-        android:id="@+id/month_picker_spinner"
+        android:id="@+id/week_picker_spinner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_weight="3"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/month_picker"
+        app:layout_constraintTop_toBottomOf="@+id/week_picker"
         tools:ignore="Autofill,LabelFor" />
 
     <Button
-        android:id="@+id/button_month_picker"
+        android:id="@+id/button_week_picker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/close"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/month_picker_spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/week_picker_spinner" />
 
 </android.support.constraint.ConstraintLayout>

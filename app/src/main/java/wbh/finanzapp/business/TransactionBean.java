@@ -69,6 +69,12 @@ public class TransactionBean extends AbstractBean {
 
     @Override
     public String toString() {
-        return super.toString() + ": " + amount + " Date: " + state;
+        if(state == 1)
+            return super.toString() + ": " + amount + " Date: " + state + " " + uniqueDate;
+
+        if(state == 3)
+            return super.toString() + ": " + amount + " Date: " + state + " " + dayOfWeek;
+
+        return super.toString();
     }
 }
