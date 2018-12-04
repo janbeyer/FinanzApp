@@ -67,20 +67,20 @@ public class TransactionBean extends AbstractBean {
         return yearlyDay;
     }
 
+
+
     @Override
     public String toString() {
-        if(state == 1)
-            return super.toString() + ": " + amount + " Date: " + state + " " + uniqueDate;
-
-        if(state == 3)
-            return super.toString() + ": " + amount + " Date: " + state + " " + dayOfWeek;
-
-        if(state == 4)
-            return super.toString() + ": " + amount + " Date: " + state + " " + monthlyDay;
-
-        if(state == 5)
-            return super.toString() + ": " + amount + " Date: " + state + " " + yearlyMonth + " " + yearlyDay;
-
-        return super.toString();
+        return "TransactionBean{" +
+                "profileId=" + profileId +
+                ", groupId=" + groupId +
+                ", amount=" + amount +
+                ", state=" + state +
+                ", uniqueDate=" + uniqueDate +
+                ", dayOfWeek=" + dayOfWeek +
+                ", monthlyDay=" + monthlyDay +
+                ", yearlyMonth=" + yearlyMonth +
+                ", yearlyDay=" + yearlyDay +
+                '}';
     }
 }
