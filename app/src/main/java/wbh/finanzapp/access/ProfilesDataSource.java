@@ -23,15 +23,11 @@ public class ProfilesDataSource extends AbstractDataSource {
         dbHelper.open();
     }
 
-    public ProfileBean getBean(long id) {
-        ProfileBean profile = null;
-        Cursor cursor = dbHelper.getDatabase().query(ProfilesDBHelper.TABLE_NAME, ProfilesDBHelper.COLUMNS,
-                ProfilesDBHelper.COLUMN_ID + "=?", new String[]{String.valueOf(id)}, null, null, null);
-        if (cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            profile = cursorToBean(cursor);
-        }
-        return profile;
+    /**
+     * Close the ProfilesDataSource.
+     */
+    public void close() {
+        dbHelper.close();
     }
 
     @Override
@@ -93,7 +89,7 @@ public class ProfilesDataSource extends AbstractDataSource {
         return new ProfileBean(id, name, description, lastUse);
     }
 
-    public ContentValues createValues(Long id, String name, String description) {
+    private ContentValues createValues(Long id, String name, String description) {
         ContentValues values = new ContentValues();
         if (id != null) values.put(ProfilesDBHelper.COLUMN_ID, id);
         if (name != null) values.put(ProfilesDBHelper.COLUMN_NAME, name);

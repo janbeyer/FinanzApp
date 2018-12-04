@@ -5,6 +5,7 @@
     <string name="dialog_button_ok">Ok</string>
     <string name="dialog_button_save">Save</string>
     <string name="dialog_button_cancel">Cancel</string>
+    <string name="dialog_button_start">Start</string>
 
     <string name="action_help">Help</string>
 
@@ -53,6 +54,9 @@
         If you want to cancel the process, press CANCEL on the bottom of the “Add a new transaction” dialogue.\n\n
         You can always change the transaction or delete it by holding on it and either using the trash can to delete it or the pencil to change it.
     </string>
+    <string name="help_analysis_text">
+        TODO: Define help text for this activity here.
+    </string>
 
     <!-- Profile properties -->
     <string name="profile_add_title">Add a new profile</string>
@@ -76,7 +80,6 @@
     <string name="group_edit_title">Edit a group</string>
     <string name="group_delete_title">Delete a group</string>
 
-    <string name="group_default_empty">&lt;No groups available&gt;</string>
     <string name="group_default_housekeeping_name">Housekeeping</string>
     <string name="group_default_housekeeping_descr">Housekeeping transactions</string>
     <string name="group_default_groceries_name">Grocerie</string>
@@ -125,9 +128,18 @@
     <string name="transaction_state_monthly">Monthly at</string>
     <string name="transaction_state_yearly">Yearly at</string>
 
-    <string name="analysis_start_button">Start analysis</string>
-    <string name="analysis_activity_title">Analysis</string>
     <string name="transaction_date_init">2000:01:01</string>
 
+    <!-- Analysis properties -->
+    <string name="analysis_title">Analysis</string>
 
+    <string name="analysis_startValue">Startvalue</string>
+    <string name="analysis_startValue_validation_error">Start value must not be empty</string>
+    <string name="analysis_startDate">Startdate</string>
+    <string name="analysis_endDate">Enddate</string>
+    <string name="calendar">Calendar</string>
+    <string name="close">Close</string>
+    <string name="weekpicker">WeekPicker</string>
+    <string name="monthpicker">MonthPicker</string>
+    <string name="year_picker">Year Picker</string>
 </resources>

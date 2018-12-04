@@ -4,19 +4,29 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
-import android.widget.Toast;
+
+import java.util.List;
 
 import wbh.finanzapp.R;
+import wbh.finanzapp.access.GroupsDataSource;
+import wbh.finanzapp.access.TransactionsDataSource;
+import wbh.finanzapp.business.AbstractBean;
+import wbh.finanzapp.util.ProfileMemory;
 
 public class MenuActivity extends AbstractActivity {
 
     private static final String LOG_TAG = MenuActivity.class.getSimpleName();
+
+    private GroupsDataSource groupsDataSource;
+    private TransactionsDataSource transactionsDataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(LOG_TAG, "--> onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        groupsDataSource = new GroupsDataSource(this, ProfileMemory.getCurProfileBean().getId());
+        transactionsDataSource = new TransactionsDataSource(this, ProfileMemory.getCurProfileBean().getId());
         activateButtons();
     }
 
@@ -52,18 +62,21 @@ public class MenuActivity extends AbstractActivity {
 
     @SuppressWarnings("CodeBlock2Expr")
     private void activateButtons() {
+        List<AbstractBean> groupBeans = groupsDataSource.getBeans();
         Button buttonTransaction = findViewById(R.id.menu_button_transaction);
+        if (groupBeans.size() == 0) buttonTransaction.setEnabled(false);
         buttonTransaction.setOnClickListener(view -> {
             Intent myIntent = new Intent(this, TransactionsActivity.class);
             Log.d(LOG_TAG, "--> Start the groups activity.");
             startActivity(myIntent);
         });
+        List<AbstractBean> transactionBeans = transactionsDataSource.getBeans();
         Button buttonAnalyze = findViewById(R.id.menu_button_analyze);
+        if (transactionBeans.size() == 0) buttonAnalyze.setEnabled(false);
         buttonAnalyze.setOnClickListener(view -> {
-            // Intent myIntent = new Intent(this, AnalysisActivity.class);
-            Toast.makeText(this, "TODO: Analyse", Toast.LENGTH_SHORT).show();
+            Intent myIntent = new Intent(this, AnalysisActivity.class);
             Log.d(LOG_TAG, "--> Start the analysis activity.");
-            // startActivity(myIntent);
+            startActivity(myIntent);
         });
         Button buttonGroups = findViewById(R.id.menu_button_groups);
         buttonGroups.setOnClickListener(view -> {

@@ -22,7 +22,7 @@ class TransactionsDBHelper {
     // 1=unique;2=daily;3=weekly;4=monthly;5=yearly
     static final String COLUMN_STATE = "state";
     static final String COLUMN_UNIQUE_DATE = "uniqueDate";
-    // 1=monday;2=tuesday;...;7=sunday
+    // 1=sunday;2=monday;...;7=saturday
     static final String COLUMN_DAY_OF_WEEK = "dayOfWeek";
     static final String COLUMN_MONTHLY_DAY = "monthlyDay";
     static final String COLUMN_YEARLY_MONTH = "yearlyMonth";

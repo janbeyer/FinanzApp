@@ -5,6 +5,7 @@
     <string name="dialog_button_ok">Ok</string>
     <string name="dialog_button_save">Speichern</string>
     <string name="dialog_button_cancel">Abbrechen</string>
+    <string name="dialog_button_start">Start</string>
 
     <string name="action_help">Hilfe</string>
 
@@ -51,6 +52,9 @@
         Möchten Sie den Vorgang abbrechen, drücken Sie im „Neue Transaktion hinzufügen“ Dialog auf ABBRECHEN.\n\n
         Sie können die Transaktion durch gedrückt halten auf die Transaktion, jederzeit wieder bearbeiten oder löschen, in dem sie darauf hin auf den Mülleimer zum Löschen oder den Stift zum Bearbeiten klicken.
     </string>
+    <string name="help_analysis_text">
+        TODO: Definition des Hilfe Texts hier.
+    </string>
 
     <!-- Profile properties -->
     <string name="profile_add_title">Neues Profil hinzufügen</string>
@@ -74,7 +78,6 @@
     <string name="group_edit_title">Gruppe bearbeiten</string>
     <string name="group_delete_title">Gruppe löschen</string>
 
-    <string name="group_default_empty">&lt;No groups available&gt;</string>
     <string name="group_default_housekeeping_name">Haushalt</string>
     <string name="group_default_housekeeping_descr">Transaktionen des Haushalts</string>
     <string name="group_default_groceries_name">Lebensmittel</string>
@@ -123,8 +126,13 @@
     <string name="transaction_state_monthly">Monatlich am</string>
     <string name="transaction_state_yearly">Jährlich am</string>
 
-    <string name="analysis_start_button">Analyse starten</string>
-    <string name="analysis_activity_title">Analyse</string>
     <string name="transaction_date_init">01.01.2000</string>
 
+    <!-- Analysis properties -->
+    <string name="analysis_title">Analyse</string>
+
+    <string name="analysis_startValue">Startbetrag</string>
+    <string name="analysis_startValue_validation_error">Der Startbetrag darf nicht leer sein</string>
+    <string name="analysis_startDate">Startdatum</string>
+    <string name="analysis_endDate">Enddatum</string>
 </resources>

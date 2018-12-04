@@ -67,8 +67,20 @@ public class TransactionBean extends AbstractBean {
         return yearlyDay;
     }
 
+
+
     @Override
     public String toString() {
-        return super.toString() + ": " + amount + " Date: " + state;
+        return "TransactionBean{" +
+                "profileId=" + profileId +
+                ", groupId=" + groupId +
+                ", amount=" + amount +
+                ", state=" + state +
+                ", uniqueDate=" + uniqueDate +
+                ", dayOfWeek=" + dayOfWeek +
+                ", monthlyDay=" + monthlyDay +
+                ", yearlyMonth=" + yearlyMonth +
+                ", yearlyDay=" + yearlyDay +
+                '}';
     }
 }

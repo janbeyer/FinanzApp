@@ -15,7 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.List;
@@ -102,7 +101,7 @@ public abstract class AbstractActivity extends AppCompatActivity {
         saveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
 
         // Initial validation by create a new bean.
-        if(!edit) {
+        if (!edit) {
             textNameInputField.setError(getString(R.string.field_name_validation_error));
             saveButton.setEnabled(false);
         }
@@ -110,46 +109,47 @@ public abstract class AbstractActivity extends AppCompatActivity {
         // Validation of the name.
         textNameInputField.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+            }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
                 String name = charSequence.toString();
-                if(name.isEmpty()) {
+                if (name.isEmpty()) {
                     textNameInputField.setError(getString(R.string.field_name_validation_error));
                     saveButton.setEnabled(false);
                 } else {
                     textNameInputField.setError(null);
-                    enableButtonIfErrorFree(view);
+                    enableSaveButtonIfErrorFree(view);
                 }
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {}
+            public void afterTextChanged(Editable editable) {
+            }
         });
     }
 
-    public void enableButtonIfErrorFree(View view) {
-        if(checkIfViewIsErrorFree(view)) {
+    public void enableSaveButtonIfErrorFree(View view) {
+        if (checkIfViewIsErrorFree(view)) {
             saveButton.setEnabled(true);
         }
     }
 
-    private boolean checkIfViewIsErrorFree(View view) {
+    public boolean checkIfViewIsErrorFree(View view) {
         ViewGroup viewGroup = null;
         try {
             viewGroup = (ViewGroup) view;
-        } catch (ClassCastException e) {}
-        if(viewGroup == null || viewGroup.getChildCount() == 0) return true;
-        for(int i = 0; i < viewGroup.getChildCount(); ++i) {
+        } catch (ClassCastException e) {
+//            e.printStackTrace();
+        }
+        if (viewGroup == null || viewGroup.getChildCount() == 0) return true;
+        for (int i = 0; i < viewGroup.getChildCount(); ++i) {
             View curView = viewGroup.getChildAt(i);
-            if(curView instanceof EditText) {
+            if (curView instanceof EditText) {
                 EditText curTextField = (EditText) curView;
-                if(!TextUtils.isEmpty(curTextField.getError())) return false;
-            } else if(curView instanceof Spinner) {
-                Spinner curSpinner = (Spinner) curView;
-                if(curSpinner.getSelectedItem().equals(getString(R.string.group_default_empty))) return false;
-            } else if(!checkIfViewIsErrorFree(curView)) {
+                if (!TextUtils.isEmpty(curTextField.getError())) return false;
+            } else if (!checkIfViewIsErrorFree(curView)) {
                 return false;
             }
         }

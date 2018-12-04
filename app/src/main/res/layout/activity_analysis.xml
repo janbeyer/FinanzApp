@@ -12,15 +12,73 @@
     android:id="@+id/activity_analysis_root_element"
     tools:context=".activity.ProfilesActivity">
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10sp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/analysis_startValue"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:layout_marginEnd="5sp" />
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal|numberSigned"
+            android:layout_weight="3"
+            android:text="0"
+            android:id="@+id/analysis_startValue"
+            tools:ignore="Autofill,LabelFor"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10sp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/analysis_startDate"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:layout_marginEnd="5sp" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="TODO: Create icon with calendar onclick handler"
+            android:layout_weight="3"
+            android:gravity="end"
+            android:layout_marginEnd="5sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10sp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/analysis_endDate"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:layout_marginEnd="5sp" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="TODO: Create icon with calendar onclick handler"
+            android:layout_weight="3"
+            android:gravity="end"
+            android:layout_marginEnd="5sp" />
+    </LinearLayout>
+
     <Button android:id="@+id/button_start_analysis"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/start_analysis" />
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/list_view_profiles"
-        android:layout_gravity="center_horizontal" />
+        android:text="@string/dialog_button_start" />
 
 </LinearLayout>

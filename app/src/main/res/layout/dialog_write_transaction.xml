@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -98,73 +99,134 @@
     </LinearLayout>
 
     <!-- The Transaction label and RadioGroup -->
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10sp">
 
         <TextView
-            android:layout_width="0dp"
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/transaction_state"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:layout_weight="1"
-            android:layout_marginEnd="5sp" />
+            android:text="@string/transaction_state"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <RadioGroup
             android:id="@+id/transaction_rb"
-            android:layout_width="0dp"
+            android:layout_width="117dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" >
-
-            <RadioButton
-                android:id="@+id/rb_unique"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/transaction_state_unique"
-                android:onClick="onRadioButtonClicked"/>
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView">
 
             <RadioButton
                 android:id="@+id/rb_daily"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/transaction_state_daily"
-                android:onClick="onRadioButtonClicked"/>
+                android:onClick="onRadioButtonClicked"
+                android:text="@string/transaction_state_daily" />
 
             <RadioButton
                 android:id="@+id/rb_weekly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/transaction_state_weekly"
-                android:onClick="onRadioButtonClicked"/>
+                android:onClick="onRadioButtonClicked"
+                android:text="@string/transaction_state_weekly" />
 
             <RadioButton
                 android:id="@+id/rb_monthly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/transaction_state_monthly"
-                android:onClick="onRadioButtonClicked"/>
+                android:onClick="onRadioButtonClicked"
+                android:text="@string/transaction_state_monthly" />
 
             <RadioButton
                 android:id="@+id/rb_yearly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/transaction_state_yearly"
-                android:onClick="onRadioButtonClicked"/>
+                android:onClick="onRadioButtonClicked"
+                android:text="@string/transaction_state_yearly" />
+
+            <RadioButton
+                android:id="@+id/rb_unique"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="onRadioButtonClicked"
+                android:text="@string/transaction_state_unique" />
+
         </RadioGroup>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/transaction_date_init"
-            android:layout_weight="1"
-            android:layout_marginEnd="5sp" />
+        <ImageButton
+            android:id="@+id/b_weekly"
+            style="@android:style/Widget.DeviceDefault.Light.ImageButton"
+            android:layout_width="39dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="2dp"
+            android:contentDescription="@string/calendar"
+            android:onClick="onDateButtonClick"
+            android:src="@android:drawable/arrow_down_float"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/b_monthly"
+            app:layout_constraintStart_toEndOf="@+id/transaction_rb" />
 
-    </LinearLayout>
+        <ImageButton
+            android:id="@+id/b_monthly"
+            style="@android:style/Widget.DeviceDefault.Light.ImageButton"
+            android:layout_width="39dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="2dp"
+            android:contentDescription="@string/calendar"
+            android:onClick="onDateButtonClick"
+            android:src="@android:drawable/arrow_down_float"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/b_yearly"
+            app:layout_constraintStart_toEndOf="@+id/transaction_rb" />
+
+        <ImageButton
+            android:id="@+id/b_yearly"
+            style="@android:style/Widget.DeviceDefault.Light.ImageButton"
+            android:layout_width="39dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="2dp"
+            android:contentDescription="@string/calendar"
+            android:onClick="onDateButtonClick"
+            android:src="@android:drawable/arrow_down_float"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/b_unique"
+            app:layout_constraintStart_toEndOf="@+id/transaction_rb" />
+
+        <ImageButton
+            android:id="@+id/b_unique"
+            style="@android:style/Widget.DeviceDefault.Light.ImageButton"
+            android:layout_width="39dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:contentDescription="@string/calendar"
+            android:onClick="onDateButtonClick"
+            android:src="@android:drawable/arrow_down_float"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/transaction_rb" />
+
+    </android.support.constraint.ConstraintLayout>
 
 
 </LinearLayout>

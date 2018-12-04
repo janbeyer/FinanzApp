@@ -1,4 +1,4 @@
-package wbh.finanzapp.activity;
+package wbh.finanzapp.util;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -17,9 +17,9 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
 
     private static final String LOG_TAG = DateDialog.class.getSimpleName();
 
-    private TransactionsActivity.TransactionStates transactionStates;
+    private TransactionStates transactionStates;
 
-    public void setTransactionStates(TransactionsActivity.TransactionStates transactionStates) {
+    public void setTransactionStates(TransactionStates transactionStates) {
         this.transactionStates = transactionStates;
     }
 
@@ -36,6 +36,6 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         String date = dayOfMonth + ":" + month + ":" + year;
         Log.d(LOG_TAG, "--> Date: " + date);
-        transactionStates.uniqueDate = new Date(year, month, dayOfMonth).getTime();
+        transactionStates.setUniqueDate(new Date(year, month, dayOfMonth).getTime());
     }
 }

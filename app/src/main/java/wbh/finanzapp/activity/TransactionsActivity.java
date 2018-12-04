@@ -17,6 +17,7 @@ import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -33,30 +34,57 @@ import wbh.finanzapp.access.TransactionsDataSource;
 import wbh.finanzapp.business.AbstractBean;
 import wbh.finanzapp.business.GroupBean;
 import wbh.finanzapp.business.TransactionBean;
+import wbh.finanzapp.util.DateDialog;
+import wbh.finanzapp.util.MonthPicker;
 import wbh.finanzapp.util.ProfileMemory;
+import wbh.finanzapp.util.TransactionStates;
+import wbh.finanzapp.util.WeekPicker;
+import wbh.finanzapp.util.YearPicker;
 
 @SuppressWarnings("Convert2Diamond")
 public class TransactionsActivity extends AbstractActivity {
 
     private static final String LOG_TAG = TransactionsActivity.class.getSimpleName();
 
+    /**
+     * The TransactionsDataSource store the transaction state in the database.
+     */
     private TransactionsDataSource transactionsDataSource;
+
+    /**
+     * The GroupsDataSource store the group state in the database.
+     */
     private GroupsDataSource groupsDataSource;
 
+    /**
+     * A text input field. The user can choose an amount for every transaction.
+     */
     private EditText textAmountInputField;
 
     /**
      * Contains all the defined Groups
      */
     private Map<Integer, Long> spinnerGroupMap;
+
+    /**
+     * A DropDown menu, so that the user can choose the group for a transaction.
+     */
     private Spinner spinnerGroups;
 
     /**
      * Contains the radio group with the Transaction date options.
      */
-    private RadioGroup radioGroup;
+    private RadioGroup radioGroupTransactionDate;
 
+    /**
+     * Contains the transaction states: unique, daily, weekly, monthly and yearly.
+     */
     private TransactionStates transactionStates;
+
+    private ImageButton button_unique;
+    private ImageButton button_weekly;
+    private ImageButton button_monthly;
+    private ImageButton button_yearly;
 
     @SuppressWarnings("CodeBlock2Expr")
     @Override
@@ -177,67 +205,36 @@ public class TransactionsActivity extends AbstractActivity {
 
 
     /**
-     * Helper class for Transaction date states.
+     * This enum define the possible date mode.
      */
-    class TransactionStates {
-        // state can be: 1=unique; 2=daily; 3=weekly;  4=monthly;  5=yearly
-        int state = 0;
-
-        // 1 = Unique --> DatePicker    --> Default current date
-        long uniqueDate = new Date().getTime();
-
-        // 2 = Daily
-
-        // 3 = Weekly --> Dropdown box (1 ...  7) --> Default is Monday
-        int dayOfWeek = 0;
-
-        // 4 = Monthly--> Dropdown box (1 ... 31) --> Default is 1
-        int monthlyDay = 0;
-
-        // 5 = Yearly --> Dropdown box (1 ... 12) --> Default is 1
-        //            --> Dropdown box (1 ... 31) --> Default is 1
-        int yearlyMonth = 0;
-        int yearlyDay = 0;
-
-        void checkStates(int rbDateMode) {
-            if(rbDateMode == R.id.rb_unique) {
-                Log.d(LOG_TAG, "--> The selected rb state: unique");
-                state = 1;
-            } else if(rbDateMode == R.id.rb_daily) {
-                Log.d(LOG_TAG, "--> The selected rb state: daily");
-                state = 2;
-            } else if(rbDateMode == R.id.rb_weekly) {
-                Log.d(LOG_TAG, "--> The selected rb state: weekly");
-                state = 3;
-                dayOfWeek = 1;
-            } else if(rbDateMode == R.id.rb_monthly) {
-                Log.d(LOG_TAG, "--> The selected rb state: monthly");
-                state = 4;
-                monthlyDay = 1;
-            } else if(rbDateMode == R.id.rb_yearly) {
-                Log.d(LOG_TAG, "--> The selected rb state: yearly");
-                state = 5;
-                yearlyMonth = 1;
-                yearlyDay = 1;
-            }
-        }
+    enum DateMode {
+        daily,
+        unique,
+        weekly,
+        monthly,
+        yearly
     }
 
     /**
-     * Add an Transaction.
+     * The current selected date mode.
+     */
+    static DateMode dateMode = DateMode.daily;
+
+    /**
+     * Add an Transaction to the transaction database.
      */
     public void addTransaction(String name, String description, double amount, long groupId) {
-
         // Check the radio button state
-        int rbDateMode = radioGroup.getCheckedRadioButtonId();
+        int rbDateMode = radioGroupTransactionDate.getCheckedRadioButtonId();
         transactionStates.checkStates(rbDateMode);
-        Date date = new Date(transactionStates.uniqueDate);
-        Log.d(LOG_TAG, "--> Date: " + date);
-
+        Log.d(LOG_TAG, "--> TransactionStates: " + transactionStates);
         TransactionBean newTransaction = transactionsDataSource.insert(name, description, groupId, amount, transactionStates.state, transactionStates.uniqueDate, transactionStates.dayOfWeek, transactionStates.monthlyDay, transactionStates.yearlyMonth, transactionStates.yearlyDay);
         Log.d(LOG_TAG, "--> Insert new entry: " + newTransaction.toString());
     }
 
+    /**
+     * Edit an existing transaction in the database.
+     */
     public void editTransaction(TransactionBean transaction, String name, String description, double amount, long groupId) {
         // MOCK DATA.
         int state = 1;
@@ -252,17 +249,11 @@ public class TransactionsActivity extends AbstractActivity {
     private void fillGroupSpinner() {
         List<AbstractBean> groups = groupsDataSource.getBeans();
         spinnerGroupMap = new HashMap<Integer, Long>();
-        String[] spinnerArray;
-        if (groups.size() == 0) {
-            spinnerArray = new String[1];
-            spinnerArray[0] = getString(R.string.group_default_empty);
-        } else {
-            spinnerArray = new String[groups.size()];
-            for (int i = 0; i < groups.size(); i++) {
-                GroupBean curGroup = (GroupBean) groups.get(i);
-                spinnerGroupMap.put(i, curGroup.getId());
-                spinnerArray[i] = curGroup.getName();
-            }
+        String[] spinnerArray = new String[groups.size()];
+        for (int i = 0; i < groups.size(); i++) {
+            GroupBean curGroup = (GroupBean) groups.get(i);
+            spinnerGroupMap.put(i, curGroup.getId());
+            spinnerArray[i] = curGroup.getName();
         }
         ArrayAdapter<String> groupsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
         spinnerGroups.setAdapter(groupsAdapter);
@@ -274,11 +265,11 @@ public class TransactionsActivity extends AbstractActivity {
 
         textAmountInputField = view.findViewById(R.id.transaction_amount);
         spinnerGroups = view.findViewById(R.id.transaction_group);
-        radioGroup = view.findViewById(R.id.transaction_rb);
+        radioGroupTransactionDate = view.findViewById(R.id.transaction_rb);
 
         // activate the first radio button in the group which is daily because
         // in this state no date picker is needed
-        radioGroup.check(R.id.rb_daily);
+        radioGroupTransactionDate.check(R.id.rb_daily);
 
         // Fill the spinner drop down box with the groups
         fillGroupSpinner();
@@ -297,6 +288,7 @@ public class TransactionsActivity extends AbstractActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
                 String amountStr = charSequence.toString();
+
                 Double amount = null;
                 try {
                     amount = Double.parseDouble(amountStr);
@@ -309,7 +301,7 @@ public class TransactionsActivity extends AbstractActivity {
                     saveButton.setEnabled(false);
                 } else {
                     textAmountInputField.setError(null);
-                    enableButtonIfErrorFree(view);
+                    enableSaveButtonIfErrorFree(view);
                 }
             }
 
@@ -333,6 +325,33 @@ public class TransactionsActivity extends AbstractActivity {
                 }
             }
         });
+
+        button_unique = view.findViewById(R.id.b_unique);
+        button_weekly = view.findViewById(R.id.b_weekly);
+        button_monthly = view.findViewById(R.id.b_monthly);
+        button_yearly = view.findViewById(R.id.b_yearly);
+    }
+
+    /**
+     * This function is called if an date button is clicked
+     */
+    public void onDateButtonClick(View view) {
+        if (dateMode == DateMode.unique) {
+            DateDialog dateDialog = new DateDialog();
+            dateDialog.setTransactionStates(transactionStates);
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            dateDialog.show(transaction, "Date Dialog");
+        } else if (dateMode == DateMode.weekly) {
+            WeekPicker weekPicker = new WeekPicker(this, transactionStates);
+            weekPicker.show();
+        } else if (dateMode == DateMode.monthly) {
+            MonthPicker monthPicker = new MonthPicker(this, transactionStates);
+            monthPicker.show();
+        } else if (dateMode == DateMode.yearly) {
+            YearPicker yearPicker = new YearPicker(this, transactionStates);
+            yearPicker.show();
+        }
     }
 
     /**
@@ -345,33 +364,50 @@ public class TransactionsActivity extends AbstractActivity {
         // 5 = Yearly --> Dropdown box (1 ... 12) --> Default is 1
         //            --> Dropdown box (1 ... 31) --> Default is 1
         boolean checked = ((RadioButton) view).isChecked();
-        // Check which radio button was clicked
-        switch(view.getId()) {
-            case R.id.rb_unique:
-                if (checked) {
-                    DateDialog dateDialog = new DateDialog();
-                    dateDialog.setTransactionStates(transactionStates);
-                    FragmentManager fragmentManager = getFragmentManager();
-                    FragmentTransaction transaction = fragmentManager.beginTransaction();
-                    dateDialog.show(transaction, "Date Dialog");
-                    break;
-                }
-            case R.id.rb_weekly:
-                if (checked) {
-                    break;
-                }
-            case R.id.rb_monthly:
-                if (checked) {
-                    break;
-                }
-            case R.id.rb_yearly:
-                if (checked) {
-                    break;
-                }
-        }
+        // if unchecked return
+        if (!checked)
+            return;
+        int id = view.getId();
 
+        setButtonsInvisible();
+        // Check which radio button was clicked
+        switch (id) {
+            case R.id.rb_unique:
+                Log.d(LOG_TAG, "--> onRadioButtonClicked(): rb_unique");
+                dateMode = DateMode.unique;
+                button_unique.setVisibility(Button.VISIBLE);
+                break;
+            case R.id.rb_weekly:
+                Log.d(LOG_TAG, "--> onRadioButtonClicked(): rb_weekly");
+                dateMode = DateMode.weekly;
+                button_weekly.setVisibility(Button.VISIBLE);
+                break;
+            case R.id.rb_monthly:
+                Log.d(LOG_TAG, "--> onRadioButtonClicked(): rb_monthly");
+                dateMode = DateMode.monthly;
+                button_monthly.setVisibility(Button.VISIBLE);
+                break;
+            case R.id.rb_yearly:
+                Log.d(LOG_TAG, "--> onRadioButtonClicked(): rb_yearly");
+                dateMode = DateMode.yearly;
+                button_yearly.setVisibility(Button.VISIBLE);
+                break;
+        }
     }
 
+    /**
+     * Make the date picker buttons invisible.
+     */
+    public void setButtonsInvisible() {
+        button_unique.setVisibility(Button.INVISIBLE);
+        button_weekly.setVisibility(Button.INVISIBLE);
+        button_monthly.setVisibility(Button.INVISIBLE);
+        button_yearly.setVisibility(Button.INVISIBLE);
+    }
+
+    /**
+     * Create the edit dialog for the transaction editing.
+     */
     public void createEditTransactionDialog(final TransactionBean transaction) {
         View editView = super.createView(R.id.dialog_write_transaction_root_view, R.layout.dialog_write_transaction);
         createDialog(editView, R.string.transaction_edit_title, new EditListener(transaction), true);
@@ -385,10 +421,17 @@ public class TransactionsActivity extends AbstractActivity {
         );
     }
 
+    /**
+     * Return the help text for the transaction activity.
+     */
     protected int getHelpText() {
         return R.string.help_transaction_text;
     }
 
+    /**
+     * If the add button in the transaction dialog is clicked this listener start
+     * the add action and refresh the transaction list view.
+     */
     class AddListener extends CustomListener {
 
         double amount;
@@ -405,6 +448,10 @@ public class TransactionsActivity extends AbstractActivity {
         }
     }
 
+    /**
+     * If the edit button is clicked this listener start the edit action and
+     * refresh the transaction list view.
+     */
     class EditListener extends CustomListener {
 
         double amount;
