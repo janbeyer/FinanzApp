@@ -38,6 +38,7 @@
         tools:ignore="Autofill,LabelFor"/>
 
     <Button
+        android:background="@drawable/button_red_small"
         android:id="@+id/button_year_picker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

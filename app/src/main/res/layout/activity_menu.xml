@@ -15,24 +15,27 @@
         android:id="@+id/menu_button_transaction"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_main"
+        android:background="@drawable/button_red"
         android:lineSpacingExtra="8sp"
+        android:layout_margin="5dp"
         android:text="@string/menu_button_transaction" />
 
     <Button
         android:id="@+id/menu_button_analyze"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_main"
+        android:background="@drawable/button_red"
         android:lineSpacingExtra="8sp"
+        android:layout_margin="5dp"
         android:text="@string/menu_button_analyze" />
 
     <Button
         android:id="@+id/menu_button_groups"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_main"
+        android:background="@drawable/button_red"
         android:lineSpacingExtra="8sp"
+        android:layout_margin="5dp"
         android:text="@string/menu_button_groups" />
 
 </LinearLayout>

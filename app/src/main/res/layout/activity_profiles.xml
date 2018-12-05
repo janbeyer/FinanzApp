@@ -16,7 +16,7 @@
         android:id="@+id/button_add_profile"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_main"
+        android:background="@drawable/button_red"
         android:text="@string/profile_add_title"
         android:textAlignment="center"
         android:textAllCaps="false"

@@ -17,13 +17,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10sp">
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/analysis_startValue"
+            android:layout_marginEnd="5sp"
             android:layout_weight="1"
             android:gravity="end"
-            android:layout_marginEnd="5sp" />
+            android:text="@string/analysis_startValue" />
         <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -56,29 +57,32 @@
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10sp">
+        android:layout_marginTop="10sp"
+        android:orientation="horizontal">
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/analysis_endDate"
+            android:layout_marginEnd="5sp"
             android:layout_weight="1"
             android:gravity="end"
-            android:layout_marginEnd="5sp" />
+            android:text="@string/analysis_endDate" />
+
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TODO: Create icon with calendar onclick handler"
-            android:layout_weight="3"
+            android:layout_marginEnd="5sp"
             android:gravity="end"
-            android:layout_marginEnd="5sp" />
+            android:text="TODO: Create icon with calendar onclick handler" />
     </LinearLayout>
 
     <Button android:id="@+id/button_start_analysis"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/dialog_button_start" />
+        android:text="@string/dialog_button_start"
+        android:background="@drawable/button_red"
+        android:layout_margin="5dp"/>
 
 </LinearLayout>
