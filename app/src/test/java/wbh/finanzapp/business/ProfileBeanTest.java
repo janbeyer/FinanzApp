@@ -13,7 +13,7 @@ public class ProfileBeanTest {
     String description = "Description";
     long lastUse = 0;
 
-    ProfileBean TestProfileBean = new ProfileBean(0, "Profile", "Description", 0);
+    ProfileBean TestProfileBean = new ProfileBean(id, name, description, lastUse);
 
         @Before
     public void setUp() throws Exception {

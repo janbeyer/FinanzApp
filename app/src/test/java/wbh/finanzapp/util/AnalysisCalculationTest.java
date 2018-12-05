@@ -2,6 +2,8 @@ package wbh.finanzapp.util;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,6 +13,7 @@ import wbh.finanzapp.business.AbstractBean;
 import wbh.finanzapp.business.AnalysisBean;
 import wbh.finanzapp.business.TransactionBean;
 
+@RunWith(JUnit4.class)
 public class AnalysisCalculationTest {
 
     private static List<AbstractBean> transactions;
@@ -19,11 +22,13 @@ public class AnalysisCalculationTest {
 
     @Test
     public void uniqueCalculationTest() {
-        Long uniqueDate = 61520342400000L; // 04.07.2019.
+        Long uniqueDate = 1562198400000L; // 04.07.2019.
         setUpTransactionBean(1, uniqueDate, null, null, null, null);
         Assert.assertNotNull(transactions);
         AnalysisBean analysisBean = AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
-        Assert.assertEquals(analysisBean.getTotal().getIncome(), 10.0);
+        Assert.assertEquals(analysisBean.getTotal().getIncome().getCount(), 1);
+        Assert.assertEquals(analysisBean.getTotal().getIncome().getSum(), 10.0, 0.0);
+        Assert.assertEquals(analysisBean.getTotal().getIncome().getAverage(), 10.0, 0.0);
     }
 
     @Test
@@ -31,7 +36,9 @@ public class AnalysisCalculationTest {
         setUpTransactionBean(2, null, null, null, null, null);
         Assert.assertNotNull(transactions);
         AnalysisBean analysisBean = AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
-        Assert.assertEquals(analysisBean.getTotal().getIncome(), 920.0);
+        Assert.assertEquals(analysisBean.getTotal().getIncome().getCount(), 92);
+        Assert.assertEquals(analysisBean.getTotal().getIncome().getSum(), 920.0, 0.0);
+        Assert.assertEquals(analysisBean.getTotal().getIncome().getAverage(), 10.0, 0.0);
     }
 
     @Test
@@ -40,7 +47,9 @@ public class AnalysisCalculationTest {
         setUpTransactionBean(3, null, dayOfWeek, null, null, null);
         Assert.assertNotNull(transactions);
         AnalysisBean analysisBean = AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
-        Assert.assertEquals(analysisBean.getTotal().getIncome(), 130.0);
+        Assert.assertEquals(analysisBean.getTotal().getIncome().getCount(), 13);
+        Assert.assertEquals(analysisBean.getTotal().getIncome().getSum(), 130.0, 0.0);
+        Assert.assertEquals(analysisBean.getTotal().getIncome().getAverage(), 10.0, 0.0);
     }
 
     @Test
@@ -49,23 +58,27 @@ public class AnalysisCalculationTest {
         setUpTransactionBean(4, null, null, monthlyDay, null, null);
         Assert.assertNotNull(transactions);
         AnalysisBean analysisBean = AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
-        Assert.assertEquals(analysisBean.getTotal().getIncome(), 30.0);
+        Assert.assertEquals(analysisBean.getTotal().getIncome().getCount(), 3);
+        Assert.assertEquals(analysisBean.getTotal().getIncome().getSum(), 30.0, 0.0);
+        Assert.assertEquals(analysisBean.getTotal().getIncome().getAverage(), 10.0, 0.0);
     }
 
     @Test
     public void yearlyCalculationTest() {
         Integer yearlyMonth = 7;
         Integer yearlyDay = 15;
-        setUpTransactionBean(4, null, null, null, yearlyMonth, yearlyDay);
+        setUpTransactionBean(5, null, null, null, yearlyMonth, yearlyDay);
         Assert.assertNotNull(transactions);
         AnalysisBean analysisBean = AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
-        Assert.assertEquals(analysisBean.getTotal().getIncome(), 10.0);
+        Assert.assertEquals(analysisBean.getTotal().getIncome().getCount(), 1);
+        Assert.assertEquals(analysisBean.getTotal().getIncome().getSum(), 10.0, 0.0);
+        Assert.assertEquals(analysisBean.getTotal().getIncome().getAverage(), 10.0, 0.0);
     }
 
     private void setUpTransactionBean(int state, Long uniqueDate, Integer dayOfWeek, Integer monthlyDay, Integer yearlyMonth, Integer yearlyDay) {
         transactions = new ArrayList<>();
         TransactionBean transactionBean = new TransactionBean(10, "testName", "testDescription", 5, 20, 10.0,
-                1, uniqueDate, dayOfWeek, monthlyDay, yearlyMonth, yearlyDay);
+                state, uniqueDate, dayOfWeek, monthlyDay, yearlyMonth, yearlyDay);
         transactions.add(transactionBean);
     }
 }
