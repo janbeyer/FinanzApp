@@ -76,7 +76,7 @@ public class AnalysisCalculation {
      * Add the count of the transactions to the analysisBean.
      */
     private static void addDailyTransaction(AnalysisBean analysisBean, TransactionBean transactionBean, Date startDate, Date endDate) {
-        int days = (int) TimeUnit.DAYS.convert((endDate.getTime() - startDate.getTime()), TimeUnit.MILLISECONDS);
+        int days = (int) TimeUnit.DAYS.convert((endDate.getTime() - startDate.getTime()), TimeUnit.MILLISECONDS) + 1;
         addTransactionsToAnalysisBean(analysisBean, transactionBean, days);
     }
 
