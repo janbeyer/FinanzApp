@@ -2,6 +2,8 @@ package wbh.finanzapp.util;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,6 +13,7 @@ import wbh.finanzapp.business.AbstractBean;
 import wbh.finanzapp.business.AnalysisBean;
 import wbh.finanzapp.business.TransactionBean;
 
+@RunWith(JUnit4.class)
 public class AnalysisCalculationTest {
 
     private static List<AbstractBean> transactions;

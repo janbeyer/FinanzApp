@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import wbh.finanzapp.access.TransactionsDataSource;
 import wbh.finanzapp.business.AbstractBean;
 import wbh.finanzapp.business.AnalysisBean;
 import wbh.finanzapp.business.TransactionBean;
