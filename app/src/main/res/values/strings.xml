@@ -2,7 +2,7 @@
     <!-- Common properties -->
     <string name="app_name">FinancialApp</string>
     <string name="cab_checked_string">selected</string>
-    <string name="dialog_button_ok">Ok</string>
+    <string name="dialog_button_ok">OK</string>
     <string name="dialog_button_save">Save</string>
     <string name="dialog_button_cancel">Cancel</string>
     <string name="dialog_button_start">Start</string>
@@ -133,13 +133,15 @@
     <!-- Analysis properties -->
     <string name="analysis_title">Analysis</string>
 
-    <string name="analysis_startValue">Startvalue</string>
+    <string name="analysis_startValue">Start value</string>
     <string name="analysis_startValue_validation_error">Start value must not be empty</string>
-    <string name="analysis_startDate">Startdate</string>
-    <string name="analysis_endDate">Enddate</string>
+    <string name="analysis_startDate">Start date</string>
+    <string name="analysis_endDate">End date</string>
     <string name="calendar">Calendar</string>
     <string name="close">Close</string>
-    <string name="weekpicker">WeekPicker</string>
-    <string name="monthpicker">MonthPicker</string>
-    <string name="year_picker">Year Picker</string>
+    <string name="week_picker">WeekPicker</string>
+    <string name="month_picker">MonthPicker</string>
+    <string name="year_picker">YearPicker</string>
+    <string name="budget">Budget</string>
+    <string name="date">Date</string>
 </resources>

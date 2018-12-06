@@ -135,4 +135,12 @@
     <string name="analysis_startValue_validation_error">Der Startbetrag darf nicht leer sein</string>
     <string name="analysis_startDate">Startdatum</string>
     <string name="analysis_endDate">Enddatum</string>
+
+    <string name="calendar">Kalender</string>
+    <string name="close">Schließen</string>
+    <string name="week_picker">WochenPicker</string>
+    <string name="month_picker">MonatsPicker</string>
+    <string name="year_picker">JahrPicker</string>
+    <string name="budget">Budget</string>
+    <string name="date">Datum</string>
 </resources>
