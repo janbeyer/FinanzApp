@@ -55,7 +55,12 @@
         You can always change the transaction or delete it by holding on it and either using the trash can to delete it or the pencil to change it.
     </string>
     <string name="help_analysis_text">
-        TODO: Define help text for this activity here.
+        The purpose of the analysis is to give you a view into the future.\n\n
+        Here your incomes end expenditures get compared and visualized. You can choose any period of time for the analysis.\n\n
+        To start the analysis you have to set a start value. Then you set a start and end date for the period you want to have a closer look at and press the start button to start the analysis.\n\n
+        As a result you get the remains within the chosen period and inclusion of your transactions.\n\n
+        This way you can calculate different scenarios or just hold the overview regarding your financial situation.\n\n
+        This feature can also support you making difficult financial decisions.
     </string>
 
     <!-- Profile properties -->

@@ -53,7 +53,11 @@
         Sie können die Transaktion durch gedrückt halten auf die Transaktion, jederzeit wieder bearbeiten oder löschen, in dem sie darauf hin auf den Mülleimer zum Löschen oder den Stift zum Bearbeiten klicken.
     </string>
     <string name="help_analysis_text">
-        TODO: Definition des Hilfe Texts hier.
+        Die Analyse dient dazu Ihnen einen Blick in die Zukunft zu gestatten.\n\n
+        Hier werden die Einnahmen mit den Ausgaben verglichen und eine Übersicht erstellt. Sie können hier einen beliebigen Zeitraum angeben über welchen die Analyse durchgeführt werden soll.\n\n
+        Um eine Analyse durchzuführen, geben Sie einen Startwert ein. Dann setzen sie ein Start- und ein Enddatum und starten die Analyse indem Sie auf den Start Button drücken.\n\n
+        Nun wird Ihnen, unter Einbezug der Transaktionen, der Restwert, in der von Ihnen angegebenen Zeit, angegeben. So können Sie verschiedene Szenarien errechnen oder einfach einen Überblick über Ihren finanziellen Status gewinnen.\n\n
+        Dieses Feature kann Sie auch dabei unterstützen schwierige, finanzielle Entscheidungen zu treffen.
     </string>
 
     <!-- Profile properties -->
