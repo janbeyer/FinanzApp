@@ -2,7 +2,7 @@
     <!-- Common properties -->
     <string name="app_name">FinancialApp</string>
     <string name="cab_checked_string">selected</string>
-    <string name="dialog_button_ok">Ok</string>
+    <string name="dialog_button_ok">OK</string>
     <string name="dialog_button_save">Save</string>
     <string name="dialog_button_cancel">Cancel</string>
     <string name="dialog_button_start">Start</string>
@@ -41,7 +41,7 @@
         Next step is to click on the SAVE button and your group will be created.\n\n
         If you want to cancel the process, press CANCEL on the bottom of the “Add a new group” dialogue.\n\n
         You can always change the Profile or delete it by holding on it and either using the trash can to delete it or the pencil to change it.\n\n
-        To create the groups from your transactions, do as follows [#TODO].
+        To create the groups from your transactions, just add the transaction to a group when you create it.
     </string>
     <string name="help_transaction_text">
         The purpose of transactions it to book new expenditures or revenues and to make them available for the analysis.\n\n
@@ -133,13 +133,15 @@
     <!-- Analysis properties -->
     <string name="analysis_title">Analysis</string>
 
-    <string name="analysis_startValue">Startvalue</string>
+    <string name="analysis_startValue">Start value</string>
     <string name="analysis_startValue_validation_error">Start value must not be empty</string>
-    <string name="analysis_startDate">Startdate</string>
-    <string name="analysis_endDate">Enddate</string>
+    <string name="analysis_startDate">Start date</string>
+    <string name="analysis_endDate">End date</string>
     <string name="calendar">Calendar</string>
     <string name="close">Close</string>
-    <string name="weekpicker">WeekPicker</string>
-    <string name="monthpicker">MonthPicker</string>
-    <string name="year_picker">Year Picker</string>
+    <string name="week_picker">WeekPicker</string>
+    <string name="month_picker">MonthPicker</string>
+    <string name="year_picker">YearPicker</string>
+    <string name="budget">Budget</string>
+    <string name="date">Date</string>
 </resources>

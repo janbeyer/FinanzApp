@@ -1,6 +1,8 @@
 package wbh.finanzapp.activity;
 
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,7 +19,9 @@ import wbh.finanzapp.access.TransactionsDataSource;
 import wbh.finanzapp.business.AbstractBean;
 import wbh.finanzapp.business.AnalysisBean;
 import wbh.finanzapp.util.AnalysisCalculation;
+import wbh.finanzapp.util.DateDialog;
 import wbh.finanzapp.util.ProfileMemory;
+import wbh.finanzapp.util.TransactionStates;
 
 /**
  * This activity has the ability to create a analysis of all transactions in an given
@@ -33,6 +37,8 @@ public class AnalysisActivity extends AbstractActivity {
     private EditText textStartValue;
     private Date startDate = new Date(1514761200000L); // 01.01.2018.
     private Date endDate = new Date(1609369200000L); // 31.12.2020.
+
+    private TransactionStates transactionStates;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +56,28 @@ public class AnalysisActivity extends AbstractActivity {
         });
 
         prepareFormElements();
+    }
+
+    /**
+     * This function is called if an date button is clicked
+     */
+    public void onAnalyseDateButtonClick(View view) {
+        DateDialog dateDialog = new DateDialog();
+        transactionStates = new TransactionStates();
+        dateDialog.setTransactionStates(transactionStates);
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        dateDialog.show(transaction, "Date Dialog");
+
+//        Button button = (Button)view;
+//        Date date = new Date(transactionStates.uniqueDate);
+//        if(button.getId() == R.id.b_start_date) {
+//            TextView editText = findViewById(R.id.tv_start_date);
+//            editText.setText(date.toString());
+//        } else if(button.getId() == R.id.b_end_date) {
+//            TextView editText = findViewById(R.id.tv_end_date);
+//            editText.setText(date.toString());
+//        }
     }
 
     @Override

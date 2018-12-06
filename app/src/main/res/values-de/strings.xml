@@ -39,7 +39,7 @@
         Anschließend drücken sie auf den SPEICHERN Button und die Gruppe wird angelegt.\n\n
         Möchten Sie den Vorgang abbrechen, drücken Sie im „Neue Gruppe hinzufügen“ Dialog auf ABBRECHEN.\n\n
         Sie können die Gruppe durch gedrückt halten auf die Gruppe, jederzeit wieder bearbeiten oder löschen, in dem sie darauf hin auf den Mülleimer zum Löschen oder den Stift zum Bearbeiten klicken.\n\n
-        Um Transaktionen zu Gruppierungen zusammen zu fassen gehen sie wie folgt vor [#TODO].
+        Um Transaktionen zu Gruppierungen zusammen zu fassen, weisen Sie beim Erstellen die Transaktionen der entsprechenden Gruppe zu.
     </string>
     <string name="help_transaction_text">
         Transaktionen dienen dazu Geldein- oder ausgänge zu Buchen und für die Analyse verfügbar zu machen.\n\n
@@ -135,4 +135,12 @@
     <string name="analysis_startValue_validation_error">Der Startbetrag darf nicht leer sein</string>
     <string name="analysis_startDate">Startdatum</string>
     <string name="analysis_endDate">Enddatum</string>
+
+    <string name="calendar">Kalender</string>
+    <string name="close">Schließen</string>
+    <string name="week_picker">WochenPicker</string>
+    <string name="month_picker">MonatsPicker</string>
+    <string name="year_picker">JahrPicker</string>
+    <string name="budget">Budget</string>
+    <string name="date">Datum</string>
 </resources>
