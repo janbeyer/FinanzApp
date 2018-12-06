@@ -79,12 +79,12 @@
 
         <TextView
             android:id="@+id/tv_end_date"
-            android:layout_width="0dp"
+            android:layout_width="10dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5sp"
             android:layout_weight="1"
-            android:gravity="end"
-             />
+            android:gravity="end" />
+
         <ImageButton
             android:id="@+id/b_end_date"
             style="@android:style/Widget.DeviceDefault.Light.ImageButton"
@@ -93,8 +93,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginBottom="2dp"
             android:contentDescription="@string/calendar"
-            android:src="@android:drawable/arrow_down_float"
-            android:onClick="onAnalyseDateButtonClick"/>
+            android:onClick="onAnalyseDateButtonClick"
+            android:src="@android:drawable/arrow_down_float" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -106,11 +106,13 @@
             android:textColor="@android:color/darker_gray" />
     </LinearLayout>
 
-    <Button android:id="@+id/button_start_analysis"
+    <Button
+        android:id="@+id/button_start_analysis"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/dialog_button_start"
+        android:layout_margin="5dp"
         android:background="@drawable/button_red"
-        android:layout_margin="5dp"/>
+        android:text="@string/dialog_button_start"
+        android:textSize="18sp" />
 
 </LinearLayout>

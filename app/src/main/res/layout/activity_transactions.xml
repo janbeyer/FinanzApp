@@ -12,12 +12,14 @@
     android:id="@+id/activity_transactions_root_element"
     tools:context=".activity.TransactionsActivity">
 
-    <Button android:id="@+id/button_add_transaction"
+    <Button
+        android:id="@+id/button_add_transaction"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_red"
         android:layout_alignParentBottom="true"
-        android:text="@string/transaction_add_title" />
+        android:background="@drawable/button_red"
+        android:text="@string/transaction_add_title"
+        android:textSize="18sp" />
 
     <ListView
         android:layout_width="match_parent"
