@@ -8,6 +8,23 @@ import static org.junit.Assert.*;
 
 public class TransactionBeanTest {
 
+    Long uniqueDate;      // Set if state is 1 = unique.
+    Integer dayOfWeek;    // Set if state is 3 = weekly.
+    Integer monthlyDay;   // Set if state is 4 = monthly.
+    Integer yearlyMonth;  // Set if state is 5 = yearly.
+    Integer yearlyDay;    // Set if state is 5 = yearly.
+
+    long id = 0;
+    String name = "Name";
+    String description = "Description";
+    long profileId = 0;
+    long groupId = 0;
+    double amount = 0;
+    int state = 0;
+
+    TransactionBean TestTransactionBean = new TransactionBean(id, name, description, profileId, groupId,
+                           amount, state, uniqueDate, dayOfWeek, monthlyDay, yearlyMonth, yearlyDay);
+
     @Before
     public void setUp() throws Exception {
     }
@@ -18,54 +35,37 @@ public class TransactionBeanTest {
 
     @Test
     public void getProfileId() {
+        assertEquals(id, TestTransactionBean.getProfileId());
     }
 
     @Test
     public void getGroupId() {
+        assertEquals(groupId, TestTransactionBean.getGroupId());
     }
 
     @Test
     public void getAmount() {
+        assertEquals(amount, TestTransactionBean.getAmount(), 0);
     }
 
     @Test
     public void getState() {
+        assertEquals(state, TestTransactionBean.getState());
     }
 
-    @Test
-    public void getUniqueDate() {
-    }
-
-    @Test
-    public void getDayOfWeek() {
-    }
-
-    @Test
-    public void getMonthlyDay() {
-    }
-
-    @Test
-    public void getYearlyMonth() {
-    }
-
-    @Test
-    public void getYearlyDay() {
-    }
-
-
-    @Test
+       @Test
     public void getId() {
+        assertEquals(id, TestTransactionBean.getId());
     }
 
     @Test
     public void getName() {
+        assertEquals(name, TestTransactionBean.getName());
     }
 
     @Test
     public void getDescription() {
+        assertEquals(description, TestTransactionBean.getDescription());
     }
 
-    //@Test
-    //public void toString1() {
-    //}
 }
