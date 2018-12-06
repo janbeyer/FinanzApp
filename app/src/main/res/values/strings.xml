@@ -41,7 +41,7 @@
         Next step is to click on the SAVE button and your group will be created.\n\n
         If you want to cancel the process, press CANCEL on the bottom of the “Add a new group” dialogue.\n\n
         You can always change the Profile or delete it by holding on it and either using the trash can to delete it or the pencil to change it.\n\n
-        To create the groups from your transactions, do as follows [#TODO].
+        To create the groups from your transactions, just add the transaction to a group when you create it.
     </string>
     <string name="help_transaction_text">
         The purpose of transactions it to book new expenditures or revenues and to make them available for the analysis.\n\n
