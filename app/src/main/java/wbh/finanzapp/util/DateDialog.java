@@ -3,8 +3,10 @@ package wbh.finanzapp.util;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.DatePicker;
 
 import java.util.Calendar;
@@ -23,6 +25,12 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
         this.transactionStates = transactionStates;
     }
 
+    View.OnClickListener listener;
+
+   public void setListener(View.OnClickListener listener) {
+       this.listener = listener;
+   }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Calendar calendar = Calendar.getInstance();
@@ -34,8 +42,22 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        String date = dayOfMonth + ":" + month + ":" + year;
+        String dateStr = dayOfMonth + ":" + month + ":" + year;
+        Log.d(LOG_TAG, "--> Date: " + dateStr);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, dayOfMonth);
+        Date date = calendar.getTime();
         Log.d(LOG_TAG, "--> Date: " + date);
-        transactionStates.setUniqueDate(new Date(year, month, dayOfMonth).getTime());
+        transactionStates.setUniqueDate(date.getTime());
+        if(listener != null) {
+            listener.onClick(view);
+        }
     }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+    }
+
+
 }

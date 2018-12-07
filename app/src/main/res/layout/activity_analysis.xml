@@ -57,8 +57,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginBottom="2dp"
             android:contentDescription="@string/calendar"
-            android:src="@android:drawable/arrow_down_float"
-            android:onClick="onAnalyseDateButtonClick"/>
+            android:src="@android:drawable/arrow_down_float"/>
         <TextView
             android:id="@+id/tv_start_date"
             android:layout_width="0dp"
@@ -78,7 +77,7 @@
         >
 
         <TextView
-            android:id="@+id/tv_end_date"
+            android:text="@string/analysis_endDate"
             android:layout_width="10dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5sp"
@@ -93,10 +92,10 @@
             android:layout_marginStart="8dp"
             android:layout_marginBottom="2dp"
             android:contentDescription="@string/calendar"
-            android:onClick="onAnalyseDateButtonClick"
-            android:src="@android:drawable/arrow_down_float" />
+            android:src="@android:drawable/arrow_down_float"/>
 
         <TextView
+            android:id="@+id/tv_end_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5sp"

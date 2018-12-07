@@ -22,6 +22,7 @@ public class AnalysisCalculation {
         Log.d(LOG_TAG, "--> createAnalysisBean()");
 
         AnalysisBean analysisBean = new AnalysisBean();
+        Log.d(LOG_TAG, "<-- AnalysisBean: " + analysisBean);
 
         // Iterate over each transaction and create the analysis bean.
         transactions.forEach(element -> {
@@ -46,7 +47,7 @@ public class AnalysisCalculation {
             }
         });
 
-        Log.d(LOG_TAG, "--> createAnalysisBean() " + analysisBean);
+        Log.d(LOG_TAG, "<-- analysis finished: " + analysisBean);
         return analysisBean;
     }
 

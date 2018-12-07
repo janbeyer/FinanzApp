@@ -147,6 +147,6 @@
     <string name="week_picker">WeekPicker</string>
     <string name="month_picker">MonthPicker</string>
     <string name="year_picker">YearPicker</string>
-    <string name="budget">Budget</string>
+    <string name="budget">0</string>
     <string name="date">Date</string>
 </resources>

@@ -1,6 +1,7 @@
 package wbh.finanzapp.activity;
 
 
+import android.annotation.SuppressLint;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -10,14 +11,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import wbh.finanzapp.R;
 import wbh.finanzapp.access.TransactionsDataSource;
 import wbh.finanzapp.business.AbstractBean;
-import wbh.finanzapp.business.AnalysisBean;
 import wbh.finanzapp.util.AnalysisCalculation;
 import wbh.finanzapp.util.DateDialog;
 import wbh.finanzapp.util.ProfileMemory;
@@ -50,34 +53,65 @@ public class AnalysisActivity extends AbstractActivity {
         startButton = findViewById(R.id.button_start_analysis);
         startButton.setOnClickListener(view -> {
             List<AbstractBean> transactions = transactionsDataSource.getBeans();
-            AnalysisBean analysisBean = AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
+            // AnalysisBean analysisBean =
+            AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
 
             // TODO: Build tables and diagrams here with the input of the analysis bean ...
         });
 
         prepareFormElements();
+        transactionStates = new TransactionStates();
+        refreshDateEditText();
     }
 
-    /**
-     * This function is called if an date button is clicked
-     */
-    public void onAnalyseDateButtonClick(View view) {
-        DateDialog dateDialog = new DateDialog();
-        transactionStates = new TransactionStates();
+    private void createDateDialog(DateDialog dateDialog) {
+        Log.d(LOG_TAG, "--> createDateDialog()");
         dateDialog.setTransactionStates(transactionStates);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         dateDialog.show(transaction, "Date Dialog");
+    }
 
-//        Button button = (Button)view;
-//        Date date = new Date(transactionStates.uniqueDate);
-//        if(button.getId() == R.id.b_start_date) {
-//            TextView editText = findViewById(R.id.tv_start_date);
-//            editText.setText(date.toString());
-//        } else if(button.getId() == R.id.b_end_date) {
-//            TextView editText = findViewById(R.id.tv_end_date);
-//            editText.setText(date.toString());
-//        }
+    /**
+     * Create a formatted date an return it as a string.
+     */
+    private String getFormattedDateAsString(Date date) {
+        // TODO get local date format
+        @SuppressLint("SimpleDateFormat")
+        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd");
+        return simpleDateFormat.format(date);
+    }
+
+    public void refreshDateEditText() {
+        Log.d(LOG_TAG, "--> refreshDateEditText()");
+        ImageButton button = findViewById(R.id.b_start_date);
+        button.setOnClickListener(v -> {
+            DateDialog dateDialog = new DateDialog();
+            createDateDialog(dateDialog);
+            dateDialog.setListener(v1 -> {
+                if (transactionStates.uniqueDate == 0)
+                    return;
+                Date date = new Date(transactionStates.uniqueDate);
+                Log.d(LOG_TAG, "--> Refresh date: " + date);
+                TextView editText = findViewById(R.id.tv_start_date);
+                editText.setText(getFormattedDateAsString(date));
+            });
+        });
+
+
+        ImageButton button2 = findViewById(R.id.b_end_date);
+        button2.setOnClickListener(v -> {
+            DateDialog dateDialog = new DateDialog();
+            createDateDialog(dateDialog);
+            dateDialog.setListener(v12 -> {
+                if (transactionStates.uniqueDate == 0)
+                    return;
+                Date date = new Date(transactionStates.uniqueDate);
+                Log.d(LOG_TAG, "--> Refresh date: " + date);
+                TextView editText = findViewById(R.id.tv_end_date);
+                editText.setText(getFormattedDateAsString(date));
+            });
+        });
     }
 
     @Override

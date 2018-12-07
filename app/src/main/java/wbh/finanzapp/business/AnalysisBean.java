@@ -65,7 +65,7 @@ public class AnalysisBean {
 
         @Override
         public String toString() {
-            return "Income: " + income + " Expenses: " + expenses;
+            return "\nIncome: " + income + "\nExpenses: " + expenses;
         }
     }
 
