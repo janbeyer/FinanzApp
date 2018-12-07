@@ -173,8 +173,8 @@
         <ImageButton
             android:id="@+id/b_weekly"
             style="@android:style/Widget.DeviceDefault.Light.ImageButton"
-            android:layout_width="39dp"
-            android:layout_height="30dp"
+            android:layout_width="60dp"
+            android:layout_height="28dp"
             android:layout_marginStart="8dp"
             android:layout_marginBottom="2dp"
             android:contentDescription="@string/calendar"
@@ -187,7 +187,7 @@
         <ImageButton
             android:id="@+id/b_monthly"
             style="@android:style/Widget.DeviceDefault.Light.ImageButton"
-            android:layout_width="39dp"
+            android:layout_width="60dp"
             android:layout_height="30dp"
             android:layout_marginStart="8dp"
             android:layout_marginBottom="2dp"
@@ -201,7 +201,7 @@
         <ImageButton
             android:id="@+id/b_yearly"
             style="@android:style/Widget.DeviceDefault.Light.ImageButton"
-            android:layout_width="39dp"
+            android:layout_width="60dp"
             android:layout_height="30dp"
             android:layout_marginStart="8dp"
             android:layout_marginBottom="2dp"
@@ -215,7 +215,7 @@
         <ImageButton
             android:id="@+id/b_unique"
             style="@android:style/Widget.DeviceDefault.Light.ImageButton"
-            android:layout_width="39dp"
+            android:layout_width="60dp"
             android:layout_height="30dp"
             android:layout_marginStart="8dp"
             android:layout_marginBottom="8dp"
