@@ -14,7 +14,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -57,11 +63,45 @@ public class AnalysisActivity extends AbstractActivity {
             AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
 
             // TODO: Build tables and diagrams here with the input of the analysis bean ...
+
+            createIncomeChart();
+            createExpenseChart();
         });
 
         prepareFormElements();
         transactionStates = new TransactionStates();
         refreshDateEditText();
+    }
+
+    private void createExpenseChart() {
+        float[] xValues =  {  1,  2,   3,   4,  5};
+        float[] yValues = {100, 50, 300, 250, 70};
+        List<BarEntry> entries = new ArrayList<>();
+        int i = 0;
+        for (Float data : xValues) {
+            entries.add(new BarEntry(data, yValues[i++]));
+        }
+        BarChart chart = findViewById(R.id.expenses);
+        BarDataSet dataSet = new BarDataSet(entries, "Expenses");
+        BarData barData = new BarData(dataSet);
+        chart.setData(barData);
+        chart.invalidate(); // refresh chart
+    }
+
+    private void createIncomeChart() {
+        float[] dataNames =  {  1, 2, 3};
+        float[] dataValues = {1000, 100, 50};
+        List<BarEntry> entries = new ArrayList<>();
+        int i = 0;
+        for (Float data : dataNames) {
+            // turn your data into Entry objects
+            entries.add(new BarEntry(data, dataValues[i++]));
+        }
+        BarChart chart = findViewById(R.id.income);
+        BarDataSet dataSet = new BarDataSet(entries, "Income");
+        BarData barData = new BarData(dataSet);
+        chart.setData(barData);
+        chart.invalidate(); // refresh chart
     }
 
     private void createDateDialog(DateDialog dateDialog) {

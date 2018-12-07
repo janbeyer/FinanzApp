@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:id="@+id/activity_analysis_root_element"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".activity.ProfilesActivity">
-
+    <!-- Title and amount part-->
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10sp">
+        android:layout_marginTop="10sp"
+        android:orientation="horizontal">
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5sp"
             android:layout_weight="1"
-            android:gravity="end"
-            />
+            android:gravity="end" />
 
         <EditText
             android:id="@+id/analysis_startValue"
@@ -38,17 +37,19 @@
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10sp">
+        android:layout_marginTop="10sp"
+        android:orientation="horizontal">
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/analysis_startDate"
+            android:layout_marginEnd="5sp"
             android:layout_weight="1"
             android:gravity="end"
-            android:layout_marginEnd="5sp" />
+            android:text="@string/analysis_startDate" />
+
         <ImageButton
             android:id="@+id/b_start_date"
             style="@android:style/Widget.DeviceDefault.Light.ImageButton"
@@ -57,7 +58,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginBottom="2dp"
             android:contentDescription="@string/calendar"
-            android:src="@android:drawable/arrow_down_float"/>
+            android:src="@android:drawable/arrow_down_float" />
+
         <TextView
             android:id="@+id/tv_start_date"
             android:layout_width="0dp"
@@ -70,19 +72,18 @@
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10sp"
-        >
+        android:orientation="horizontal">
 
         <TextView
-            android:text="@string/analysis_endDate"
             android:layout_width="10dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5sp"
             android:layout_weight="1"
-            android:gravity="end" />
+            android:gravity="end"
+            android:text="@string/analysis_endDate" />
 
         <ImageButton
             android:id="@+id/b_end_date"
@@ -92,7 +93,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginBottom="2dp"
             android:contentDescription="@string/calendar"
-            android:src="@android:drawable/arrow_down_float"/>
+            android:src="@android:drawable/arrow_down_float" />
 
         <TextView
             android:id="@+id/tv_end_date"
@@ -113,5 +114,33 @@
         android:background="@drawable/button_red"
         android:text="@string/dialog_button_start"
         android:textSize="18sp" />
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="fill_parent">-->
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/income"
+                    android:layout_width="fill_parent"
+                    android:layout_height="200dp" />
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/expenses"
+                    android:layout_width="fill_parent"
+                    android:layout_height="200dp" />
+            </LinearLayout>
+        </ScrollView>
+
+    <!--</LinearLayout>-->
+
+
 
 </LinearLayout>
