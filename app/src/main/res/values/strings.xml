@@ -135,6 +135,10 @@
 
     <string name="transaction_date_init">2000:01:01</string>
 
+    <string name="dialog_pick_week">weekday</string>
+    <string name="dialog_pick_month">day</string>
+    <string name="dialog_pick_year">month</string>
+
     <!-- Analysis properties -->
     <string name="analysis_title">Analysis</string>
 
