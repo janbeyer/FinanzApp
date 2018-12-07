@@ -4,6 +4,7 @@ package wbh.finanzapp.activity;
 import android.annotation.SuppressLint;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,9 +16,13 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,6 +32,7 @@ import java.util.List;
 import wbh.finanzapp.R;
 import wbh.finanzapp.access.TransactionsDataSource;
 import wbh.finanzapp.business.AbstractBean;
+import wbh.finanzapp.business.AnalysisBean;
 import wbh.finanzapp.util.AnalysisCalculation;
 import wbh.finanzapp.util.DateDialog;
 import wbh.finanzapp.util.ProfileMemory;
@@ -43,11 +49,16 @@ public class AnalysisActivity extends AbstractActivity {
     private TransactionsDataSource transactionsDataSource;
 
     private Button startButton;
+
     private EditText textStartValue;
+
     private Date startDate = new Date(1514761200000L); // 01.01.2018.
     private Date endDate = new Date(1609369200000L); // 31.12.2020.
 
     private TransactionStates transactionStates;
+
+    private TextView textViewStartDate;
+    private TextView textViewEndDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,17 +66,28 @@ public class AnalysisActivity extends AbstractActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_analysis);
 
-        transactionsDataSource = new TransactionsDataSource(this, ProfileMemory.getCurProfileBean().getId());
+        transactionsDataSource = new TransactionsDataSource(
+                this, ProfileMemory.getCurProfileBean().getId());
+
+        textStartValue = this.findViewById(R.id.analysis_startValue);
+
+        textViewStartDate = findViewById(R.id.text_view_start_date);
+        textViewStartDate.setText(getFormattedDateAsString(startDate));
+
+
+        textViewEndDate = findViewById(R.id.text_view_end_date);
+        textViewEndDate.setText(getFormattedDateAsString(endDate));
+
         startButton = findViewById(R.id.button_start_analysis);
         startButton.setOnClickListener(view -> {
             List<AbstractBean> transactions = transactionsDataSource.getBeans();
-            // AnalysisBean analysisBean =
+            AnalysisBean analysisBean =
             AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
 
-            // TODO: Build tables and diagrams here with the input of the analysis bean ...
-
-            createIncomeChart();
-            createExpenseChart();
+            // Build tables and diagrams here with the input of the analysis bean ...
+            createPieChart(analysisBean);
+            createIncomeChart(analysisBean);
+            createExpenseChart(analysisBean);
         });
 
         prepareFormElements();
@@ -73,7 +95,25 @@ public class AnalysisActivity extends AbstractActivity {
         refreshDateEditText();
     }
 
-    private void createExpenseChart() {
+    private void createPieChart(AnalysisBean analysisBean) {
+        AnalysisBean.CashFlow cashFlow = analysisBean.getTotal();
+        Log.d(LOG_TAG, "--> CashFlow: " + cashFlow);
+        Log.d(LOG_TAG, "--> Income  : " + cashFlow.getIncome());
+        Log.d(LOG_TAG, "--> Expenses: " + cashFlow.getExpenses());
+        List<PieEntry> entries = new ArrayList<>();
+        entries.add(new PieEntry(1000));
+        entries.add(new PieEntry(950));
+        PieDataSet pieDataSet = new PieDataSet(entries, "Income/Expenses");
+        pieDataSet.setColors(Color.GREEN, Color.BLUE);
+        pieDataSet.setValueTextSize(18);
+        PieData pieData = new PieData(pieDataSet);
+
+        PieChart pieChart = findViewById(R.id.pie_chart);
+        pieChart.setData(pieData);
+        pieChart.invalidate();
+    }
+
+    private void createExpenseChart(AnalysisBean analysisBean) {
         float[] xValues =  {  1,  2,   3,   4,  5};
         float[] yValues = {100, 50, 300, 250, 70};
         List<BarEntry> entries = new ArrayList<>();
@@ -81,14 +121,15 @@ public class AnalysisActivity extends AbstractActivity {
         for (Float data : xValues) {
             entries.add(new BarEntry(data, yValues[i++]));
         }
-        BarChart chart = findViewById(R.id.expenses);
         BarDataSet dataSet = new BarDataSet(entries, "Expenses");
         BarData barData = new BarData(dataSet);
+
+        BarChart chart = findViewById(R.id.expenses_chart);
         chart.setData(barData);
         chart.invalidate(); // refresh chart
     }
 
-    private void createIncomeChart() {
+    private void createIncomeChart(AnalysisBean analysisBean) {
         float[] dataNames =  {  1, 2, 3};
         float[] dataValues = {1000, 100, 50};
         List<BarEntry> entries = new ArrayList<>();
@@ -97,9 +138,10 @@ public class AnalysisActivity extends AbstractActivity {
             // turn your data into Entry objects
             entries.add(new BarEntry(data, dataValues[i++]));
         }
-        BarChart chart = findViewById(R.id.income);
         BarDataSet dataSet = new BarDataSet(entries, "Income");
         BarData barData = new BarData(dataSet);
+
+        BarChart chart = findViewById(R.id.income_chart);
         chart.setData(barData);
         chart.invalidate(); // refresh chart
     }
@@ -133,8 +175,7 @@ public class AnalysisActivity extends AbstractActivity {
                     return;
                 Date date = new Date(transactionStates.uniqueDate);
                 Log.d(LOG_TAG, "--> Refresh date: " + date);
-                TextView editText = findViewById(R.id.tv_start_date);
-                editText.setText(getFormattedDateAsString(date));
+                textViewStartDate.setText(getFormattedDateAsString(date));
             });
         });
 
@@ -148,8 +189,7 @@ public class AnalysisActivity extends AbstractActivity {
                     return;
                 Date date = new Date(transactionStates.uniqueDate);
                 Log.d(LOG_TAG, "--> Refresh date: " + date);
-                TextView editText = findViewById(R.id.tv_end_date);
-                editText.setText(getFormattedDateAsString(date));
+                textViewEndDate.setText(getFormattedDateAsString(date));
             });
         });
     }
@@ -172,19 +212,32 @@ public class AnalysisActivity extends AbstractActivity {
     }
 
     private void prepareFormElements() {
+        // set error for the beginning
+        textStartValue.setError(
+                getString(R.string.transaction_amount_validation_error));
+        startButton.setEnabled(false);
         // StartValue.
-        textStartValue = this.findViewById(R.id.analysis_startValue);
         textStartValue.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+            public void beforeTextChanged(CharSequence charSequence,
+                                          int start, int count, int after) {
+                String startValueStr = charSequence.toString();
+                if (startValueStr.isEmpty() || startValueStr.equals("0") ||
+                        startValueStr.equals("-") || startValueStr.endsWith(".")) {
+                    textStartValue.setError(
+                            getString(R.string.transaction_amount_validation_error));
+                    startButton.setEnabled(false);
+                }
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+            public void onTextChanged(CharSequence charSequence,
+                                      int start, int before, int count) {
                 String startValueStr = charSequence.toString();
-
-                if (startValueStr.isEmpty() || startValueStr.equals("-") || startValueStr.endsWith(".")) {
-                    textStartValue.setError(getString(R.string.transaction_amount_validation_error));
+                if (startValueStr.isEmpty() || startValueStr.equals("0") ||
+                        startValueStr.equals("-") || startValueStr.endsWith(".")) {
+                    textStartValue.setError(
+                            getString(R.string.transaction_amount_validation_error));
                     startButton.setEnabled(false);
                 } else {
                     textStartValue.setError(null);

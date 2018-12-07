@@ -22,7 +22,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="5sp"
             android:layout_weight="1"
-            android:gravity="end" />
+            android:gravity="end"
+            android:text="@string/analysis_startValue"/>
 
         <EditText
             android:id="@+id/analysis_startValue"
@@ -61,7 +62,7 @@
             android:src="@android:drawable/arrow_down_float" />
 
         <TextView
-            android:id="@+id/tv_start_date"
+            android:id="@+id/text_view_start_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5sp"
@@ -96,7 +97,7 @@
             android:src="@android:drawable/arrow_down_float" />
 
         <TextView
-            android:id="@+id/tv_end_date"
+            android:id="@+id/text_view_end_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5sp"
@@ -127,15 +128,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/income"
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/pie_chart"
                     android:layout_width="fill_parent"
-                    android:layout_height="200dp" />
+                    android:layout_height="300dp" />
 
                 <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/expenses"
+                    android:id="@+id/income_chart"
                     android:layout_width="fill_parent"
-                    android:layout_height="200dp" />
+                    android:layout_height="300dp" />
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/expenses_chart"
+                    android:layout_width="fill_parent"
+                    android:layout_height="300dp" />
             </LinearLayout>
         </ScrollView>
 
