@@ -29,9 +29,13 @@ public class TransactionsDataSource extends AbstractDataSource {
     @Override
     public List<AbstractBean> getBeans() {
         List<AbstractBean> transactionList = new ArrayList<>();
-        Cursor cursor = dbHelper.getDatabase().query(TransactionsDBHelper.TABLE_NAME, TransactionsDBHelper.COLUMNS,
-                TransactionsDBHelper.COLUMN_PROFILE_ID + "=?", new String[]{String.valueOf(profileId)},
-                null, null, TransactionsDBHelper.COLUMN_NAME + " ASC");
+        Cursor cursor = dbHelper.getDatabase().query(
+                TransactionsDBHelper.TABLE_NAME,
+                TransactionsDBHelper.COLUMNS,
+                TransactionsDBHelper.COLUMN_PROFILE_ID + "=?",
+                new String[]{String.valueOf(profileId)},
+                null, null,
+                TransactionsDBHelper.COLUMN_NAME + " ASC");
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             TransactionBean transaction = cursorToBean(cursor);
@@ -42,12 +46,37 @@ public class TransactionsDataSource extends AbstractDataSource {
         return transactionList;
     }
 
-    public TransactionBean insert(String name, String description, long groupId, double amount, int state, Long uniqueDate, Integer dayOfWeek, Integer monthlyDay, Integer yearlyMonth, Integer yearlyDay) {
-        ContentValues values = createValues(null, name, description, profileId, groupId, amount, state, uniqueDate, dayOfWeek, monthlyDay, yearlyMonth, yearlyDay);
-        long insertId = dbHelper.getDatabase().insert(TransactionsDBHelper.TABLE_NAME, null, values);
+    public TransactionBean insert(
+            String name,
+            String description,
+            long groupId,
+            double amount,
+            int state,
+            Long uniqueDate,
+            Integer dayOfWeek,
+            Integer monthlyDay,
+            Integer yearlyMonth,
+            Integer yearlyDay) {
+        ContentValues values = createValues(null,
+                name, description,
+                profileId, groupId,
+                amount,
+                state,
+                uniqueDate,
+                dayOfWeek,
+                monthlyDay,
+                yearlyMonth,
+                yearlyDay);
+        long insertId = dbHelper.getDatabase().insert(
+                TransactionsDBHelper.TABLE_NAME,
+                null,
+                values);
 
-        Cursor cursor = dbHelper.getDatabase().query(TransactionsDBHelper.TABLE_NAME, TransactionsDBHelper.COLUMNS,
-                TransactionsDBHelper.COLUMN_ID + "=" + insertId, null, null, null, null);
+        Cursor cursor = dbHelper.getDatabase().query(
+                TransactionsDBHelper.TABLE_NAME,
+                TransactionsDBHelper.COLUMNS,
+                TransactionsDBHelper.COLUMN_ID + "=" + insertId,
+                null, null, null, null);
         cursor.moveToFirst();
         TransactionBean transaction = cursorToBean(cursor);
         cursor.close();
@@ -58,12 +87,42 @@ public class TransactionsDataSource extends AbstractDataSource {
      * Update the Transaction entry in the Database.
      * @return the updated Transaction as TransactionBean.
      */
-    public TransactionBean update(long id, String newName, String newDescription, long newGroupId, double newAmount, int newState, Long newUniqueDate, Integer newDayOfWeek, Integer newMonthlyDay, Integer newYearlyMonth, Integer newYearlyDay) {
-        ContentValues values = createValues(id, newName, newDescription, profileId, newGroupId, newAmount, newState, newUniqueDate, newDayOfWeek, newMonthlyDay, newYearlyMonth, newYearlyDay);
-        dbHelper.getDatabase().update(TransactionsDBHelper.TABLE_NAME, values, TransactionsDBHelper.COLUMN_ID + "=" + id, null);
+    public TransactionBean update(
+            long id,
+            String newName,
+            String newDescription,
+            long newGroupId,
+            double newAmount,
+            int newState,
+            Long newUniqueDate,
+            Integer newDayOfWeek,
+            Integer newMonthlyDay,
+            Integer newYearlyMonth,
+            Integer newYearlyDay) {
+        ContentValues values = createValues(
+                id,
+                newName,
+                newDescription,
+                profileId,
+                newGroupId,
+                newAmount,
+                newState,
+                newUniqueDate,
+                newDayOfWeek,
+                newMonthlyDay,
+                newYearlyMonth,
+                newYearlyDay);
+        dbHelper.getDatabase().update(
+                TransactionsDBHelper.TABLE_NAME,
+                values,
+                TransactionsDBHelper.COLUMN_ID + "=" + id,
+                null);
 
-        Cursor cursor = dbHelper.getDatabase().query(TransactionsDBHelper.TABLE_NAME, TransactionsDBHelper.COLUMNS,
-                TransactionsDBHelper.COLUMN_ID + "=" + id, null, null, null, null);
+        Cursor cursor = dbHelper.getDatabase().query(
+                TransactionsDBHelper.TABLE_NAME,
+                TransactionsDBHelper.COLUMNS,
+                TransactionsDBHelper.COLUMN_ID + "=" + id,
+                null, null, null, null);
         cursor.moveToFirst();
         TransactionBean transaction = cursorToBean(cursor);
         cursor.close();
@@ -72,7 +131,10 @@ public class TransactionsDataSource extends AbstractDataSource {
 
     @Override
     public void delete(long transactionId) {
-        dbHelper.getDatabase().delete(TransactionsDBHelper.TABLE_NAME, TransactionsDBHelper.COLUMN_ID + "=" + transactionId, null);
+        dbHelper.getDatabase().delete(
+                TransactionsDBHelper.TABLE_NAME,
+                TransactionsDBHelper.COLUMN_ID + "=" + transactionId,
+                null);
     }
 
     @Override
@@ -103,23 +165,59 @@ public class TransactionsDataSource extends AbstractDataSource {
         Integer yearlyMonth = cursor.getInt(idYearlyMonth);
         Integer yearlyDay = cursor.getInt(idYearlyDay);
 
-        return new TransactionBean(id, name, description, profileId, groupId, amount, state, uniqueDate, dayOfWeek, monthlyDay, yearlyMonth, yearlyDay);
+        return new TransactionBean(
+                id,
+                name,
+                description,
+                profileId,
+                groupId,
+                amount,
+                state,
+                uniqueDate,
+                dayOfWeek, monthlyDay, yearlyMonth, yearlyDay);
     }
 
-    private ContentValues createValues(Long id, String name, String description, long profileId, long groupId, double amount, int state, Long uniqueDate, Integer dayOfWeek, Integer monthlyDay, Integer yearlyMonth, Integer yearlyDay) {
+    private ContentValues createValues(
+            Long id,
+            String name, String description,
+            long profileId,
+            long groupId,
+            double amount,
+            int state,
+            Long uniqueDate,
+            Integer dayOfWeek,
+            Integer monthlyDay, Integer yearlyMonth, Integer yearlyDay) {
         ContentValues values = new ContentValues();
-        if (id != null) values.put(TransactionsDBHelper.COLUMN_ID, id);
-        if (name != null) values.put(TransactionsDBHelper.COLUMN_NAME, name);
-        if (description != null) values.put(TransactionsDBHelper.COLUMN_DESCRIPTION, description);
+        if (id != null) {
+            values.put(TransactionsDBHelper.COLUMN_ID, id);
+        }
+        if (name != null) {
+            values.put(TransactionsDBHelper.COLUMN_NAME, name);
+        }
+        if (description != null) {
+            values.put(TransactionsDBHelper.COLUMN_DESCRIPTION, description);
+        }
+
         values.put(TransactionsDBHelper.COLUMN_PROFILE_ID, profileId);
         values.put(TransactionsDBHelper.COLUMN_GROUP_ID, groupId);
         values.put(TransactionsDBHelper.COLUMN_AMOUNT, amount);
         values.put(TransactionsDBHelper.COLUMN_STATE, state);
-        if (uniqueDate != null) values.put(TransactionsDBHelper.COLUMN_UNIQUE_DATE, uniqueDate);
-        if (dayOfWeek != null) values.put(TransactionsDBHelper.COLUMN_DAY_OF_WEEK, dayOfWeek);
-        if (monthlyDay != null) values.put(TransactionsDBHelper.COLUMN_MONTHLY_DAY, monthlyDay);
-        if (yearlyMonth != null) values.put(TransactionsDBHelper.COLUMN_YEARLY_MONTH, yearlyMonth);
-        if (yearlyDay != null) values.put(TransactionsDBHelper.COLUMN_YEARLY_DAY, yearlyDay);
+
+        if (uniqueDate != null) {
+            values.put(TransactionsDBHelper.COLUMN_UNIQUE_DATE, uniqueDate);
+        }
+        if (dayOfWeek != null) {
+            values.put(TransactionsDBHelper.COLUMN_DAY_OF_WEEK, dayOfWeek);
+        }
+        if (monthlyDay != null) {
+            values.put(TransactionsDBHelper.COLUMN_MONTHLY_DAY, monthlyDay);
+        }
+        if (yearlyMonth != null) {
+            values.put(TransactionsDBHelper.COLUMN_YEARLY_MONTH, yearlyMonth);
+        }
+        if (yearlyDay != null) {
+            values.put(TransactionsDBHelper.COLUMN_YEARLY_DAY, yearlyDay);
+        }
         return values;
     }
 
