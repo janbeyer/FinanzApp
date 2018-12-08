@@ -93,14 +93,18 @@ public class TransactionsActivity extends AbstractActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transactions);
 
-        transactionsDataSource = new TransactionsDataSource(this, ProfileMemory.getCurProfileBean().getId());
-        groupsDataSource = new GroupsDataSource(this, ProfileMemory.getCurProfileBean().getId());
+        transactionsDataSource =
+                new TransactionsDataSource(this, ProfileMemory.getCurProfileBean().getId());
+        groupsDataSource =
+                new GroupsDataSource(this, ProfileMemory.getCurProfileBean().getId());
 
         transactionStates = new TransactionStates();
 
         Button buttonAddTransaction = findViewById(R.id.button_add_transaction);
         buttonAddTransaction.setOnClickListener(view -> {
-            View addView = super.createView(R.id.dialog_write_transaction_root_view, R.layout.dialog_write_transaction);
+            View addView = super.createView(
+                    R.id.dialog_write_transaction_root_view,
+                    R.layout.dialog_write_transaction);
             createDialog(addView, R.string.transaction_add_title, new AddListener(), false);
         });
 

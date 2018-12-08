@@ -57,7 +57,10 @@ public class AnalysisCalculationTest {
         Integer monthlyDay = 15;
         setUpTransactionBean(4, null, null, monthlyDay, null, null);
         Assert.assertNotNull(transactions);
-        AnalysisBean analysisBean = AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
+
+        AnalysisBean analysisBean =
+                AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
+
         Assert.assertEquals(analysisBean.getTotal().getIncome().getCount(), 3);
         Assert.assertEquals(analysisBean.getTotal().getIncome().getSum(), 30.0, 0.0);
         Assert.assertEquals(analysisBean.getTotal().getIncome().getAverage(), 10.0, 0.0);

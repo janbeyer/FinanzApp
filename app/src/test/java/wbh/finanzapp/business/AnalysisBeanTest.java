@@ -13,8 +13,6 @@ public class AnalysisBeanTest {
 
     int count = 3;
     double sum_income = 3000;
-
-
     AnalysisBean TestAnalysisBean = new AnalysisBean();
     AnalysisBean.CashFlow TestCashFlow = new AnalysisBean.CashFlow();
     AnalysisBean.Statistic TestStatistic = new AnalysisBean.Statistic();

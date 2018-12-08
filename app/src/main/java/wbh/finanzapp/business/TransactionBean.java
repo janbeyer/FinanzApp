@@ -13,7 +13,7 @@ public class TransactionBean extends AbstractBean {
     private final int state;
 
     private final Long uniqueDate;      // Set if state is 1 = unique.
-    private final Date date;
+    private Date date;
     private final Integer dayOfWeek;    // Set if state is 3 = weekly.
     private final Integer monthlyDay;   // Set if state is 4 = monthly.
     private final Integer yearlyMonth;  // Set if state is 5 = yearly.
@@ -32,7 +32,9 @@ public class TransactionBean extends AbstractBean {
         this.monthlyDay = monthlyDay;
         this.yearlyMonth = yearlyMonth;
         this.yearlyDay = yearlyDay;
-        this.date = new Date(uniqueDate);
+        if(uniqueDate != null) {
+            this.date = new Date(uniqueDate);
+        }
     }
 
     public long getProfileId() {
@@ -78,32 +80,21 @@ public class TransactionBean extends AbstractBean {
         // 1=unique;2=daily;3=weekly;4=monthly;5=yearly.
         if(state == 1) {
             return super.toString() +
-                    "\n(Group=" + groupId +
-                    ", amount=" + amount +
-                    ", uniqueDate=" + date + ")";
+                    "(Group=" + groupId + ", amount=" + amount + ", uniqueDate=" + date + ")";
         } else if(state == 2) {
             return super.toString() +
-                    "\n(Group=" + groupId +
-                    ", amount=" + amount +
-                    ", Daily)";
+                    "(Group=" + groupId + ", amount=" + amount + ", Daily)";
         } else if(state == 3) {
             return super.toString() +
-                    "\n(Group==" + groupId +
-                    ", amount=" + amount +
-                    ", dayOfWeek=" + dayOfWeek + ")";
+                    "(Group==" + groupId + ", amount=" + amount + ", dayOfWeek=" + dayOfWeek + ")";
         } else if(state == 4) {
             return super.toString() +
-                    "\n(Group=" + groupId +
-                    ", amount=" + amount +
-                    ", monthlyDay=" + monthlyDay + ")";
+                    "(Group=" + groupId + ", amount=" + amount + ", monthlyDay=" + monthlyDay + ")";
         } else if(state == 5) {
             return super.toString() +
-                    "\n(Group=" + groupId +
-                    ", amount=" + amount +
-                    ", yearlyMonth=" + yearlyMonth +
+                    "(Group=" + groupId + ", amount=" + amount + ", yearlyMonth=" + yearlyMonth +
                     ", yearlyDay=" + yearlyDay+ ")";
         }
-
         return super.toString();
     }
 }

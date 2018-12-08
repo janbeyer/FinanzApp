@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -17,6 +16,7 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -26,8 +26,10 @@ import com.github.mikephil.charting.data.PieEntry;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import wbh.finanzapp.R;
 import wbh.finanzapp.access.TransactionsDataSource;
@@ -48,12 +50,16 @@ public class AnalysisActivity extends AbstractActivity {
 
     private TransactionsDataSource transactionsDataSource;
 
-    private Button startButton;
-
     private EditText textStartValue;
 
-    private Date startDate = new Date(1514761200000L); // 01.01.2018.
-    private Date endDate = new Date(1609369200000L); // 31.12.2020.
+    // current day
+    private Calendar calendar = Calendar.getInstance();
+
+    // 01.01.2018.
+    private Date startDate;
+
+    // current date.
+    private Date endDate   = calendar.getTime();
 
     private TransactionStates transactionStates;
 
@@ -66,10 +72,13 @@ public class AnalysisActivity extends AbstractActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_analysis);
 
+        calendar.set(2018, 0, 1);
+        startDate = calendar.getTime();
+
         transactionsDataSource = new TransactionsDataSource(
                 this, ProfileMemory.getCurProfileBean().getId());
 
-        textStartValue = this.findViewById(R.id.analysis_startValue);
+        textStartValue = this.findViewById(R.id.start_value_edit_text);
 
         textViewStartDate = findViewById(R.id.text_view_start_date);
         textViewStartDate.setText(getFormattedDateAsString(startDate));
@@ -78,7 +87,7 @@ public class AnalysisActivity extends AbstractActivity {
         textViewEndDate = findViewById(R.id.text_view_end_date);
         textViewEndDate.setText(getFormattedDateAsString(endDate));
 
-        startButton = findViewById(R.id.button_start_analysis);
+        Button startButton = findViewById(R.id.button_start_analysis);
         startButton.setOnClickListener(view -> {
             List<AbstractBean> transactions = transactionsDataSource.getBeans();
             AnalysisBean analysisBean =
@@ -95,25 +104,33 @@ public class AnalysisActivity extends AbstractActivity {
         refreshDateEditText();
     }
 
+    /**
+     * Create the PieChart and show the income and the expenses.
+     */
     private void createPieChart(AnalysisBean analysisBean) {
         AnalysisBean.CashFlow cashFlow = analysisBean.getTotal();
         Log.d(LOG_TAG, "--> CashFlow: " + cashFlow);
         Log.d(LOG_TAG, "--> Income  : " + cashFlow.getIncome());
         Log.d(LOG_TAG, "--> Expenses: " + cashFlow.getExpenses());
         List<PieEntry> entries = new ArrayList<>();
-        entries.add(new PieEntry(1000));
-        entries.add(new PieEntry(950));
+        entries.add(new PieEntry((float) cashFlow.getIncome().getSum()));
+        entries.add(new PieEntry((float)cashFlow.getExpenses().getSum()));
         PieDataSet pieDataSet = new PieDataSet(entries, "Income/Expenses");
-        pieDataSet.setColors(Color.GREEN, Color.BLUE);
+
+        pieDataSet.setColors(Color.GREEN, Color.RED);
         pieDataSet.setValueTextSize(18);
         PieData pieData = new PieData(pieDataSet);
-
         PieChart pieChart = findViewById(R.id.pie_chart);
         pieChart.setData(pieData);
+        pieChart.setDescription(null);
+        Legend legend = pieChart.getLegend();
+        legend.setTextSize(18);
         pieChart.invalidate();
     }
 
     private void createExpenseChart(AnalysisBean analysisBean) {
+        Map<Long, AnalysisBean.CashFlow> map = analysisBean.getGroups();
+
         float[] xValues =  {  1,  2,   3,   4,  5};
         float[] yValues = {100, 50, 300, 250, 70};
         List<BarEntry> entries = new ArrayList<>();
@@ -157,7 +174,7 @@ public class AnalysisActivity extends AbstractActivity {
     /**
      * Create a formatted date an return it as a string.
      */
-    private String getFormattedDateAsString(Date date) {
+    public static String getFormattedDateAsString(Date date) {
         // TODO get local date format
         @SuppressLint("SimpleDateFormat")
         final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd");
@@ -212,43 +229,19 @@ public class AnalysisActivity extends AbstractActivity {
     }
 
     private void prepareFormElements() {
-        // set error for the beginning
-        textStartValue.setError(
-                getString(R.string.transaction_amount_validation_error));
-        startButton.setEnabled(false);
         // StartValue.
         textStartValue.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence,
-                                          int start, int count, int after) {
-                String startValueStr = charSequence.toString();
-                if (startValueStr.isEmpty() || startValueStr.equals("0") ||
-                        startValueStr.equals("-") || startValueStr.endsWith(".")) {
-                    textStartValue.setError(
-                            getString(R.string.transaction_amount_validation_error));
-                    startButton.setEnabled(false);
-                }
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence,
-                                      int start, int before, int count) {
-                String startValueStr = charSequence.toString();
-                if (startValueStr.isEmpty() || startValueStr.equals("0") ||
-                        startValueStr.equals("-") || startValueStr.endsWith(".")) {
-                    textStartValue.setError(
-                            getString(R.string.transaction_amount_validation_error));
-                    startButton.setEnabled(false);
-                } else {
-                    textStartValue.setError(null);
-                    enableStartButtonIfErrorFree(getWindow().getDecorView().getRootView());
-                }
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
                 String startValueStr = editable.toString();
-
                 Double startValue = null;
                 try {
                     startValue = Double.parseDouble(startValueStr);
@@ -266,11 +259,5 @@ public class AnalysisActivity extends AbstractActivity {
                 }
             }
         });
-    }
-
-    private void enableStartButtonIfErrorFree(View view) {
-        if (checkIfViewIsErrorFree(view)) {
-            startButton.setEnabled(true);
-        }
     }
 }

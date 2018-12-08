@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import wbh.finanzapp.activity.AnalysisActivity;
 import wbh.finanzapp.business.AbstractBean;
 import wbh.finanzapp.business.AnalysisBean;
 import wbh.finanzapp.business.TransactionBean;
@@ -18,31 +19,45 @@ public class AnalysisCalculation {
     /**
      * Create the analysis bean. Iterates over all transaction within an given start and end date.
      */
-    public static AnalysisBean createAnalysisBean(Date startDate, Date endDate, List<AbstractBean> transactions) {
-        Log.d(LOG_TAG, "--> createAnalysisBean()");
+    public static AnalysisBean createAnalysisBean(
+            Date startDate,
+            Date endDate,
+            List<AbstractBean> transactions) {
+        Log.d(LOG_TAG, "--> createAnalysisBean() Date is between: " +
+                AnalysisActivity.getFormattedDateAsString(startDate) + " to "
+                + AnalysisActivity.getFormattedDateAsString(endDate));
+
+        Calendar startCalendar = initCalendar(startDate);
+        Log.d(LOG_TAG, "--> Start Calendar: " + startCalendar.getTime());
+        Calendar endCalendar = initCalendar(endDate);
+        Log.d(LOG_TAG, "--> End Calendar: " + endCalendar.getTime());
 
         AnalysisBean analysisBean = new AnalysisBean();
-        Log.d(LOG_TAG, "<-- AnalysisBean: " + analysisBean);
+        Log.d(LOG_TAG, "--> AnalysisBean: " + analysisBean);
 
+        Log.d(LOG_TAG, "--> Iterate over each transaction count: " + transactions.size());
         // Iterate over each transaction and create the analysis bean.
         transactions.forEach(element -> {
 
             TransactionBean transactionBean = (TransactionBean) element;
-
-            Calendar startCalendar = initCalendar(startDate);
-            Calendar endCalendar = initCalendar(endDate);
+            Log.d(LOG_TAG, "--> Iterate over: " + transactionBean);
 
             int state = transactionBean.getState();
 
             if (state == 1) { // unique.
+                Log.d(LOG_TAG, "--> addUniqueTransaction: ");
                 addUniqueTransaction(analysisBean, transactionBean, startCalendar, endCalendar);
             } else if (state == 2) { // daily.
+                Log.d(LOG_TAG, "--> addDailyTransaction: ");
                 addDailyTransaction(analysisBean, transactionBean, startDate, endDate);
             } else if (state == 3) { // weekly.
+                Log.d(LOG_TAG, "--> addWeeklyTransaction: ");
                 addWeeklyTransaction(analysisBean, transactionBean, startCalendar, endCalendar);
             } else if (state == 4) { // monthly.
+                Log.d(LOG_TAG, "--> addMonthlyTransaction: ");
                 addMonthlyTransaction(analysisBean, transactionBean, startCalendar, endCalendar);
             } else if (state == 5) { // yearly.
+                Log.d(LOG_TAG, "--> addYearlyTransaction: ");
                 addYearlyTransaction(analysisBean, transactionBean, startCalendar, endCalendar);
             }
         });
@@ -64,10 +79,16 @@ public class AnalysisCalculation {
      * Check if the unique date of the transaction bean is between the startCalendar and endCalendar.
      * If this is true, add this transaction to the analysisBean.
      */
-    private static void addUniqueTransaction(AnalysisBean analysisBean, TransactionBean transactionBean, Calendar startCalendar, Calendar endCalendar) {
+    private static void addUniqueTransaction(
+            AnalysisBean analysisBean,
+            TransactionBean transactionBean,
+            Calendar startCalendar,
+            Calendar endCalendar) {
         Calendar uniqueCalendar = Calendar.getInstance();
         uniqueCalendar.setTime(new Date(transactionBean.getUniqueDate()));
-        if ((uniqueCalendar.equals(startCalendar) || uniqueCalendar.after(startCalendar)) && (uniqueCalendar.before(endCalendar) || uniqueCalendar.equals(endCalendar))) {
+        if ((uniqueCalendar.equals(startCalendar) ||
+                uniqueCalendar.after(startCalendar)) &&
+                (uniqueCalendar.before(endCalendar) || uniqueCalendar.equals(endCalendar))) {
             addTransactionsToAnalysisBean(analysisBean, transactionBean, 1);
         }
     }
@@ -104,10 +125,16 @@ public class AnalysisCalculation {
      * Count the dayOfMonth between the startCalendar and the endCalendar.
      * Add the count of the transactions to the analysisBean.
      */
-    private static void addMonthlyTransaction(AnalysisBean analysisBean, TransactionBean transactionBean, Calendar startCalendar, Calendar endCalendar) {
+    private static void addMonthlyTransaction(
+            AnalysisBean analysisBean,
+            TransactionBean transactionBean,
+            Calendar startCalendar,
+            Calendar endCalendar) {
         int monthlyDay = transactionBean.getMonthlyDay();
         int startMonthlyDay = startCalendar.get(Calendar.DAY_OF_MONTH);
         int daysOfMonth = 0;
+        Log.d(LOG_TAG, "--> addMonthlyTransaction: " + monthlyDay + " " + startCalendar +
+        " " + daysOfMonth);
         while (startCalendar.before(endCalendar) || startCalendar.equals(endCalendar)) {
             if (startMonthlyDay <= monthlyDay) {
                 Calendar tmpDate = Calendar.getInstance();
@@ -116,9 +143,9 @@ public class AnalysisCalculation {
                 if (tmpDate.before(endCalendar) || tmpDate.equals(endCalendar)) {
                     daysOfMonth++;
                     startCalendar.add(Calendar.MONTH, 1);
+                } else {
+                    break;
                 }
-            } else if (monthlyDay < startMonthlyDay) {
-                startCalendar.add(Calendar.DATE, 1);
             }
         }
         addTransactionsToAnalysisBean(analysisBean, transactionBean, daysOfMonth);
@@ -150,13 +177,20 @@ public class AnalysisCalculation {
      * Check if the transaction is an income or an expense.
      * Fill the analysisBean.
      */
-    private static void addTransactionsToAnalysisBean(AnalysisBean analysisBean, TransactionBean transactionBean, int count) {
+    private static void addTransactionsToAnalysisBean(
+            AnalysisBean analysisBean,
+            TransactionBean transactionBean,
+            int count) {
+
         long groupId = transactionBean.getGroupId();
         double amount = transactionBean.getAmount();
 
         AnalysisBean.CashFlow totalCF = analysisBean.getTotal();
         AnalysisBean.CashFlow groupCF = analysisBean.getGroups().get(groupId);
-        if (groupCF == null) groupCF = new AnalysisBean.CashFlow();
+
+        if (groupCF == null) {
+            groupCF = new AnalysisBean.CashFlow();
+        }
 
         if (amount > 0) {
             AnalysisBean.Statistic totalStatistic = totalCF.getIncome();

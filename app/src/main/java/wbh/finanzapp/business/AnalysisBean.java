@@ -6,7 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Represent an Analysis which contain the information of all transaction within an start and end date.
+ * Represent an Analysis which contain the information of all transaction
+ * within an start and end date.
  */
 public class AnalysisBean {
 
@@ -15,14 +16,11 @@ public class AnalysisBean {
     @SuppressLint("UseSparseArrays")
     private Map<Long, CashFlow> groups = new HashMap<>();
 
-    public AnalysisBean() {
-    }
-
     public CashFlow getTotal() {
         return total;
     }
 
-    public void setTotal(CashFlow total) {
+    void setTotal(CashFlow total) {
         this.total = total;
     }
 
@@ -51,7 +49,7 @@ public class AnalysisBean {
             return income;
         }
 
-        public void setIncome(Statistic income) {
+        void setIncome(Statistic income) {
             this.income = income;
         }
 
