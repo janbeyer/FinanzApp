@@ -33,31 +33,31 @@ public class AnalysisCalculation {
         Log.d(LOG_TAG, "--> End Calendar: " + endCalendar.getTime());
 
         AnalysisBean analysisBean = new AnalysisBean();
-        Log.d(LOG_TAG, "--> AnalysisBean: " + analysisBean);
-
         Log.d(LOG_TAG, "--> Iterate over each transaction count: " + transactions.size());
         // Iterate over each transaction and create the analysis bean.
         transactions.forEach(element -> {
 
             TransactionBean transactionBean = (TransactionBean) element;
             Log.d(LOG_TAG, "--> Iterate over: " + transactionBean);
+            // set the transaction to the analyse
+            analysisBean.getTransactionNames().add(transactionBean.getName());
 
             int state = transactionBean.getState();
 
             if (state == 1) { // unique.
-                Log.d(LOG_TAG, "--> addUniqueTransaction: ");
+                Log.d(LOG_TAG, "--> addUniqueTransaction.");
                 addUniqueTransaction(analysisBean, transactionBean, startCalendar, endCalendar);
             } else if (state == 2) { // daily.
-                Log.d(LOG_TAG, "--> addDailyTransaction: ");
+                Log.d(LOG_TAG, "--> addDailyTransaction.");
                 addDailyTransaction(analysisBean, transactionBean, startDate, endDate);
             } else if (state == 3) { // weekly.
-                Log.d(LOG_TAG, "--> addWeeklyTransaction: ");
+                Log.d(LOG_TAG, "--> addWeeklyTransaction.");
                 addWeeklyTransaction(analysisBean, transactionBean, startCalendar, endCalendar);
             } else if (state == 4) { // monthly.
-                Log.d(LOG_TAG, "--> addMonthlyTransaction: ");
+                Log.d(LOG_TAG, "--> addMonthlyTransaction.");
                 addMonthlyTransaction(analysisBean, transactionBean, startCalendar, endCalendar);
             } else if (state == 5) { // yearly.
-                Log.d(LOG_TAG, "--> addYearlyTransaction: ");
+                Log.d(LOG_TAG, "--> addYearlyTransaction.");
                 addYearlyTransaction(analysisBean, transactionBean, startCalendar, endCalendar);
             }
         });
@@ -133,8 +133,6 @@ public class AnalysisCalculation {
         int monthlyDay = transactionBean.getMonthlyDay();
         int startMonthlyDay = startCalendar.get(Calendar.DAY_OF_MONTH);
         int daysOfMonth = 0;
-        Log.d(LOG_TAG, "--> addMonthlyTransaction: " + monthlyDay + " " + startCalendar +
-        " " + daysOfMonth);
         while (startCalendar.before(endCalendar) || startCalendar.equals(endCalendar)) {
             if (startMonthlyDay <= monthlyDay) {
                 Calendar tmpDate = Calendar.getInstance();

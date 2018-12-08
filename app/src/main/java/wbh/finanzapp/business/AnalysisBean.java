@@ -2,7 +2,9 @@ package wbh.finanzapp.business;
 
 import android.annotation.SuppressLint;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,6 +14,8 @@ import java.util.Map;
 public class AnalysisBean {
 
     private CashFlow total = new CashFlow();
+
+    private List<String> transactionNames = new ArrayList<>();
 
     @SuppressLint("UseSparseArrays")
     private Map<Long, CashFlow> groups = new HashMap<>();
@@ -35,6 +39,10 @@ public class AnalysisBean {
     @Override
     public String toString() {
         return "CashFlow: " + total;
+    }
+
+    public List<String> getTransactionNames() {
+        return transactionNames;
     }
 
     /**

@@ -9,9 +9,11 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -96,6 +98,18 @@ public class AnalysisActivity extends AbstractActivity {
             // Build tables and diagrams here with the input of the analysis bean ...
             createPieChart(analysisBean);
             createIncomeExpenseChart(analysisBean);
+
+            List<String> transactionList = new ArrayList<>();
+            int a = 2000*12;
+            int b = -600*52;
+            int c = -50*52;
+            transactionList.add("1. Gehalt monatlich  : 2000*12 = " + a);
+            transactionList.add("2. Miete  monatlich  : -600*12 = " + b);
+            transactionList.add("3. Auto   wöchentlich:  -50*52 = " + c);
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
+                    android.R.layout.simple_list_item_activated_1, transactionList);
+            ListView listView = findViewById(R.id.list_view_analysis);
+            listView.setAdapter(arrayAdapter);
         });
 
         prepareFormElements();

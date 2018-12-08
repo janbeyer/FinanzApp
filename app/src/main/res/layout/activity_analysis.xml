@@ -154,6 +154,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/button_start_analysis" />
 
+            <ListView
+                android:id="@+id/list_view_analysis"
+                android:layout_width="fill_parent"
+                android:layout_height="139dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:scrollbars="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/pie_chart" />
+
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/income_expenses_chart"
                 android:layout_width="fill_parent"
@@ -163,7 +176,7 @@
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/pie_chart" />
+                app:layout_constraintTop_toBottomOf="@+id/list_view_analysis" />
 
         </android.support.constraint.ConstraintLayout>
 
