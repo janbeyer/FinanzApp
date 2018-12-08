@@ -95,8 +95,7 @@ public class AnalysisActivity extends AbstractActivity {
 
             // Build tables and diagrams here with the input of the analysis bean ...
             createPieChart(analysisBean);
-            createIncomeChart(analysisBean);
-            createExpenseChart(analysisBean);
+            createIncomeExpenseChart(analysisBean);
         });
 
         prepareFormElements();
@@ -112,54 +111,52 @@ public class AnalysisActivity extends AbstractActivity {
         Log.d(LOG_TAG, "--> CashFlow: " + cashFlow);
         Log.d(LOG_TAG, "--> Income  : " + cashFlow.getIncome());
         Log.d(LOG_TAG, "--> Expenses: " + cashFlow.getExpenses());
+
         List<PieEntry> entries = new ArrayList<>();
         entries.add(new PieEntry((float) cashFlow.getIncome().getSum()));
         entries.add(new PieEntry((float)cashFlow.getExpenses().getSum()));
         PieDataSet pieDataSet = new PieDataSet(entries, "Income/Expenses");
-
         pieDataSet.setColors(Color.GREEN, Color.RED);
         pieDataSet.setValueTextSize(18);
+
         PieData pieData = new PieData(pieDataSet);
+
         PieChart pieChart = findViewById(R.id.pie_chart);
         pieChart.setData(pieData);
         pieChart.setDescription(null);
+
         Legend legend = pieChart.getLegend();
-        legend.setTextSize(18);
+        legend.setTextSize(14);
         pieChart.invalidate();
     }
 
-    private void createExpenseChart(AnalysisBean analysisBean) {
+    private void createIncomeExpenseChart(AnalysisBean analysisBean) {
         Map<Long, AnalysisBean.CashFlow> map = analysisBean.getGroups();
 
-        float[] xValues =  {  1,  2,   3,   4,  5};
-        float[] yValues = {100, 50, 300, 250, 70};
+        float[] values = {1000, 100, 50, -100, -50, -300, -250, -70};
+        int  [] colors = new int[values.length];
         List<BarEntry> entries = new ArrayList<>();
-        int i = 0;
-        for (Float data : xValues) {
-            entries.add(new BarEntry(data, yValues[i++]));
+        for (int i = 1; i < values.length; ++i) {
+            entries.add(new BarEntry(i, values[i-1]));
+            if(values[i-1] >= 0) {
+                colors[i-1] = Color.GREEN;
+            } else {
+                colors[i-1] = Color.RED;
+            }
         }
-        BarDataSet dataSet = new BarDataSet(entries, "Expenses");
+        BarDataSet dataSet = new BarDataSet(entries, "Income/Expenses");
+        dataSet.setColors(colors);
+        dataSet.setValueTextSize(18);
+
         BarData barData = new BarData(dataSet);
 
-        BarChart chart = findViewById(R.id.expenses_chart);
+        BarChart chart = findViewById(R.id.income_expenses_chart);
         chart.setData(barData);
-        chart.invalidate(); // refresh chart
-    }
+        chart.setDescription(null);
 
-    private void createIncomeChart(AnalysisBean analysisBean) {
-        float[] dataNames =  {  1, 2, 3};
-        float[] dataValues = {1000, 100, 50};
-        List<BarEntry> entries = new ArrayList<>();
-        int i = 0;
-        for (Float data : dataNames) {
-            // turn your data into Entry objects
-            entries.add(new BarEntry(data, dataValues[i++]));
-        }
-        BarDataSet dataSet = new BarDataSet(entries, "Income");
-        BarData barData = new BarData(dataSet);
+        Legend legend = chart.getLegend();
+        legend.setTextSize(14);
 
-        BarChart chart = findViewById(R.id.income_chart);
-        chart.setData(barData);
         chart.invalidate(); // refresh chart
     }
 

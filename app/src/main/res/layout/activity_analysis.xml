@@ -155,25 +155,15 @@
                 app:layout_constraintTop_toBottomOf="@+id/button_start_analysis" />
 
             <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/income_chart"
+                android:id="@+id/income_expenses_chart"
                 android:layout_width="fill_parent"
                 android:layout_height="345dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="47dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/pie_chart" />
-
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/expenses_chart"
-                android:layout_width="fill_parent"
-                android:layout_height="345dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/income_chart" />
 
         </android.support.constraint.ConstraintLayout>
 
