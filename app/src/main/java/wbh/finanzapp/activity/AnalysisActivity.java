@@ -2,6 +2,7 @@ package wbh.finanzapp.activity;
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.graphics.Color;
@@ -9,6 +10,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -89,6 +92,8 @@ public class AnalysisActivity extends AbstractActivity {
 
         Button startButton = findViewById(R.id.button_start_analysis);
         startButton.setOnClickListener(view -> {
+            hideKeyboard(this);
+
             List<AbstractBean> transactions = transactionsDataSource.getBeans();
             AnalysisBean analysisBean =
             AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
@@ -98,7 +103,12 @@ public class AnalysisActivity extends AbstractActivity {
 
             Log.d(LOG_TAG, "--> TransactionNames: ");
 
-            float[] values = createListView(analysisBean);
+            List<String> transactionList = new ArrayList<>();
+
+            float[] values = createListDate(analysisBean, transactionList);
+
+            // The list view represent all transactions with there count and amount within the given period.
+            createListView(transactionList, R.id.list_view_analysis);
 
             createIncomeExpenseChart(values);
         });
@@ -108,9 +118,11 @@ public class AnalysisActivity extends AbstractActivity {
         refreshDateEditText();
     }
 
-    private float[] createListView(AnalysisBean analysisBean) {
+    /**
+     * Create the list date and return it as a float array.
+     */
+    private float[] createListDate(AnalysisBean analysisBean, List<String> transactionList) {
         List<Long>   groupIds = analysisBean.getGroupIds();
-        List<String> transactionList = new ArrayList<>();
         Map<Long, AnalysisBean.CashFlow> map = analysisBean.getGroups();
         int i = 1;
         int j = 0;
@@ -132,9 +144,6 @@ public class AnalysisActivity extends AbstractActivity {
                 j++;
             }
         }
-
-        createListView(transactionList, R.id.list_view_analysis);
-
         return values;
     }
 
@@ -146,25 +155,24 @@ public class AnalysisActivity extends AbstractActivity {
         Log.d(LOG_TAG, "--> CashFlow: " + cashFlow);
         Log.d(LOG_TAG, "--> Income  : " + cashFlow.getIncome());
         Log.d(LOG_TAG, "--> Expenses: " + cashFlow.getExpenses());
-
         List<PieEntry> entries = new ArrayList<>();
         entries.add(new PieEntry((float) cashFlow.getIncome().getSum()));
         entries.add(new PieEntry((float)cashFlow.getExpenses().getSum() * -1));
         PieDataSet pieDataSet = new PieDataSet(entries, "Income/Expenses");
         pieDataSet.setColors(Color.GREEN, Color.RED);
         pieDataSet.setValueTextSize(18);
-
         PieData pieData = new PieData(pieDataSet);
-
         PieChart pieChart = findViewById(R.id.pie_chart);
         pieChart.setData(pieData);
         pieChart.setDescription(null);
-
         Legend legend = pieChart.getLegend();
         legend.setTextSize(14);
         pieChart.invalidate();
     }
 
+    /**
+     * Create an BarChar and show the income and expenses groupd by there category.
+     */
     private void createIncomeExpenseChart(float[] values) {
         int  [] colors = new int[values.length];
         List<BarEntry> entries = new ArrayList<>();
@@ -178,18 +186,27 @@ public class AnalysisActivity extends AbstractActivity {
         }
         BarDataSet dataSet = new BarDataSet(entries, "Income/Expenses");
         dataSet.setColors(colors);
-        dataSet.setValueTextSize(18);
-
+        dataSet.setValueTextSize(16);
         BarData barData = new BarData(dataSet);
-
         BarChart chart = findViewById(R.id.income_expenses_chart);
         chart.setData(barData);
         chart.setDescription(null);
-
+        
         Legend legend = chart.getLegend();
         legend.setTextSize(14);
 
         chart.invalidate(); // refresh chart
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     private void createDateDialog(DateDialog dateDialog) {
