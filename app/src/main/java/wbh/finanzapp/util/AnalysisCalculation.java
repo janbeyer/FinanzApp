@@ -27,15 +27,15 @@ public class AnalysisCalculation {
                 AnalysisActivity.getFormattedDateAsString(startDate) + " to "
                 + AnalysisActivity.getFormattedDateAsString(endDate));
 
-        Calendar startCalendar = initCalendar(startDate);
-        Log.d(LOG_TAG, "--> Start Calendar: " + startCalendar.getTime());
-        Calendar endCalendar = initCalendar(endDate);
-        Log.d(LOG_TAG, "--> End Calendar: " + endCalendar.getTime());
-
         AnalysisBean analysisBean = new AnalysisBean();
         Log.d(LOG_TAG, "--> Iterate over each transaction count: " + transactions.size());
         // Iterate over each transaction and create the analysis bean.
         transactions.forEach(element -> {
+
+            // the start and end calenda is modified by the called funtions
+            // so we have to initialize them every time
+            Calendar startCalendar = initCalendar(startDate);
+            Calendar endCalendar = initCalendar(endDate);
 
             TransactionBean transactionBean = (TransactionBean) element;
             Log.d(LOG_TAG, "--> Iterate over: " + transactionBean);
@@ -109,7 +109,8 @@ public class AnalysisCalculation {
      */
     private static void addWeeklyTransaction(AnalysisBean analysisBean, TransactionBean transactionBean, Calendar startCalendar, Calendar endCalendar) {
         int dayOfWeek = transactionBean.getDayOfWeek();
-        int daysOfWeek = 0;
+        // start by 1 because this is used as multiplier in addTransactionsToAnalysisBean
+        int daysOfWeek = 1;
         while (startCalendar.before(endCalendar) || startCalendar.equals(endCalendar)) {
             if (startCalendar.get(Calendar.DAY_OF_WEEK) == dayOfWeek) {
                 daysOfWeek++;
@@ -132,7 +133,8 @@ public class AnalysisCalculation {
             Calendar endCalendar) {
         int monthlyDay = transactionBean.getMonthlyDay();
         int startMonthlyDay = startCalendar.get(Calendar.DAY_OF_MONTH);
-        int daysOfMonth = 0;
+        // start by 1 because this is used as multiplier in addTransactionsToAnalysisBean
+        int daysOfMonth = 1;
         while (startCalendar.before(endCalendar) || startCalendar.equals(endCalendar)) {
             if (startMonthlyDay <= monthlyDay) {
                 Calendar tmpDate = Calendar.getInstance();
@@ -146,6 +148,7 @@ public class AnalysisCalculation {
                 }
             }
         }
+
         addTransactionsToAnalysisBean(analysisBean, transactionBean, daysOfMonth);
     }
 
@@ -156,7 +159,8 @@ public class AnalysisCalculation {
     private static void addYearlyTransaction(AnalysisBean analysisBean, TransactionBean transactionBean, Calendar startCalendar, Calendar endCalendar) {
         int yearlyMonth = transactionBean.getYearlyMonth();
         int yearlyDay = transactionBean.getYearlyDay();
-        int monthOfYear = 0;
+        // start by 1 because this is used as multiplier in addTransactionsToAnalysisBean
+        int monthOfYear = 1;
         while (startCalendar.before(endCalendar) || startCalendar.equals(endCalendar)) {
             if (startCalendar.get(Calendar.MONTH) < yearlyMonth) {
                 startCalendar.add(Calendar.MONTH, 1);
