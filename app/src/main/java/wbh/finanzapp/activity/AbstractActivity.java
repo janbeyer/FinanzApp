@@ -20,7 +20,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import wbh.finanzapp.R;
-import wbh.finanzapp.business.AbstractBean;
 
 public abstract class AbstractActivity extends AppCompatActivity {
 
@@ -61,12 +60,13 @@ public abstract class AbstractActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public ListView createListView(List<AbstractBean> list, int layoutType, int listViewId) {
-        ArrayAdapter<AbstractBean> arrayAdapter = new ArrayAdapter<>(this, layoutType, list);
+    public ListView createListView(List<?> list, int listViewId) {
+        ArrayAdapter<?> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_activated_1, list);
         ListView listView = findViewById(listViewId);
         listView.setAdapter(arrayAdapter);
         return listView;
     }
+
 
     public View createView(int viewId, int layoutId) {
         LayoutInflater inflater = getLayoutInflater();

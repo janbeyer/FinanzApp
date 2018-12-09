@@ -66,7 +66,7 @@ public class ProfilesActivity extends AbstractActivity {
 
     public void showAllListEntries() {
         Log.d(LOG_TAG, "--> Show all list entries.");
-        ListView profilesListView = createListView(profileDataSource.getBeans(), android.R.layout.simple_list_item_activated_1, R.id.list_view_profiles);
+        ListView profilesListView = createListView(profileDataSource.getBeans(), R.id.list_view_profiles);
         profilesListView.setOnItemClickListener((adapterView, view, position, id) -> {
             ProfileBean selectedProfile = (ProfileBean) adapterView.getItemAtPosition(position);
             ProfileMemory.setCurProfileBean(selectedProfile);

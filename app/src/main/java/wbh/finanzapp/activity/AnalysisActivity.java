@@ -9,11 +9,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -98,40 +96,9 @@ public class AnalysisActivity extends AbstractActivity {
             // Build tables and diagrams here with the input of the analysis bean ...
             createPieChart(analysisBean);
 
-
             Log.d(LOG_TAG, "--> TransactionNames: ");
 
-            List<String> list = analysisBean.getTransactionNames();
-            List<Long>   groupIds = analysisBean.getGroupIds();
-            List<String> transactionList = new ArrayList<>();
-            Map<Long, AnalysisBean.CashFlow> map = analysisBean.getGroups();
-            int i = 1;
-            int j = 0;
-            float[] values = new float[map.size()];
-            for (String item: list) {
-                Long groupId;
-                if(j < map.size()) {
-                    groupId = groupIds.get(j);
-                    AnalysisBean.CashFlow cashFlow = map.get(groupId);
-                    AnalysisBean.Statistic statistic = cashFlow.getIncome();
-                    double sum = statistic.getSum();
-                    if(sum == 0) {
-                        statistic = cashFlow.getExpenses();
-                    }
-                    String str = (i++) + ". " +  item + " = " + statistic;
-                    Log.d(LOG_TAG, "--> " + str);
-                    transactionList.add(str);
-                    values[j] = (float) statistic.getSum();
-                    j++;
-                }
-            }
-
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
-                    android.R.layout.simple_list_item_activated_1, transactionList);
-            ListView listView = findViewById(R.id.list_view_analysis);
-            listView.setAdapter(arrayAdapter);
-
-            // float[] values = {1000, 100, 50, -100, -50, -300, -250, -70};
+            float[] values = createListView(analysisBean);
 
             createIncomeExpenseChart(values);
         });
@@ -139,6 +106,36 @@ public class AnalysisActivity extends AbstractActivity {
         prepareFormElements();
         transactionStates = new TransactionStates();
         refreshDateEditText();
+    }
+
+    private float[] createListView(AnalysisBean analysisBean) {
+        List<Long>   groupIds = analysisBean.getGroupIds();
+        List<String> transactionList = new ArrayList<>();
+        Map<Long, AnalysisBean.CashFlow> map = analysisBean.getGroups();
+        int i = 1;
+        int j = 0;
+        float[] values = new float[map.size()];
+        for (String item: analysisBean.getTransactionNames()) {
+            Long groupId;
+            if(j < map.size()) {
+                groupId = groupIds.get(j);
+                AnalysisBean.CashFlow cashFlow = map.get(groupId);
+                AnalysisBean.Statistic statistic = cashFlow.getIncome();
+                double sum = statistic.getSum();
+                if(sum == 0) {
+                    statistic = cashFlow.getExpenses();
+                }
+                String str = (i++) + ". " +  item + " = " + statistic;
+                Log.d(LOG_TAG, "--> " + str);
+                transactionList.add(str);
+                values[j] = (float) statistic.getSum();
+                j++;
+            }
+        }
+
+        createListView(transactionList, R.id.list_view_analysis);
+
+        return values;
     }
 
     /**

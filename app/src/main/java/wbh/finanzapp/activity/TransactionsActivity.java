@@ -126,8 +126,7 @@ public class TransactionsActivity extends AbstractActivity {
 
     public void showAllListEntries() {
         Log.d(LOG_TAG, "--> Show all list entries.");
-        createListView(transactionsDataSource.getBeans(), android.R.layout.simple_list_item_activated_1,
-                R.id.list_view_transactions);
+        createListView(transactionsDataSource.getBeans(), R.id.list_view_transactions);
     }
 
     private void initializeContextualActionBar() {
