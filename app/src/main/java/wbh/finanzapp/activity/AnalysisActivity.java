@@ -97,19 +97,38 @@ public class AnalysisActivity extends AbstractActivity {
 
             // Build tables and diagrams here with the input of the analysis bean ...
             createPieChart(analysisBean);
-            createIncomeExpenseChart(analysisBean);
 
+
+            Log.d(LOG_TAG, "--> TransactionNames: ");
+
+            List<String> list = analysisBean.getTransactionNames();
+            List<Long>   groupIds = analysisBean.getGroupIds();
             List<String> transactionList = new ArrayList<>();
-            int a = 2000*12;
-            int b = -600*52;
-            int c = -50*52;
-            transactionList.add("1. Gehalt monatlich  : 2000*12 = " + a);
-            transactionList.add("2. Miete  monatlich  : -600*12 = " + b);
-            transactionList.add("3. Auto   wöchentlich:  -50*52 = " + c);
+            Map<Long, AnalysisBean.CashFlow> map = analysisBean.getGroups();
+            int i = 1;
+            int j = 0;
+            float[] values = new float[map.size()];
+            for (String item: list) {
+                Long groupId;
+                if(j < map.size()) {
+                    groupId = groupIds.get(j);
+                    AnalysisBean.CashFlow cashFlow = map.get(groupId);
+                    String str = (i++) + ". " +  item + " = " + cashFlow.getIncome();
+                    Log.d(LOG_TAG, "--> " + str);
+                    transactionList.add(str);
+                    values[j] = (float) cashFlow.getIncome().getSum();
+                    j++;
+                }
+            }
+
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
                     android.R.layout.simple_list_item_activated_1, transactionList);
             ListView listView = findViewById(R.id.list_view_analysis);
             listView.setAdapter(arrayAdapter);
+
+            // float[] values = {1000, 100, 50, -100, -50, -300, -250, -70};
+
+            createIncomeExpenseChart(values);
         });
 
         prepareFormElements();
@@ -128,7 +147,7 @@ public class AnalysisActivity extends AbstractActivity {
 
         List<PieEntry> entries = new ArrayList<>();
         entries.add(new PieEntry((float) cashFlow.getIncome().getSum()));
-        entries.add(new PieEntry((float)cashFlow.getExpenses().getSum()));
+        entries.add(new PieEntry((float)cashFlow.getExpenses().getSum() * -1));
         PieDataSet pieDataSet = new PieDataSet(entries, "Income/Expenses");
         pieDataSet.setColors(Color.GREEN, Color.RED);
         pieDataSet.setValueTextSize(18);
@@ -144,10 +163,7 @@ public class AnalysisActivity extends AbstractActivity {
         pieChart.invalidate();
     }
 
-    private void createIncomeExpenseChart(AnalysisBean analysisBean) {
-        Map<Long, AnalysisBean.CashFlow> map = analysisBean.getGroups();
-
-        float[] values = {1000, 100, 50, -100, -50, -300, -250, -70};
+    private void createIncomeExpenseChart(float[] values) {
         int  [] colors = new int[values.length];
         List<BarEntry> entries = new ArrayList<>();
         for (int i = 1; i < values.length; ++i) {

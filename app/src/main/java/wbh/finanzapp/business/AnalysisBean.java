@@ -17,6 +17,8 @@ public class AnalysisBean {
 
     private List<String> transactionNames = new ArrayList<>();
 
+    private List<Long> groupIds = new ArrayList<>();
+
     @SuppressLint("UseSparseArrays")
     private Map<Long, CashFlow> groups = new HashMap<>();
 
@@ -43,6 +45,10 @@ public class AnalysisBean {
 
     public List<String> getTransactionNames() {
         return transactionNames;
+    }
+
+    public List<Long> getGroupIds() {
+        return groupIds;
     }
 
     /**

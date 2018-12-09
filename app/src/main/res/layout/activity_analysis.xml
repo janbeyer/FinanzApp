@@ -146,7 +146,7 @@
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/pie_chart"
                 android:layout_width="fill_parent"
-                android:layout_height="345dp"
+                android:layout_height="350dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
@@ -157,7 +157,7 @@
             <ListView
                 android:id="@+id/list_view_analysis"
                 android:layout_width="fill_parent"
-                android:layout_height="139dp"
+                android:layout_height="350dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
@@ -170,7 +170,7 @@
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/income_expenses_chart"
                 android:layout_width="fill_parent"
-                android:layout_height="345dp"
+                android:layout_height="350dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"

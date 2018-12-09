@@ -183,8 +183,12 @@ public class AnalysisCalculation {
         long groupId = transactionBean.getGroupId();
         double amount = transactionBean.getAmount();
 
+        Log.d(LOG_TAG, "--> addTransactionsToAnalysisBean Sum: " + count + "*" + amount);
+
         AnalysisBean.CashFlow totalCF = analysisBean.getTotal();
         AnalysisBean.CashFlow groupCF = analysisBean.getGroups().get(groupId);
+
+        analysisBean.getGroupIds().add(groupId);
 
         if (groupCF == null) {
             groupCF = new AnalysisBean.CashFlow();
@@ -193,13 +197,14 @@ public class AnalysisCalculation {
         if (amount > 0) {
             AnalysisBean.Statistic totalStatistic = totalCF.getIncome();
             addStatisticToCashFlow(totalStatistic, count, amount);
+
             AnalysisBean.Statistic groupStatistic = groupCF.getIncome();
             addStatisticToCashFlow(groupStatistic, count, amount);
         } else {
             AnalysisBean.Statistic totalStatistic = totalCF.getExpenses();
-            addStatisticToCashFlow(totalStatistic, count, amount * -1);
+            addStatisticToCashFlow(totalStatistic, count, amount);
             AnalysisBean.Statistic groupStatistic = groupCF.getExpenses();
-            addStatisticToCashFlow(groupStatistic, count, amount * -1);
+            addStatisticToCashFlow(groupStatistic, count, amount);
         }
 
         analysisBean.getGroups().put(groupId, groupCF);
@@ -210,6 +215,9 @@ public class AnalysisCalculation {
      */
     private static void addStatisticToCashFlow(AnalysisBean.Statistic statistic, int count, double sum) {
         statistic.setCount(statistic.getCount() + count);
-        statistic.setSum(statistic.getSum() + (count * sum));
+        double a = count * sum;
+        double b = statistic.getSum();
+        statistic.setSum(a + b);
+        Log.d(LOG_TAG, "--> addStatisticToCashFlow: " + b + " + " + a);
     }
 }
