@@ -3,6 +3,7 @@ package wbh.finanzapp.business;
 import android.annotation.SuppressLint;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,29 @@ import java.util.Map;
  */
 public class AnalysisBean {
 
+    /**
+     * The total cash flow for a period of time.
+     */
     private CashFlow total = new CashFlow();
+
+    private Calendar startCalendar;
+    private Calendar endCalendar;
+
+    public void setEndCalendar(Calendar endCalendar) {
+        this.endCalendar = endCalendar;
+    }
+
+    public Calendar getEndCalendar() {
+        return endCalendar;
+    }
+
+    public void setStartCalendar(Calendar startCalendar) {
+        this.startCalendar = startCalendar;
+    }
+
+    public Calendar getStartCalendar() {
+        return startCalendar;
+    }
 
     private List<String> transactionNames = new ArrayList<>();
 
@@ -82,11 +105,17 @@ public class AnalysisBean {
     }
 
     /**
-     * Statistic class contains the sum over all transactions.
+     * Statistic class contains the sum over all transactions and the count of times the transaction was occur.
      */
     public static class Statistic {
 
+        /**
+         * The count of times the transaction was occur.
+         */
         private int count = 0;
+        /**
+         * The sum of all transactions for a group.
+         */
         private double sum = 0;
 
         public int getCount() {

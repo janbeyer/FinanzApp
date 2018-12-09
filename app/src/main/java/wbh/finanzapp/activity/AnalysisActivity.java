@@ -222,6 +222,7 @@ public class AnalysisActivity extends AbstractActivity {
                 Date date = new Date(transactionStates.uniqueDate);
                 Log.d(LOG_TAG, "--> Refresh date: " + date);
                 textViewStartDate.setText(getFormattedDateAsString(date));
+                startDate = date;
             });
         });
 
@@ -236,6 +237,7 @@ public class AnalysisActivity extends AbstractActivity {
                 Date date = new Date(transactionStates.uniqueDate);
                 Log.d(LOG_TAG, "--> Refresh date: " + date);
                 textViewEndDate.setText(getFormattedDateAsString(date));
+                endDate = date;
             });
         });
     }

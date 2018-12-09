@@ -34,8 +34,8 @@ public class AnalysisCalculation {
 
             // the start and end calenda is modified by the called funtions
             // so we have to initialize them every time
-            Calendar startCalendar = initCalendar(startDate);
-            Calendar endCalendar = initCalendar(endDate);
+            analysisBean.setStartCalendar(initCalendar(startDate));
+            analysisBean.setEndCalendar(initCalendar(endDate));
 
             TransactionBean transactionBean = (TransactionBean) element;
             Log.d(LOG_TAG, "--> Iterate over: " + transactionBean);
@@ -46,19 +46,19 @@ public class AnalysisCalculation {
 
             if (state == 1) { // unique.
                 Log.d(LOG_TAG, "--> addUniqueTransaction.");
-                addUniqueTransaction(analysisBean, transactionBean, startCalendar, endCalendar);
+                addUniqueTransaction(analysisBean, transactionBean);
             } else if (state == 2) { // daily.
                 Log.d(LOG_TAG, "--> addDailyTransaction.");
                 addDailyTransaction(analysisBean, transactionBean, startDate, endDate);
             } else if (state == 3) { // weekly.
                 Log.d(LOG_TAG, "--> addWeeklyTransaction.");
-                addWeeklyTransaction(analysisBean, transactionBean, startCalendar, endCalendar);
+                addWeeklyTransaction(analysisBean, transactionBean);
             } else if (state == 4) { // monthly.
                 Log.d(LOG_TAG, "--> addMonthlyTransaction.");
-                addMonthlyTransaction(analysisBean, transactionBean, startCalendar, endCalendar);
+                addMonthlyTransaction(analysisBean, transactionBean);
             } else if (state == 5) { // yearly.
                 Log.d(LOG_TAG, "--> addYearlyTransaction.");
-                addYearlyTransaction(analysisBean, transactionBean, startCalendar, endCalendar);
+                addYearlyTransaction(analysisBean, transactionBean);
             }
         });
 
@@ -81,9 +81,10 @@ public class AnalysisCalculation {
      */
     private static void addUniqueTransaction(
             AnalysisBean analysisBean,
-            TransactionBean transactionBean,
-            Calendar startCalendar,
-            Calendar endCalendar) {
+            TransactionBean transactionBean) {
+
+        Calendar startCalendar = analysisBean.getStartCalendar();
+        Calendar endCalendar = analysisBean.getEndCalendar();
         Calendar uniqueCalendar = Calendar.getInstance();
         uniqueCalendar.setTime(new Date(transactionBean.getUniqueDate()));
         if ((uniqueCalendar.equals(startCalendar) ||
@@ -97,7 +98,11 @@ public class AnalysisCalculation {
      * Count the days between the startDate and the endDate.
      * Add the count of the transactions to the analysisBean.
      */
-    private static void addDailyTransaction(AnalysisBean analysisBean, TransactionBean transactionBean, Date startDate, Date endDate) {
+    private static void addDailyTransaction(
+            AnalysisBean analysisBean,
+            TransactionBean transactionBean,
+            Date startDate,
+            Date endDate) {
         int days = (int) TimeUnit.DAYS.convert((endDate.getTime() - startDate.getTime()), TimeUnit.MILLISECONDS) + 1;
         addTransactionsToAnalysisBean(analysisBean, transactionBean, days);
     }
@@ -107,7 +112,12 @@ public class AnalysisCalculation {
      * It is important, that the DAY_OF_WEEK (e.g. Sunday = 1) of the transactionBean is equal to the CALENDAR.DAY_OF_WEEKS (see api).
      * Add the count of the transactions to the analysisBean.
      */
-    private static void addWeeklyTransaction(AnalysisBean analysisBean, TransactionBean transactionBean, Calendar startCalendar, Calendar endCalendar) {
+    private static void addWeeklyTransaction(
+            AnalysisBean analysisBean,
+            TransactionBean transactionBean) {
+
+        Calendar startCalendar = analysisBean.getStartCalendar();
+        Calendar endCalendar = analysisBean.getEndCalendar();
         int dayOfWeek = transactionBean.getDayOfWeek();
         // start by 1 because this is used as multiplier in addTransactionsToAnalysisBean
         int daysOfWeek = 1;
@@ -128,9 +138,10 @@ public class AnalysisCalculation {
      */
     private static void addMonthlyTransaction(
             AnalysisBean analysisBean,
-            TransactionBean transactionBean,
-            Calendar startCalendar,
-            Calendar endCalendar) {
+            TransactionBean transactionBean) {
+
+        Calendar startCalendar = analysisBean.getStartCalendar();
+        Calendar endCalendar = analysisBean.getEndCalendar();
         int monthlyDay = transactionBean.getMonthlyDay();
         int startMonthlyDay = startCalendar.get(Calendar.DAY_OF_MONTH);
         // start by 1 because this is used as multiplier in addTransactionsToAnalysisBean
@@ -156,7 +167,11 @@ public class AnalysisCalculation {
      * Count the yearlyMonth and yearlyDate between the startCalendar and the endCalendar.
      * Add the count of the transactions to the analysisBean.
      */
-    private static void addYearlyTransaction(AnalysisBean analysisBean, TransactionBean transactionBean, Calendar startCalendar, Calendar endCalendar) {
+    private static void addYearlyTransaction(
+            AnalysisBean analysisBean,
+            TransactionBean transactionBean) {
+        Calendar startCalendar = analysisBean.getStartCalendar();
+        Calendar endCalendar = analysisBean.getEndCalendar();
         int yearlyMonth = transactionBean.getYearlyMonth();
         int yearlyDay = transactionBean.getYearlyDay();
         // start by 1 because this is used as multiplier in addTransactionsToAnalysisBean
