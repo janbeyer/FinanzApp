@@ -113,10 +113,15 @@ public class AnalysisActivity extends AbstractActivity {
                 if(j < map.size()) {
                     groupId = groupIds.get(j);
                     AnalysisBean.CashFlow cashFlow = map.get(groupId);
-                    String str = (i++) + ". " +  item + " = " + cashFlow.getIncome();
+                    AnalysisBean.Statistic statistic = cashFlow.getIncome();
+                    double sum = statistic.getSum();
+                    if(sum == 0) {
+                        statistic = cashFlow.getExpenses();
+                    }
+                    String str = (i++) + ". " +  item + " = " + statistic;
                     Log.d(LOG_TAG, "--> " + str);
                     transactionList.add(str);
-                    values[j] = (float) cashFlow.getIncome().getSum();
+                    values[j] = (float) statistic.getSum();
                     j++;
                 }
             }
