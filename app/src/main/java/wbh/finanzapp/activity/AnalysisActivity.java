@@ -176,12 +176,12 @@ public class AnalysisActivity extends AbstractActivity {
     private void createIncomeExpenseChart(float[] values) {
         int  [] colors = new int[values.length];
         List<BarEntry> entries = new ArrayList<>();
-        for (int i = 1; i < values.length; ++i) {
-            entries.add(new BarEntry(i, values[i-1]));
-            if(values[i-1] >= 0) {
-                colors[i-1] = Color.GREEN;
+        for (int i = 0; i < values.length; ++i) {
+            entries.add(new BarEntry(i, values[i]));
+            if(values[i] >= 0) {
+                colors[i] = Color.GREEN;
             } else {
-                colors[i-1] = Color.RED;
+                colors[i] = Color.RED;
             }
         }
         BarDataSet dataSet = new BarDataSet(entries, "Income/Expenses");
@@ -191,7 +191,7 @@ public class AnalysisActivity extends AbstractActivity {
         BarChart chart = findViewById(R.id.income_expenses_chart);
         chart.setData(barData);
         chart.setDescription(null);
-        
+
         Legend legend = chart.getLegend();
         legend.setTextSize(14);
 
