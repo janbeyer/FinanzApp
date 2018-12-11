@@ -17,8 +17,8 @@ import wbh.finanzapp.business.TransactionBean;
 public class AnalysisCalculationTest {
 
     private static List<AbstractBean> transactions;
-    private static Date startDate = new Date(1559347200000L);
-    private static Date endDate = new Date(1567209600000L);
+    private static Date startDate = new Date(1559347200000L); // 1.6.19.
+    private static Date endDate = new Date(1567209600000L); // 31.8.19.
 
     @Test
     public void uniqueCalculationTest() {
