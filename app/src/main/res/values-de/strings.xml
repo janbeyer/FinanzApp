@@ -43,11 +43,11 @@
     </string>
     <string name="help_transaction_text">
         Transaktionen dienen dazu Geldein- oder ausgänge zu Buchen und für die Analyse verfügbar zu machen.\n\n
-        Um eine neue Transaktion anzulegen drücken Sie auf NEUE TRANSAKTION HINZUFÜGEN und geben den Namen, eine für Sie eindeutige Beschreibung der Transaktion und einen Betrag ein.\n\n
+        Um eine neue Transaktion anzulegen drücken Sie auf NEUE TRANSAKTION HINZUFÜGEN und geben den Namen, eine für Sie eindeutige Beschreibung der Transaktion und einen Betrag ein. Ist der Betrag positiv, so wird die Transaktion als Geldeingang behandelt. Ist der Betrag negativ, so wied die Transaktion als Geldausgang behandelt.\n\n
         <b>Name:</b> „Gehalt“\n
         <b>Beschreibung:</b> „Arbeit“\n
         <b>Betrag:</b> „3000“\n\n
-        Danach folgen Sie den weiteren Eingabemöglichkeiten und entscheiden ob es sich um einen Geldein- oder -ausgang handelt und wählen aus den möglichen Zeitpunkten aus, ob die Transaktion einmalig oder wiederkehrend ist.\n\n
+        Danach folgen Sie den weiteren Eingabemöglichkeiten und wählen aus den möglichen Zeitpunkten aus, ob die Transaktion einmalig oder wiederkehrend ist.\n\n
         Anschließend drücken sie auf den SPEICHERN Button und die Transaktion wird angelegt.\n\n
         Möchten Sie den Vorgang abbrechen, drücken Sie im „Neue Transaktion hinzufügen“ Dialog auf ABBRECHEN.\n\n
         Sie können die Transaktion durch gedrückt halten auf die Transaktion, jederzeit wieder bearbeiten oder löschen, in dem sie darauf hin auf den Mülleimer zum Löschen oder den Stift zum Bearbeiten klicken.
