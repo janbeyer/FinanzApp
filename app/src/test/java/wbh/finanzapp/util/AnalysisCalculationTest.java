@@ -26,9 +26,9 @@ public class AnalysisCalculationTest {
         setUpTransactionBean(1, uniqueDate, null, null, null, null);
         Assert.assertNotNull(transactions);
         AnalysisBean analysisBean = AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
-        Assert.assertEquals(analysisBean.getTotal().getIncome().getCount(), 1);
-        Assert.assertEquals(analysisBean.getTotal().getIncome().getSum(), 10.0, 0.0);
-        Assert.assertEquals(analysisBean.getTotal().getIncome().getAverage(), 10.0, 0.0);
+        Assert.assertEquals(1, analysisBean.getTotal().getIncome().getCount());
+        Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
+        Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
     }
 
     @Test
@@ -36,9 +36,9 @@ public class AnalysisCalculationTest {
         setUpTransactionBean(2, null, null, null, null, null);
         Assert.assertNotNull(transactions);
         AnalysisBean analysisBean = AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
-        Assert.assertEquals(analysisBean.getTotal().getIncome().getCount(), 92);
-        Assert.assertEquals(analysisBean.getTotal().getIncome().getSum(), 920.0, 0.0);
-        Assert.assertEquals(analysisBean.getTotal().getIncome().getAverage(), 10.0, 0.0);
+        Assert.assertEquals(92, analysisBean.getTotal().getIncome().getCount());
+        Assert.assertEquals(920.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
+        Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
     }
 
     @Test
@@ -47,9 +47,9 @@ public class AnalysisCalculationTest {
         setUpTransactionBean(3, null, dayOfWeek, null, null, null);
         Assert.assertNotNull(transactions);
         AnalysisBean analysisBean = AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
-        Assert.assertEquals(analysisBean.getTotal().getIncome().getCount(), 13);
-        Assert.assertEquals(analysisBean.getTotal().getIncome().getSum(), 130.0, 0.0);
-        Assert.assertEquals(analysisBean.getTotal().getIncome().getAverage(), 10.0, 0.0);
+        Assert.assertEquals(13, analysisBean.getTotal().getIncome().getCount());
+        Assert.assertEquals(130.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
+        Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
     }
 
     @Test
@@ -61,9 +61,9 @@ public class AnalysisCalculationTest {
         AnalysisBean analysisBean =
                 AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
 
-        Assert.assertEquals(analysisBean.getTotal().getIncome().getCount(), 3);
-        Assert.assertEquals(analysisBean.getTotal().getIncome().getSum(), 30.0, 0.0);
-        Assert.assertEquals(analysisBean.getTotal().getIncome().getAverage(), 10.0, 0.0);
+        Assert.assertEquals(3, analysisBean.getTotal().getIncome().getCount());
+        Assert.assertEquals(30.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
+        Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
     }
 
     @Test
@@ -73,9 +73,9 @@ public class AnalysisCalculationTest {
         setUpTransactionBean(5, null, null, null, yearlyMonth, yearlyDay);
         Assert.assertNotNull(transactions);
         AnalysisBean analysisBean = AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
-        Assert.assertEquals(analysisBean.getTotal().getIncome().getCount(), 1);
-        Assert.assertEquals(analysisBean.getTotal().getIncome().getSum(), 10.0, 0.0);
-        Assert.assertEquals(analysisBean.getTotal().getIncome().getAverage(), 10.0, 0.0);
+        Assert.assertEquals(1, analysisBean.getTotal().getIncome().getCount());
+        Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
+        Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
     }
 
     private void setUpTransactionBean(int state, Long uniqueDate, Integer dayOfWeek, Integer monthlyDay, Integer yearlyMonth, Integer yearlyDay) {
