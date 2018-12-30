@@ -118,7 +118,7 @@ public class AnalysisCalculation {
 
         Calendar startCalendar = analysisBean.getStartCalendar();
         Calendar endCalendar = analysisBean.getEndCalendar();
-        int dayOfWeek = transactionBean.getDayOfWeek();
+        int dayOfWeek = transactionBean.getDayOfWeek() + 1;
         int daysOfWeek = 0;
         while (startCalendar.before(endCalendar) || startCalendar.equals(endCalendar)) {
             if (startCalendar.get(Calendar.DAY_OF_WEEK) == dayOfWeek) {
@@ -199,6 +199,7 @@ public class AnalysisCalculation {
             int count) {
 
         if (count == 0) {
+            Log.d(LOG_TAG, "--> addTransactionsToAnalysisBean Count: " + count);
             return;
         }
 
