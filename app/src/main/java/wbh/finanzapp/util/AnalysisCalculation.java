@@ -119,8 +119,7 @@ public class AnalysisCalculation {
         Calendar startCalendar = analysisBean.getStartCalendar();
         Calendar endCalendar = analysisBean.getEndCalendar();
         int dayOfWeek = transactionBean.getDayOfWeek();
-        // start by 1 because this is used as multiplier in addTransactionsToAnalysisBean
-        int daysOfWeek = 1;
+        int daysOfWeek = 0;
         while (startCalendar.before(endCalendar) || startCalendar.equals(endCalendar)) {
             if (startCalendar.get(Calendar.DAY_OF_WEEK) == dayOfWeek) {
                 daysOfWeek++;
@@ -198,6 +197,10 @@ public class AnalysisCalculation {
             AnalysisBean analysisBean,
             TransactionBean transactionBean,
             int count) {
+
+        if (count == 0) {
+            return;
+        }
 
         long groupId = transactionBean.getGroupId();
         double amount = transactionBean.getAmount();
