@@ -118,7 +118,11 @@ public class AnalysisCalculation {
 
         Calendar startCalendar = analysisBean.getStartCalendar();
         Calendar endCalendar = analysisBean.getEndCalendar();
-        int dayOfWeek = transactionBean.getDayOfWeek() + 1;
+        // Mo - Su + 2 offset, Sunday + 2 = 8 --> 1 #TODO change insert order in database
+        int dayOfWeek = transactionBean.getDayOfWeek() + 2;
+        if (dayOfWeek == 8) {
+            dayOfWeek = 1;
+        }
         int daysOfWeek = 0;
         while (startCalendar.before(endCalendar) || startCalendar.equals(endCalendar)) {
             if (startCalendar.get(Calendar.DAY_OF_WEEK) == dayOfWeek) {
