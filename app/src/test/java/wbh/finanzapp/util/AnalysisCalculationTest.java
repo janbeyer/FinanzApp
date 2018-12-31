@@ -43,10 +43,76 @@ public class AnalysisCalculationTest {
 
     @Test
     public void weeklyCalculationTest() {
-        Integer dayOfWeek = 4; // Wednesday.
-        setUpTransactionBean(3, null, dayOfWeek, null, null, null);
+        AnalysisBean analysisBean;
+
+        //offset = -2; sunday should be 1;
+        Integer sunday = 6;
+        Integer monday = 0;
+        Integer tuesday = 1;
+        Integer wednesday = 2;
+        Integer thursday = 3;
+        Integer friday = 4;
+        Integer saturday = 5;
+
+        //Check weeklyCalculation for a fixed period of time one by one for every weekday
+        setUpTransactionBean(3, null, monday, null, null, null);
         Assert.assertNotNull(transactions);
-        AnalysisBean analysisBean = AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
+
+        analysisBean = AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
+        Assert.assertEquals(13, analysisBean.getTotal().getIncome().getCount());
+        Assert.assertEquals(130.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
+        Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
+
+
+        setUpTransactionBean(3, null, tuesday, null, null, null);
+        Assert.assertNotNull(transactions);
+        analysisBean = AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
+
+        Assert.assertEquals(13, analysisBean.getTotal().getIncome().getCount());
+        Assert.assertEquals(130.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
+        Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
+
+
+        setUpTransactionBean(3, null, wednesday, null, null, null);
+        Assert.assertNotNull(transactions);
+        analysisBean = AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
+
+        Assert.assertEquals(13, analysisBean.getTotal().getIncome().getCount());
+        Assert.assertEquals(130.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
+        Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
+
+
+        setUpTransactionBean(3, null, thursday, null, null, null);
+        Assert.assertNotNull(transactions);
+        analysisBean = AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
+
+        Assert.assertEquals(13, analysisBean.getTotal().getIncome().getCount());
+        Assert.assertEquals(130.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
+        Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
+
+
+        setUpTransactionBean(3, null, friday, null, null, null);
+        Assert.assertNotNull(transactions);
+        analysisBean = AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
+
+        Assert.assertEquals(13, analysisBean.getTotal().getIncome().getCount());
+        Assert.assertEquals(130.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
+        Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
+
+
+        setUpTransactionBean(3, null, saturday, null, null, null);
+        Assert.assertNotNull(transactions);
+        analysisBean = AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
+
+        Assert.assertEquals(14, analysisBean.getTotal().getIncome().getCount());
+        Assert.assertEquals(140.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
+        Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
+
+
+        setUpTransactionBean(3, null, sunday, null, null, null);
+        Assert.assertNotNull(transactions);
+        analysisBean = AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
+
         Assert.assertEquals(13, analysisBean.getTotal().getIncome().getCount());
         Assert.assertEquals(130.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
         Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
