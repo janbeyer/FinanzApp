@@ -272,7 +272,7 @@ public class TransactionsActivity extends AbstractActivity {
 
         // activate the first radio button in the group which is daily because
         // in this state no date picker is needed
-        radioGroupTransactionDate.check(R.id.rb_daily);
+        if(!edit) radioGroupTransactionDate.check(R.id.rb_daily);
 
         // Fill the spinner drop down box with the groups
         fillGroupSpinner();
@@ -414,14 +414,35 @@ public class TransactionsActivity extends AbstractActivity {
     public void createEditTransactionDialog(final TransactionBean transaction) {
         View editView = super.createView(R.id.dialog_write_transaction_root_view, R.layout.dialog_write_transaction);
         createDialog(editView, R.string.transaction_edit_title, new EditListener(transaction), true);
+
         textNameInputField.setText(transaction.getName());
+
         textDescriptionInputField.setText(transaction.getDescription());
+
         double d = transaction.getAmount();
         textAmountInputField.setText(String.valueOf(d));
 
         spinnerGroups.setSelection(
-                spinnerGroupMap.entrySet().stream().filter(e -> e.getValue() == transaction.getGroupId()).findFirst().get().getKey()
+            spinnerGroupMap.entrySet().stream().filter(e -> e.getValue() == transaction.getGroupId()).findFirst().get().getKey()
         );
+
+        switch (transaction.getState()) {
+            case 1:
+                radioGroupTransactionDate.check(R.id.rb_unique);
+                break;
+            case 3:
+                radioGroupTransactionDate.check(R.id.rb_weekly);
+                break;
+            case 4:
+                radioGroupTransactionDate.check(R.id.rb_monthly);
+                break;
+            case 5:
+                radioGroupTransactionDate.check(R.id.rb_yearly);
+                break;
+            default:
+                radioGroupTransactionDate.check(R.id.rb_daily);
+                break;
+        }
     }
 
     /**
