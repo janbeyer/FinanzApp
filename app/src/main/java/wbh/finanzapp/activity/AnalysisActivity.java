@@ -297,9 +297,18 @@ public class AnalysisActivity extends AbstractActivity {
                     e.printStackTrace();
                 }
 
+                boolean moreThanTwoPlaces = false;
+                int integerPlaces = startValueStr.indexOf('.');
+                if(integerPlaces >= 0) {
+                    int decimalPlaces = startValueStr.length() - integerPlaces - 1;
+                    if(decimalPlaces > 2) {
+                        moreThanTwoPlaces = true;
+                    }
+                }
+
                 if (startValue != null) {
                     int decimalAmount = (int) (startValue * 100);
-                    if ((startValue * 100) != ((double) decimalAmount)) {
+                    if ((startValue * 100) != ((double) decimalAmount) || moreThanTwoPlaces) {
                         String newText = "" + ((double) decimalAmount / 100);
                         textStartValue.setText(newText);
                         textStartValue.setSelection(newText.length());

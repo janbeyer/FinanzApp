@@ -311,6 +311,7 @@ public class TransactionsActivity extends AbstractActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 String amountStr = editable.toString();
+
                 Double amount = null;
                 try {
                     amount = Double.parseDouble(amountStr);
@@ -318,9 +319,18 @@ public class TransactionsActivity extends AbstractActivity {
                     e.printStackTrace();
                 }
 
+                boolean moreThanTwoPlaces = false;
+                int integerPlaces = amountStr.indexOf('.');
+                if(integerPlaces >= 0) {
+                    int decimalPlaces = amountStr.length() - integerPlaces - 1;
+                    if(decimalPlaces > 2) {
+                        moreThanTwoPlaces = true;
+                    }
+                }
+
                 if (amount != null) {
                     int decimalAmount = (int) (amount * 100);
-                    if ((amount * 100) != ((double) decimalAmount)) {
+                    if ((amount * 100) != ((double) decimalAmount) || moreThanTwoPlaces) {
                         String newText = "" + ((double) decimalAmount / 100);
                         textAmountInputField.setText(newText);
                         textAmountInputField.setSelection(newText.length());
