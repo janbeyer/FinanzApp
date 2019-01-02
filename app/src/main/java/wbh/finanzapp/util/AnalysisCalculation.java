@@ -27,15 +27,10 @@ public class AnalysisCalculation {
                 AnalysisActivity.getFormattedDateAsString(startDate) + " to "
                 + AnalysisActivity.getFormattedDateAsString(endDate));
 
-        AnalysisBean analysisBean = new AnalysisBean();
+        AnalysisBean analysisBean = new AnalysisBean(initCalendar(startDate), initCalendar(endDate));
         Log.d(LOG_TAG, "--> Iterate over each transaction count: " + transactions.size());
         // Iterate over each transaction and create the analysis bean.
         transactions.forEach(element -> {
-
-            // the start and end calenda is modified by the called funtions
-            // so we have to initialize them every time
-            analysisBean.setStartCalendar(initCalendar(startDate));
-            analysisBean.setEndCalendar(initCalendar(endDate));
 
             TransactionBean transactionBean = (TransactionBean) element;
             Log.d(LOG_TAG, "--> Iterate over: " + transactionBean);

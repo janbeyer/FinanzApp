@@ -14,6 +14,11 @@ import java.util.Map;
  */
 public class AnalysisBean {
 
+    public AnalysisBean(Calendar startCalendar, Calendar endCalendar) {
+        this.startCalendar = startCalendar;
+        this.endCalendar = endCalendar;
+    }
+
     /**
      * The total cash flow for a period of time.
      */
@@ -22,16 +27,8 @@ public class AnalysisBean {
     private Calendar startCalendar;
     private Calendar endCalendar;
 
-    public void setEndCalendar(Calendar endCalendar) {
-        this.endCalendar = endCalendar;
-    }
-
     public Calendar getEndCalendar() {
         return endCalendar;
-    }
-
-    public void setStartCalendar(Calendar startCalendar) {
-        this.startCalendar = startCalendar;
     }
 
     public Calendar getStartCalendar() {
