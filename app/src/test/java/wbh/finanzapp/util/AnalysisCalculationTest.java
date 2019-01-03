@@ -131,9 +131,7 @@ public class AnalysisCalculationTest {
         Assert.assertEquals(10960.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
         Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
 
-        /* #TODO getAverage is NaN when there is no transaction over a given period
-
-        check weeklyCalculation with 0 value
+        //check weeklyCalculation with 0 value
         firstDay = new Date(946684800000L); // Sat Jan 01 2000 01:00:00 GMT+0100
         lastDay = new Date(946771200000L); // Sun Jan 02 2000 01:00:00 GMT+0100
 
@@ -143,7 +141,7 @@ public class AnalysisCalculationTest {
         analysisBean = AnalysisCalculation.createAnalysisBean(firstDay, lastDay, transactions);
         Assert.assertEquals(0, analysisBean.getTotal().getIncome().getCount());
         Assert.assertEquals(0.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
-        Assert.assertEquals(0.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);*/
+        Assert.assertEquals(0.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
     }
 
     @Test
