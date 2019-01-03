@@ -142,8 +142,7 @@ public class AnalysisCalculation {
         Calendar endCalendar = analysisBean.getEndCalendar();
         int monthlyDay = transactionBean.getMonthlyDay();
         int startMonthlyDay = startCalendar.get(Calendar.DAY_OF_MONTH);
-        // start by 1 because this is used as multiplier in addTransactionsToAnalysisBean
-        int daysOfMonth = 1;
+        int daysOfMonth = 0;
         while (startCalendar.before(endCalendar) || startCalendar.equals(endCalendar)) {
             if (startMonthlyDay <= monthlyDay) {
                 Calendar tmpDate = Calendar.getInstance();
@@ -172,8 +171,7 @@ public class AnalysisCalculation {
         Calendar endCalendar = analysisBean.getEndCalendar();
         int yearlyMonth = transactionBean.getYearlyMonth();
         int yearlyDay = transactionBean.getYearlyDay();
-        // start by 1 because this is used as multiplier in addTransactionsToAnalysisBean
-        int monthOfYear = 1;
+        int monthOfYear = 0;
         while (startCalendar.before(endCalendar) || startCalendar.equals(endCalendar)) {
             if (startCalendar.get(Calendar.MONTH) < yearlyMonth) {
                 startCalendar.add(Calendar.MONTH, 1);
