@@ -86,7 +86,6 @@ public class AnalysisActivity extends AbstractActivity {
         textViewStartDate = findViewById(R.id.text_view_start_date);
         textViewStartDate.setText(getFormattedDateAsString(startDate));
 
-
         textViewEndDate = findViewById(R.id.text_view_end_date);
         textViewEndDate.setText(getFormattedDateAsString(endDate));
 
@@ -234,9 +233,9 @@ public class AnalysisActivity extends AbstractActivity {
             DateDialog dateDialog = new DateDialog();
             createDateDialog(dateDialog);
             dateDialog.setListener(v1 -> {
-                if (transactionStates.uniqueDate == 0)
+                if (transactionStates.getUniqueDate() == 0)
                     return;
-                Date date = new Date(transactionStates.uniqueDate);
+                Date date = new Date(transactionStates.getUniqueDate());
                 Log.d(LOG_TAG, "--> Refresh date: " + date);
                 textViewStartDate.setText(getFormattedDateAsString(date));
                 startDate = date;
@@ -249,9 +248,9 @@ public class AnalysisActivity extends AbstractActivity {
             DateDialog dateDialog = new DateDialog();
             createDateDialog(dateDialog);
             dateDialog.setListener(v12 -> {
-                if (transactionStates.uniqueDate == 0)
+                if (transactionStates.getUniqueDate() == 0)
                     return;
-                Date date = new Date(transactionStates.uniqueDate);
+                Date date = new Date(transactionStates.getUniqueDate());
                 Log.d(LOG_TAG, "--> Refresh date: " + date);
                 textViewEndDate.setText(getFormattedDateAsString(date));
                 endDate = date;

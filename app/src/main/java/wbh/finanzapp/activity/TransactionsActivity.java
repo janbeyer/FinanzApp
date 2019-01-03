@@ -22,7 +22,9 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -85,6 +87,8 @@ public class TransactionsActivity extends AbstractActivity {
     private ImageButton button_weekly;
     private ImageButton button_monthly;
     private ImageButton button_yearly;
+
+    private TextView textViewUniqueDate;
 
     @SuppressWarnings("CodeBlock2Expr")
     @Override
@@ -229,9 +233,9 @@ public class TransactionsActivity extends AbstractActivity {
     public void addTransaction(String name, String description, double amount, long groupId) {
         // Check the radio button state
         int rbDateMode = radioGroupTransactionDate.getCheckedRadioButtonId();
-        transactionStates.checkStates(rbDateMode);
+        transactionStates.setState(rbDateMode);
         Log.d(LOG_TAG, "--> TransactionStates: " + transactionStates);
-        TransactionBean newTransaction = transactionsDataSource.insert(name, description, groupId, amount, transactionStates.state, transactionStates.uniqueDate, transactionStates.dayOfWeek, transactionStates.monthlyDay, transactionStates.yearlyMonth, transactionStates.yearlyDay);
+        TransactionBean newTransaction = transactionsDataSource.insert(name, description, groupId, amount, transactionStates.getState(), transactionStates.getUniqueDate(), transactionStates.getDayOfWeek(), transactionStates.getMonthlyDay(), transactionStates.getYearlyMonth(), transactionStates.getYearlyDay());
         Log.d(LOG_TAG, "--> Insert new entry: " + newTransaction.toString());
     }
 
@@ -239,11 +243,10 @@ public class TransactionsActivity extends AbstractActivity {
      * Edit an existing transaction in the database.
      */
     public void editTransaction(TransactionBean transaction, String name, String description, double amount, long groupId) {
-        // MOCK DATA.
-        int state = 1;
-        long uniqueDate = new Date().getTime();
-
-        TransactionBean updatedTransaction = transactionsDataSource.update(transaction.getId(), name, description, groupId, amount, state, uniqueDate, null, null, null, null);
+        // Check the radio button state
+        int rbDateMode = radioGroupTransactionDate.getCheckedRadioButtonId();
+        transactionStates.setState(rbDateMode);
+        TransactionBean updatedTransaction = transactionsDataSource.update(transaction.getId(), name, description, groupId, amount, transactionStates.getState(), transactionStates.getUniqueDate(), transactionStates.getDayOfWeek(), transactionStates.getMonthlyDay(), transactionStates.getYearlyMonth(), transactionStates.getYearlyDay());
         Log.d(LOG_TAG, "--> Update old entry: " + transaction.toString());
         Log.d(LOG_TAG, "--> Update new entry: " + updatedTransaction.toString());
     }
@@ -269,10 +272,19 @@ public class TransactionsActivity extends AbstractActivity {
         textAmountInputField = view.findViewById(R.id.transaction_amount);
         spinnerGroups = view.findViewById(R.id.transaction_group);
         radioGroupTransactionDate = view.findViewById(R.id.transaction_rb);
+        textViewUniqueDate = view.findViewById(R.id.text_view_unique_date);
 
         // activate the first radio button in the group which is daily because
         // in this state no date picker is needed
-        if(!edit) radioGroupTransactionDate.check(R.id.rb_daily);
+        if(!edit) {
+            dateMode = DateMode.daily;
+            radioGroupTransactionDate.check(R.id.rb_daily);
+
+            // default unique date ...
+            Date currentDate = new Date();
+            textViewUniqueDate.setText(getFormattedDateAsString(currentDate.getTime()));
+            transactionStates.setUniqueDate(currentDate.getTime());
+        }
 
         // Fill the spinner drop down box with the groups
         fillGroupSpinner();
@@ -355,6 +367,12 @@ public class TransactionsActivity extends AbstractActivity {
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             dateDialog.show(transaction, "Date Dialog");
+            dateDialog.setListener(v1 -> {
+                if (transactionStates.getUniqueDate() == 0) return;
+                Date date = new Date(transactionStates.getUniqueDate());
+                Log.d(LOG_TAG, "--> Refresh date: " + getFormattedDateAsString(date.getTime()));
+                textViewUniqueDate.setText(getFormattedDateAsString(date.getTime()));
+            });
         } else if (dateMode == DateMode.weekly) {
             WeekPicker weekPicker = new WeekPicker(this, transactionStates);
             weekPicker.show();
@@ -365,6 +383,14 @@ public class TransactionsActivity extends AbstractActivity {
             YearPicker yearPicker = new YearPicker(this, transactionStates);
             yearPicker.show();
         }
+    }
+
+    public static String getFormattedDateAsString(Long date) {
+        // TODO get local date format
+        @SuppressLint("SimpleDateFormat")
+        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd");
+        String formatDate = simpleDateFormat.format(new Date(date));
+        return formatDate;
     }
 
     /**
@@ -438,7 +464,10 @@ public class TransactionsActivity extends AbstractActivity {
 
         switch (transaction.getState()) {
             case 1:
+                dateMode = DateMode.unique;
                 radioGroupTransactionDate.check(R.id.rb_unique);
+                button_unique.setVisibility(Button.VISIBLE);
+                textViewUniqueDate.setText(getFormattedDateAsString(transaction.getUniqueDate()));
                 break;
             case 3:
                 radioGroupTransactionDate.check(R.id.rb_weekly);
@@ -450,6 +479,7 @@ public class TransactionsActivity extends AbstractActivity {
                 radioGroupTransactionDate.check(R.id.rb_yearly);
                 break;
             default:
+                dateMode = DateMode.daily;
                 radioGroupTransactionDate.check(R.id.rb_daily);
                 break;
         }
@@ -500,8 +530,10 @@ public class TransactionsActivity extends AbstractActivity {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             super.onClick(dialog, which);
+
             amount = Double.parseDouble(textAmountInputField.getText().toString());
             groupId = spinnerGroupMap.get(spinnerGroups.getSelectedItemPosition());
+
             editTransaction(transaction, name, description, amount, groupId);
             showAllListEntries();
             dialog.dismiss();

@@ -13,18 +13,18 @@ public class AnalysisBeanTest {
 
     int count = 3;
     double sum_income = 3000;
-    AnalysisBean TestAnalysisBean = new AnalysisBean();
-    AnalysisBean.CashFlow TestCashFlow = new AnalysisBean.CashFlow();
-    AnalysisBean.Statistic TestStatistic = new AnalysisBean.Statistic();
-    Map<Long, AnalysisBean.CashFlow> TestGroups = new HashMap<>();
+    AnalysisBean testAnalysisBean = new AnalysisBean(null, null);
+    AnalysisBean.CashFlow testCashFlow = new AnalysisBean.CashFlow();
+    AnalysisBean.Statistic testStatistic = new AnalysisBean.Statistic();
+    Map<Long, AnalysisBean.CashFlow> testGroups = new HashMap<>();
 
     @Before
     public void setUp() throws Exception {
-        TestStatistic.setSum(sum_income);
-        TestStatistic.setCount(count);
-        TestCashFlow.setIncome(TestStatistic);
-        TestAnalysisBean.setTotal(TestCashFlow);
-        TestAnalysisBean.setGroups(TestGroups);
+        testStatistic.setSum(sum_income);
+        testStatistic.setCount(count);
+        testCashFlow.setIncome(testStatistic);
+        testAnalysisBean.setTotal(testCashFlow);
+        testAnalysisBean.setGroups(testGroups);
     }
 
     @After
@@ -33,12 +33,12 @@ public class AnalysisBeanTest {
 
     @Test
     public void getTotal() {
-        assertEquals(TestAnalysisBean.getTotal(), TestAnalysisBean.getTotal());
+        assertEquals(testAnalysisBean.getTotal(), testAnalysisBean.getTotal());
     }
 
     @Test
     public void getGroups() {
-        assertEquals(TestAnalysisBean.getGroups(), TestAnalysisBean.getGroups());
+        assertEquals(testAnalysisBean.getGroups(), testAnalysisBean.getGroups());
     }
 
 }

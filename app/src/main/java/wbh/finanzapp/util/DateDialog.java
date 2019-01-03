@@ -1,5 +1,6 @@
 package wbh.finanzapp.util;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -42,12 +44,10 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        String dateStr = dayOfMonth + ":" + month + ":" + year;
-        Log.d(LOG_TAG, "--> Date: " + dateStr);
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, dayOfMonth);
         Date date = calendar.getTime();
-        Log.d(LOG_TAG, "--> Date: " + date);
+        Log.d(LOG_TAG, "--> Date: " + getFormattedDateAsString(date.getTime()));
         transactionStates.setUniqueDate(date.getTime());
         if(listener != null) {
             listener.onClick(view);
@@ -59,5 +59,11 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
         super.onDismiss(dialog);
     }
 
-
+    public static String getFormattedDateAsString(Long date) {
+        // TODO get local date format
+        @SuppressLint("SimpleDateFormat")
+        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd");
+        String formatDate = simpleDateFormat.format(new Date(date));
+        return formatDate;
+    }
 }
