@@ -69,23 +69,23 @@ public class TransactionStates {
         }
     }
 
-    public void setUniqueDate(long uniqueDate) {
+    public void setUniqueDate(Long uniqueDate) {
         this.uniqueDate = uniqueDate;
     }
 
-    public void setDayOfWeek(int dayOfWeek) {
+    public void setDayOfWeek(Integer dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
     }
 
-    public void setMonthlyDay(int monthlyDay) {
+    public void setMonthlyDay(Integer monthlyDay) {
         this.monthlyDay = monthlyDay;
     }
 
-    public void setYearlyDay(int yearlyDay) {
+    public void setYearlyDay(Integer yearlyDay) {
         this.yearlyDay = yearlyDay;
     }
 
-    public void setYearlyMonth(int yearlyMonth) {
+    public void setYearlyMonth(Integer yearlyMonth) {
         this.yearlyMonth = yearlyMonth;
     }
 

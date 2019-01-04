@@ -135,7 +135,6 @@
 
     <string name="transaction_date_init">2000:01:01</string>
 
-    <string name="dialog_pick_week">weekday</string>
     <string name="dialog_pick_month">day</string>
     <string name="dialog_pick_year">month</string>
 
@@ -148,7 +147,6 @@
     <string name="analysis_endDate">End date</string>
     <string name="calendar">Calendar</string>
     <string name="close">Close</string>
-    <string name="week_picker">WeekPicker</string>
     <string name="month_picker">MonthPicker</string>
     <string name="year_picker">YearPicker</string>
     <string name="budget">0</string>

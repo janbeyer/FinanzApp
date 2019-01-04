@@ -25,7 +25,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +42,7 @@ import wbh.finanzapp.util.DateDialog;
 import wbh.finanzapp.util.MonthPicker;
 import wbh.finanzapp.util.ProfileMemory;
 import wbh.finanzapp.util.TransactionStates;
-import wbh.finanzapp.util.WeekPicker;
+import wbh.finanzapp.util.WeekEnum;
 import wbh.finanzapp.util.YearPicker;
 
 @SuppressWarnings("Convert2Diamond")
@@ -69,9 +71,10 @@ public class TransactionsActivity extends AbstractActivity {
     private Map<Integer, Long> spinnerGroupMap;
 
     /**
-     * A DropDown menu, so that the user can choose the group for a transaction.
+     * A DropDown menus.
      */
     private Spinner spinnerGroups;
+    private Spinner spinnerDaysOfWeek;
 
     /**
      * Contains the radio group with the Transaction date options.
@@ -84,7 +87,6 @@ public class TransactionsActivity extends AbstractActivity {
     private TransactionStates transactionStates;
 
     private ImageButton button_unique;
-    private ImageButton button_weekly;
     private ImageButton button_monthly;
     private ImageButton button_yearly;
 
@@ -265,6 +267,17 @@ public class TransactionsActivity extends AbstractActivity {
         spinnerGroups.setAdapter(groupsAdapter);
     }
 
+    @SuppressLint("UseSparseArrays")
+    private void fillDaysOfWeekSpinner() {
+        List<WeekEnum> weekList = new ArrayList<WeekEnum>(EnumSet.allOf(WeekEnum.class));
+        String[] spinnerArray = new String[weekList.size()];
+        weekList.stream().forEach(e -> {
+            spinnerArray[e.getValue()-1] = e.getKey();
+        });
+        ArrayAdapter<String> daysOfWeekAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
+        spinnerDaysOfWeek.setAdapter(daysOfWeekAdapter);
+    }
+
     @Override
     public void createDialog(View view, int title, CustomListener listener, boolean edit) {
         super.createDialog(view, title, listener, edit);
@@ -273,25 +286,23 @@ public class TransactionsActivity extends AbstractActivity {
         spinnerGroups = view.findViewById(R.id.transaction_group);
         radioGroupTransactionDate = view.findViewById(R.id.transaction_rb);
         textViewUniqueDate = view.findViewById(R.id.text_view_unique_date);
+        spinnerDaysOfWeek = view.findViewById(R.id.week_picker_spinner);
 
-        // activate the first radio button in the group which is daily because
-        // in this state no date picker is needed
+        // Fill the spinner drop down boxes.
+        fillGroupSpinner();
+        fillDaysOfWeekSpinner();
+
+        // activate some default settings for the add mode.
         if(!edit) {
             dateMode = DateMode.daily;
             radioGroupTransactionDate.check(R.id.rb_daily);
+
+            textAmountInputField.setError(getString(R.string.transaction_amount_validation_error));
 
             // default unique date ...
             Date currentDate = new Date();
             textViewUniqueDate.setText(getFormattedDateAsString(currentDate.getTime()));
             transactionStates.setUniqueDate(currentDate.getTime());
-        }
-
-        // Fill the spinner drop down box with the groups
-        fillGroupSpinner();
-
-        // Initial validation by create a new bean.
-        if (!edit) {
-            textAmountInputField.setError(getString(R.string.transaction_amount_validation_error));
         }
 
         // Validation of the amount.
@@ -352,7 +363,6 @@ public class TransactionsActivity extends AbstractActivity {
         });
 
         button_unique = view.findViewById(R.id.b_unique);
-        button_weekly = view.findViewById(R.id.b_weekly);
         button_monthly = view.findViewById(R.id.b_monthly);
         button_yearly = view.findViewById(R.id.b_yearly);
     }
@@ -373,9 +383,6 @@ public class TransactionsActivity extends AbstractActivity {
                 Log.d(LOG_TAG, "--> Refresh date: " + getFormattedDateAsString(date.getTime()));
                 textViewUniqueDate.setText(getFormattedDateAsString(date.getTime()));
             });
-        } else if (dateMode == DateMode.weekly) {
-            WeekPicker weekPicker = new WeekPicker(this, transactionStates);
-            weekPicker.show();
         } else if (dateMode == DateMode.monthly) {
             MonthPicker monthPicker = new MonthPicker(this, transactionStates);
             monthPicker.show();
@@ -416,11 +423,6 @@ public class TransactionsActivity extends AbstractActivity {
                 dateMode = DateMode.unique;
                 button_unique.setVisibility(Button.VISIBLE);
                 break;
-            case R.id.rb_weekly:
-                Log.d(LOG_TAG, "--> onRadioButtonClicked(): rb_weekly");
-                dateMode = DateMode.weekly;
-                button_weekly.setVisibility(Button.VISIBLE);
-                break;
             case R.id.rb_monthly:
                 Log.d(LOG_TAG, "--> onRadioButtonClicked(): rb_monthly");
                 dateMode = DateMode.monthly;
@@ -439,7 +441,6 @@ public class TransactionsActivity extends AbstractActivity {
      */
     public void setButtonsInvisible() {
         button_unique.setVisibility(Button.INVISIBLE);
-        button_weekly.setVisibility(Button.INVISIBLE);
         button_monthly.setVisibility(Button.INVISIBLE);
         button_yearly.setVisibility(Button.INVISIBLE);
     }
@@ -471,6 +472,9 @@ public class TransactionsActivity extends AbstractActivity {
                 break;
             case 3:
                 radioGroupTransactionDate.check(R.id.rb_weekly);
+                spinnerGroups.setSelection(
+                    transaction.getDayOfWeek() - 1
+                );
                 break;
             case 4:
                 radioGroupTransactionDate.check(R.id.rb_monthly);
@@ -506,6 +510,7 @@ public class TransactionsActivity extends AbstractActivity {
             super.onClick(dialog, which);
             amount = Double.parseDouble(textAmountInputField.getText().toString());
             groupId = spinnerGroupMap.get(spinnerGroups.getSelectedItemPosition());
+            transactionStates.setDayOfWeek(spinnerDaysOfWeek.getSelectedItemPosition()+1);
             addTransaction(name, description, amount, groupId);
             showAllListEntries();
             dialog.dismiss();
@@ -530,10 +535,9 @@ public class TransactionsActivity extends AbstractActivity {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             super.onClick(dialog, which);
-
             amount = Double.parseDouble(textAmountInputField.getText().toString());
             groupId = spinnerGroupMap.get(spinnerGroups.getSelectedItemPosition());
-
+            transactionStates.setDayOfWeek(spinnerDaysOfWeek.getSelectedItemPosition()+1);
             editTransaction(transaction, name, description, amount, groupId);
             showAllListEntries();
             dialog.dismiss();

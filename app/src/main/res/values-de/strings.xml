@@ -132,7 +132,6 @@
 
     <string name="transaction_date_init">01.01.2000</string>
 
-    <string name="dialog_pick_week">Wochentag</string>
     <string name="dialog_pick_month">Tag</string>
     <string name="dialog_pick_year">Monat</string>
 
@@ -146,7 +145,6 @@
 
     <string name="calendar">Kalender</string>
     <string name="close">Schließen</string>
-    <string name="week_picker">WochenPicker</string>
     <string name="month_picker">MonatsPicker</string>
     <string name="year_picker">JahrPicker</string>
     <string name="budget">0</string>
