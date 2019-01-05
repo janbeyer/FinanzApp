@@ -24,16 +24,35 @@ public class AnalysisCalculationTest {
 
     @Test
     public void uniqueCalculationTest() {
-
-        //#TODO further testing
-
+        AnalysisBean analysisBean;
         Long uniqueDate = 1562198400000L; // Thu Jul 04 2019 02:00:00 GMT+0200
+
         setUpTransactionBean(1, uniqueDate, null, null, null, null);
         Assert.assertNotNull(transactions);
-        AnalysisBean analysisBean = AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
+
+        //check over period of time
+        analysisBean = AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
         Assert.assertEquals(1, analysisBean.getTotal().getIncome().getCount());
         Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
         Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
+
+        //check over long period of time
+        analysisBean = AnalysisCalculation.createAnalysisBean(firstDay_20, lastDay_20, transactions);
+        Assert.assertEquals(1, analysisBean.getTotal().getIncome().getCount());
+        Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
+        Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
+
+        //startDate > endDate and included
+        analysisBean = AnalysisCalculation.createAnalysisBean(endDate, startDate, transactions);
+        Assert.assertEquals(0, analysisBean.getTotal().getIncome().getCount());
+        Assert.assertEquals(0.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
+        Assert.assertEquals(0.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
+
+        //startDate == endDate and not included
+        analysisBean = AnalysisCalculation.createAnalysisBean(startDate, startDate, transactions);
+        Assert.assertEquals(0, analysisBean.getTotal().getIncome().getCount());
+        Assert.assertEquals(00.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
+        Assert.assertEquals(00.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
     }
 
     @Test
