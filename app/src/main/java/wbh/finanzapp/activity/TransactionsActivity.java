@@ -463,6 +463,8 @@ public class TransactionsActivity extends AbstractActivity {
             spinnerGroupMap.entrySet().stream().filter(e -> e.getValue() == transaction.getGroupId()).findFirst().get().getKey()
         );
 
+        textViewUniqueDate.setText(getFormattedDateAsString(new Date().getTime()));
+
         switch (transaction.getState()) {
             case 1:
                 dateMode = DateMode.unique;
@@ -472,7 +474,7 @@ public class TransactionsActivity extends AbstractActivity {
                 break;
             case 3:
                 radioGroupTransactionDate.check(R.id.rb_weekly);
-                spinnerGroups.setSelection(
+                spinnerDaysOfWeek.setSelection(
                     transaction.getDayOfWeek() - 1
                 );
                 break;
