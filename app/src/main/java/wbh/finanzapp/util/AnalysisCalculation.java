@@ -98,6 +98,9 @@ public class AnalysisCalculation {
             TransactionBean transactionBean,
             Date startDate,
             Date endDate) {
+        if (startDate.getTime() > endDate.getTime()) {
+            return;
+        }
         int days = (int) TimeUnit.DAYS.convert((endDate.getTime() - startDate.getTime()), TimeUnit.MILLISECONDS) + 1;
         addTransactionsToAnalysisBean(analysisBean, transactionBean, days);
     }

@@ -19,9 +19,14 @@ public class AnalysisCalculationTest {
     private static List<AbstractBean> transactions;
     private static Date startDate = new Date(1559347200000L); // Sat Jun 01 2019 02:00:00 GMT+0200
     private static Date endDate = new Date(1567209600000L); // Sat Aug 31 2019 02:00:00 GMT+0200
+    private static Date firstDay_20 = new Date(946684800000L); // Sat Jan 01 2000 01:00:00 GMT+0100
+    private static Date lastDay_20 = new Date(1609372800000L); // Thu Dec 31 2020 01:00:00 GMT+0100
 
     @Test
     public void uniqueCalculationTest() {
+
+        //#TODO further testing
+
         Long uniqueDate = 1562198400000L; // Thu Jul 04 2019 02:00:00 GMT+0200
         setUpTransactionBean(1, uniqueDate, null, null, null, null);
         Assert.assertNotNull(transactions);
@@ -33,11 +38,33 @@ public class AnalysisCalculationTest {
 
     @Test
     public void dailyCalculationTest() {
+        AnalysisBean analysisBean;
+
         setUpTransactionBean(2, null, null, null, null, null);
         Assert.assertNotNull(transactions);
-        AnalysisBean analysisBean = AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
+
+        //check weeklyCalculation over a long period of 20 years
+        analysisBean = AnalysisCalculation.createAnalysisBean(firstDay_20, lastDay_20, transactions);
+        Assert.assertEquals(7671, analysisBean.getTotal().getIncome().getCount());
+        Assert.assertEquals(76710.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
+        Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
+
+        //check dailyCalculation for a fixed period of time
+        analysisBean = AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
         Assert.assertEquals(92, analysisBean.getTotal().getIncome().getCount());
         Assert.assertEquals(920.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
+        Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
+
+        //startDate > endDate
+        analysisBean = AnalysisCalculation.createAnalysisBean(endDate, startDate, transactions);
+        Assert.assertEquals(0, analysisBean.getTotal().getIncome().getCount());
+        Assert.assertEquals(0.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
+        Assert.assertEquals(0.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
+
+        //startDate == endDate
+        analysisBean = AnalysisCalculation.createAnalysisBean(startDate, startDate, transactions);
+        Assert.assertEquals(1, analysisBean.getTotal().getIncome().getCount());
+        Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
         Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
     }
 
@@ -56,7 +83,48 @@ public class AnalysisCalculationTest {
         Integer friday = 4;
         Integer saturday = 5;
 
-        //Check weeklyCalculation for a fixed period of time, one by one, for every weekday
+        //startDate == endDate
+        //monday is not included
+        setUpTransactionBean(3, null, monday, null, null, null);
+        Assert.assertNotNull(transactions);
+
+        analysisBean = AnalysisCalculation.createAnalysisBean(startDate, startDate, transactions);
+        Assert.assertEquals(0, analysisBean.getTotal().getIncome().getCount());
+        Assert.assertEquals(0.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
+        Assert.assertEquals(0.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
+
+        //saturday is included
+        setUpTransactionBean(3, null, saturday, null, null, null);
+        Assert.assertNotNull(transactions);
+
+        analysisBean = AnalysisCalculation.createAnalysisBean(startDate, startDate, transactions);
+        Assert.assertEquals(1, analysisBean.getTotal().getIncome().getCount());
+        Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
+        Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
+
+        //startDate > endDate
+        setUpTransactionBean(3, null, monday, null, null, null);
+        Assert.assertNotNull(transactions);
+
+        analysisBean = AnalysisCalculation.createAnalysisBean(endDate, startDate, transactions);
+        Assert.assertEquals(0, analysisBean.getTotal().getIncome().getCount());
+        Assert.assertEquals(0.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
+        Assert.assertEquals(0.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
+
+        //startDate < endDate
+        //monday is not included
+        firstDay = new Date(946684800000L); // Sat Jan 01 2000 01:00:00 GMT+0100
+        lastDay = new Date(946771200000L); // Sun Jan 02 2000 01:00:00 GMT+0100
+
+        setUpTransactionBean(3, null, monday, null, null, null);
+        Assert.assertNotNull(transactions);
+
+        analysisBean = AnalysisCalculation.createAnalysisBean(firstDay, lastDay, transactions);
+        Assert.assertEquals(0, analysisBean.getTotal().getIncome().getCount());
+        Assert.assertEquals(0.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
+        Assert.assertEquals(0.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
+
+        //Check weeklyCalculation for a fixed period of time for every weekday
         setUpTransactionBean(3, null, monday, null, null, null);
         Assert.assertNotNull(transactions);
 
@@ -120,28 +188,13 @@ public class AnalysisCalculationTest {
         Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
 
         //check weeklyCalculation over a long period of 20 years
-        firstDay = new Date(946684800000L); // Sat Jan 01 2000 01:00:00 GMT+0100
-        lastDay = new Date(1609372800000L); // Thu Dec 31 2020 01:00:00 GMT+0100
-
         setUpTransactionBean(3, null, monday, null, null, null);
         Assert.assertNotNull(transactions);
 
-        analysisBean = AnalysisCalculation.createAnalysisBean(firstDay, lastDay, transactions);
+        analysisBean = AnalysisCalculation.createAnalysisBean(firstDay_20, lastDay_20, transactions);
         Assert.assertEquals(1096, analysisBean.getTotal().getIncome().getCount());
         Assert.assertEquals(10960.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
         Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
-
-        //check weeklyCalculation with 0 value
-        firstDay = new Date(946684800000L); // Sat Jan 01 2000 01:00:00 GMT+0100
-        lastDay = new Date(946771200000L); // Sun Jan 02 2000 01:00:00 GMT+0100
-
-        setUpTransactionBean(3, null, monday, null, null, null);
-        Assert.assertNotNull(transactions);
-
-        analysisBean = AnalysisCalculation.createAnalysisBean(firstDay, lastDay, transactions);
-        Assert.assertEquals(0, analysisBean.getTotal().getIncome().getCount());
-        Assert.assertEquals(0.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
-        Assert.assertEquals(0.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
     }
 
     @Test
