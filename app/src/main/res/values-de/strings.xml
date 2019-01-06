@@ -61,6 +61,7 @@
     </string>
 
     <!-- Profile properties -->
+    <string name="profile_title">Profil</string>
     <string name="profile_add_title">Neues Profil hinzufügen</string>
     <string name="profile_edit_title">Profil bearbeiten</string>
     <string name="profile_delete_title">Profil löschen</string>

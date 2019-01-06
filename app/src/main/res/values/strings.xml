@@ -64,6 +64,7 @@
     </string>
 
     <!-- Profile properties -->
+    <string name="profile_title">Profile</string>
     <string name="profile_add_title">Add a new profile</string>
     <string name="profile_edit_title">Edit a profile</string>
     <string name="profile_delete_title">Delete a profile</string>
@@ -151,4 +152,5 @@
     <string name="year_picker">YearPicker</string>
     <string name="budget">0</string>
     <string name="date">Date</string>
+
 </resources>
