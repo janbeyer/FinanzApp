@@ -146,7 +146,6 @@
 
     <string name="calendar">Kalender</string>
     <string name="close">Schließen</string>
-    <string name="month_picker">MonatsPicker</string>
     <string name="year_picker">JahrPicker</string>
     <string name="budget">0</string>
     <string name="date">Datum</string>
