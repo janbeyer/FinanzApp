@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -42,7 +44,6 @@ import wbh.finanzapp.util.DateDialog;
 import wbh.finanzapp.util.ProfileMemory;
 import wbh.finanzapp.util.TransactionStates;
 import wbh.finanzapp.util.WeekEnum;
-import wbh.finanzapp.util.YearPicker;
 
 @SuppressWarnings("Convert2Diamond")
 public class TransactionsActivity extends AbstractActivity {
@@ -75,6 +76,8 @@ public class TransactionsActivity extends AbstractActivity {
     private Spinner spinnerGroups;
     private Spinner spinnerDaysOfWeek;
     private Spinner spinnerMonthlyDays;
+    private Spinner spinnerYearlyDays;
+    private Spinner spinnerYearlyMonth;
 
     /**
      * Contains the radio group with the Transaction date options.
@@ -87,7 +90,6 @@ public class TransactionsActivity extends AbstractActivity {
     private TransactionStates transactionStates;
 
     private ImageButton button_unique;
-    private ImageButton button_yearly;
 
     private TextView textViewUniqueDate;
 
@@ -278,9 +280,9 @@ public class TransactionsActivity extends AbstractActivity {
     }
 
     @SuppressLint("UseSparseArrays")
-    private void fillMonthlyDaysSpinner(Spinner spinner, int daysOfMonth) {
-        String[] spinnerArray = new String[daysOfMonth];
-        for(int i = 1; i <= daysOfMonth; ++i) {
+    private void fillIntegerSpinner(Spinner spinner, int maxValue) {
+        String[] spinnerArray = new String[maxValue];
+        for(int i = 1; i <= maxValue; ++i) {
             spinnerArray[i-1] = Integer.toString(i);
         }
         ArrayAdapter<String> monthlyDaysAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
@@ -297,11 +299,32 @@ public class TransactionsActivity extends AbstractActivity {
         textViewUniqueDate = view.findViewById(R.id.text_view_unique_date);
         spinnerDaysOfWeek = view.findViewById(R.id.week_picker_spinner);
         spinnerMonthlyDays = view.findViewById(R.id.month_picker_spinner);
+        spinnerYearlyDays = view.findViewById(R.id.year_picker_spinner_day);
+        spinnerYearlyMonth = view.findViewById(R.id.year_picker_spinner_month);
 
         // Fill the spinner drop down boxes.
         fillGroupSpinner();
         fillDaysOfWeekSpinner();
-        fillMonthlyDaysSpinner(spinnerMonthlyDays, 31);
+        fillIntegerSpinner(spinnerMonthlyDays, 31);
+        fillIntegerSpinner(spinnerYearlyDays, 31);
+        fillIntegerSpinner(spinnerYearlyMonth, 12);
+
+        spinnerYearlyMonth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                int curMonth = position + 1;
+                if(Arrays.asList(1, 3, 5, 7, 8, 10, 12).stream().anyMatch(e -> e == curMonth)) {
+                    fillIntegerSpinner(spinnerYearlyDays, 31);
+                } else if(Arrays.asList(4, 6, 9, 11).stream().anyMatch(e -> e == curMonth)) {
+                    fillIntegerSpinner(spinnerYearlyDays, 30);
+                } else if(curMonth == 2) {
+                    fillIntegerSpinner(spinnerYearlyDays, 28);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {}
+        });
 
         // activate some default settings for the add mode.
         if(!edit) {
@@ -374,7 +397,6 @@ public class TransactionsActivity extends AbstractActivity {
         });
 
         button_unique = view.findViewById(R.id.b_unique);
-        button_yearly = view.findViewById(R.id.b_yearly);
     }
 
     /**
@@ -393,9 +415,6 @@ public class TransactionsActivity extends AbstractActivity {
                 Log.d(LOG_TAG, "--> Refresh date: " + getFormattedDateAsString(date.getTime()));
                 textViewUniqueDate.setText(getFormattedDateAsString(date.getTime()));
             });
-        } else if (dateMode == DateMode.yearly) {
-            YearPicker yearPicker = new YearPicker(this, transactionStates);
-            yearPicker.show();
         }
     }
 
@@ -411,30 +430,19 @@ public class TransactionsActivity extends AbstractActivity {
      * Called when an Transaction RadioButton is clicked
      */
     public void onRadioButtonClicked(View view) {
-        // 1 = Unique --> DatePicker    --> Default current date
-        // 3 = Weekly --> Dropdown box (1 ...  7) --> Default is Monday
-        // 4 = Monthly--> Dropdown box (1 ... 31) --> Default is 1
-        // 5 = Yearly --> Dropdown box (1 ... 12) --> Default is 1
-        //            --> Dropdown box (1 ... 31) --> Default is 1
         boolean checked = ((RadioButton) view).isChecked();
+
         // if unchecked return
         if (!checked)
             return;
-        int id = view.getId();
 
+        int id = view.getId();
         setButtonsInvisible();
-        // Check which radio button was clicked
-        switch (id) {
-            case R.id.rb_unique:
-                Log.d(LOG_TAG, "--> onRadioButtonClicked(): rb_unique");
-                dateMode = DateMode.unique;
-                button_unique.setVisibility(Button.VISIBLE);
-                break;
-            case R.id.rb_yearly:
-                Log.d(LOG_TAG, "--> onRadioButtonClicked(): rb_yearly");
-                dateMode = DateMode.yearly;
-                button_yearly.setVisibility(Button.VISIBLE);
-                break;
+
+        if(id == R.id.rb_unique) {
+            Log.d(LOG_TAG, "--> onRadioButtonClicked(): rb_unique");
+            dateMode = DateMode.unique;
+            button_unique.setVisibility(Button.VISIBLE);
         }
     }
 
@@ -443,7 +451,6 @@ public class TransactionsActivity extends AbstractActivity {
      */
     public void setButtonsInvisible() {
         button_unique.setVisibility(Button.INVISIBLE);
-        button_yearly.setVisibility(Button.INVISIBLE);
     }
 
     /**
@@ -487,6 +494,12 @@ public class TransactionsActivity extends AbstractActivity {
                 break;
             case 5:
                 radioGroupTransactionDate.check(R.id.rb_yearly);
+                spinnerYearlyDays.setSelection(
+                    transaction.getYearlyDay() - 1
+                );
+                spinnerYearlyMonth.setSelection(
+                    transaction.getYearlyMonth() - 1
+                );
                 break;
             default:
                 dateMode = DateMode.daily;
@@ -518,6 +531,8 @@ public class TransactionsActivity extends AbstractActivity {
             groupId = spinnerGroupMap.get(spinnerGroups.getSelectedItemPosition());
             transactionStates.setDayOfWeek(spinnerDaysOfWeek.getSelectedItemPosition() + 1);
             transactionStates.setMonthlyDay(spinnerMonthlyDays.getSelectedItemPosition() + 1);
+            transactionStates.setYearlyDay(spinnerYearlyDays.getSelectedItemPosition() + 1);
+            transactionStates.setYearlyMonth(spinnerYearlyMonth.getSelectedItemPosition() + 1);
             addTransaction(name, description, amount, groupId);
             showAllListEntries();
             dialog.dismiss();
@@ -546,6 +561,8 @@ public class TransactionsActivity extends AbstractActivity {
             groupId = spinnerGroupMap.get(spinnerGroups.getSelectedItemPosition());
             transactionStates.setDayOfWeek(spinnerDaysOfWeek.getSelectedItemPosition() + 1);
             transactionStates.setMonthlyDay(spinnerMonthlyDays.getSelectedItemPosition() + 1);
+            transactionStates.setYearlyDay(spinnerYearlyDays.getSelectedItemPosition() + 1);
+            transactionStates.setYearlyMonth(spinnerYearlyMonth.getSelectedItemPosition() + 1);
             editTransaction(transaction, name, description, amount, groupId);
             showAllListEntries();
             dialog.dismiss();

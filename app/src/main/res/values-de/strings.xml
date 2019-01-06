@@ -131,11 +131,6 @@
     <string name="transaction_state_monthly">Monatlich am</string>
     <string name="transaction_state_yearly">Jährlich am</string>
 
-    <string name="transaction_date_init">01.01.2000</string>
-
-    <string name="dialog_pick_month">Tag</string>
-    <string name="dialog_pick_year">Monat</string>
-
     <!-- Analysis properties -->
     <string name="analysis_title">Analyse</string>
 
@@ -146,7 +141,6 @@
 
     <string name="calendar">Kalender</string>
     <string name="close">Schließen</string>
-    <string name="year_picker">JahrPicker</string>
     <string name="budget">0</string>
     <string name="date">Datum</string>
 </resources>
