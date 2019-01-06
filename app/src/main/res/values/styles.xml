@@ -5,10 +5,10 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#fafafa</item>
         <item name="colorPrimaryDark">#c7c7c7</item>
-        <item name="colorAccent">#d50000</item>
-        <item name="android:colorPrimary">@color/primary_material_light</item>
-        <item name="android:colorPrimaryDark">@color/primary_dark_material_light</item>
-        <item name="android:colorAccent">@color/accent_material_light</item>
+        <item name="colorAccent">#6c64fa</item>
+        <!--<item name="android:colorPrimary">@color/primary_material_light</item>-->
+        <!--<item name="android:colorPrimaryDark">@color/primary_dark_material_light</item>-->
+        <!--<item name="android:colorAccent">@color/accent_material_light</item>-->
         <item name="android:navigationBarColor">@color/text_color_secondary</item>
     </style>
 

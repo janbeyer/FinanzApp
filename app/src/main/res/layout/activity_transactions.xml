@@ -17,7 +17,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/button_red"
+        android:background="@drawable/button_template"
         android:text="@string/transaction_add_title"
         android:textSize="18sp" />
 
