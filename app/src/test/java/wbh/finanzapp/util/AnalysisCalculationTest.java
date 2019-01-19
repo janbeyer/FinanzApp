@@ -600,7 +600,7 @@ public class AnalysisCalculationTest {
         Assert.assertEquals(2310.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
         Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);*/
 
-        //#TODO 01.01.2000 - 31.12.2020 -> 252 - ( 5 * 21 ) (5 month per year with less then 31 days) = 147
+        //#TODO 01.01.2000 - 31.12.2020 -> 252 - ( 5 * 21 ) (5 month each year with less then 31 days) = 147
         /*setUpTransactionBean(4, null, null, monthlyDay_31, null, null);
         Assert.assertNotNull(transactions);
 
@@ -634,13 +634,78 @@ public class AnalysisCalculationTest {
 
     @Test
     public void yearlyCalculationTest() {
-        Integer yearlyMonth = 7;
-        Integer yearlyDay = 15;
-        setUpTransactionBean(5, null, null, null, yearlyMonth, yearlyDay);
+        AnalysisBean analysisBean;
+        Integer yearlyMonth_jan = 1;
+        Integer yearlyMonth_feb = 2;
+        Integer yearlyMonth_mar = 3;
+        Integer yearlyMonth_apr = 4;
+        Integer yearlyMonth_may = 5;
+        Integer yearlyMonth_jun = 6;
+        Integer yearlyMonth_jul = 7;
+        Integer yearlyMonth_aug = 8;
+        Integer yearlyMonth_sep = 9;
+        Integer yearlyMonth_oct = 10;
+        Integer yearlyMonth_nov = 11;
+        Integer yearlyMonth_dec = 12;
+
+        Integer yearlyDay_1 = 1;
+        Integer yearlyDay_15 = 15;
+        Integer yearlyDay_31 = 31;
+
+
+        //#TODO
+        /*//startDate == endDate transaction included
+        setUpTransactionBean(5, null, null, null, yearlyMonth_jun, yearlyDay_1);
         Assert.assertNotNull(transactions);
-        AnalysisBean analysisBean = AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
+
+        analysisBean = AnalysisCalculation.createAnalysisBean(startDate, startDate, transactions);
+
         Assert.assertEquals(1, analysisBean.getTotal().getIncome().getCount());
         Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
+        Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);*/
+
+
+        //startDate == endDate transaction not included
+        setUpTransactionBean(5, null, null, null, yearlyMonth_jun, yearlyDay_15);
+        Assert.assertNotNull(transactions);
+
+        analysisBean = AnalysisCalculation.createAnalysisBean(startDate, startDate, transactions);
+
+        Assert.assertEquals(0, analysisBean.getTotal().getIncome().getCount());
+        Assert.assertEquals(0.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
+        Assert.assertEquals(0.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
+
+
+        //startDate > endDate
+        setUpTransactionBean(5, null, null, null, yearlyMonth_jun, yearlyDay_15);
+        Assert.assertNotNull(transactions);
+
+        analysisBean = AnalysisCalculation.createAnalysisBean(endDate, startDate, transactions);
+
+        Assert.assertEquals(0, analysisBean.getTotal().getIncome().getCount());
+        Assert.assertEquals(0.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
+        Assert.assertEquals(0.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
+
+
+        //check yearlyCalculation for a short period
+        setUpTransactionBean(5, null, null, null, yearlyMonth_jul, yearlyDay_15);
+        Assert.assertNotNull(transactions);
+
+        analysisBean = AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
+
+        Assert.assertEquals(1, analysisBean.getTotal().getIncome().getCount());
+        Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
+        Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
+
+
+        //check yearlyCalculation for a long period of 20 years
+        setUpTransactionBean(5, null, null, null, yearlyMonth_jan, yearlyDay_1);
+        Assert.assertNotNull(transactions);
+
+        analysisBean = AnalysisCalculation.createAnalysisBean(firstDay_20, lastDay_20, transactions);
+
+        Assert.assertEquals(21, analysisBean.getTotal().getIncome().getCount());
+        Assert.assertEquals(210.0, analysisBean.getTotal().getIncome().getSum(), 0.0);
         Assert.assertEquals(10.0, analysisBean.getTotal().getIncome().getAverage(), 0.0);
     }
 
