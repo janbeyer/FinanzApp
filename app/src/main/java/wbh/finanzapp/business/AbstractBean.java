@@ -29,6 +29,6 @@ public class AbstractBean {
 
     @Override
     public String toString() {
-        return id + ": " + name + " [" + description + "]";
+        return name + " [" + description + "]";
     }
 }

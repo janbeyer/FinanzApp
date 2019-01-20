@@ -75,25 +75,25 @@ public class TransactionBean extends AbstractBean {
 
 
 
+
     @Override
     public String toString() {
         // 1=unique;2=daily;3=weekly;4=monthly;5=yearly.
         if(state == 1) {
             return super.toString() +
-                    "(Group=" + groupId + ", amount=" + amount + ", uniqueDate=" + date + ")";
+                    "\n" + amount + " Euro, on " + date;
         } else if(state == 2) {
             return super.toString() +
-                    "(Group=" + groupId + ", amount=" + amount + ", Daily)";
+                    "\n" + amount + " Euro, daily";
         } else if(state == 3) {
             return super.toString() +
-                    "(Group==" + groupId + ", amount=" + amount + ", dayOfWeek=" + dayOfWeek + ")";
+                    "\n" + amount + " Euro, weekly on " + (dayOfWeek-1);
         } else if(state == 4) {
             return super.toString() +
-                    "(Group=" + groupId + ", amount=" + amount + ", monthlyDay=" + monthlyDay + ")";
+                    "\n" + amount + " Euro, monthly on " + monthlyDay;
         } else if(state == 5) {
             return super.toString() +
-                    "(Group=" + groupId + ", amount=" + amount + ", yearlyMonth=" + yearlyMonth +
-                    ", yearlyDay=" + yearlyDay+ ")";
+                    "\n" + amount + " Euro, yearly on " + yearlyMonth + "." + yearlyDay;
         }
         return super.toString();
     }
