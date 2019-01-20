@@ -33,6 +33,9 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Stream;
 
 import wbh.finanzapp.R;
 import wbh.finanzapp.access.GroupsDataSource;
@@ -219,10 +222,7 @@ public class TransactionsActivity extends AbstractActivity {
      */
     enum DateMode {
         daily,
-        unique,
-        weekly,
-        monthly,
-        yearly
+        unique
     }
 
     /**
@@ -272,9 +272,7 @@ public class TransactionsActivity extends AbstractActivity {
     private void fillDaysOfWeekSpinner() {
         List<WeekEnum> weekList = new ArrayList<WeekEnum>(EnumSet.allOf(WeekEnum.class));
         String[] spinnerArray = new String[weekList.size()];
-        weekList.stream().forEach(e -> {
-            spinnerArray[e.getValue()-1] = e.getKey();
-        });
+        weekList.forEach(e -> spinnerArray[e.getValue()-1] = e.getKey());
         ArrayAdapter<String> daysOfWeekAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
         spinnerDaysOfWeek.setAdapter(daysOfWeekAdapter);
     }
@@ -313,9 +311,9 @@ public class TransactionsActivity extends AbstractActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 int curMonth = position + 1;
-                if(Arrays.asList(1, 3, 5, 7, 8, 10, 12).stream().anyMatch(e -> e == curMonth)) {
+                if(Stream.of(1, 3, 5, 7, 8, 10, 12).anyMatch(e -> e == curMonth)) {
                     fillIntegerSpinner(spinnerYearlyDays, 31);
-                } else if(Arrays.asList(4, 6, 9, 11).stream().anyMatch(e -> e == curMonth)) {
+                } else if(Stream.of(4, 6, 9, 11).anyMatch(e -> e == curMonth)) {
                     fillIntegerSpinner(spinnerYearlyDays, 30);
                 } else if(curMonth == 2) {
                     fillIntegerSpinner(spinnerYearlyDays, 28);
@@ -422,8 +420,7 @@ public class TransactionsActivity extends AbstractActivity {
         // TODO get local date format
         @SuppressLint("SimpleDateFormat")
         final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd");
-        String formatDate = simpleDateFormat.format(new Date(date));
-        return formatDate;
+        return simpleDateFormat.format(new Date(date));
     }
 
     /**
@@ -456,6 +453,7 @@ public class TransactionsActivity extends AbstractActivity {
     /**
      * Create the edit dialog for the transaction editing.
      */
+    @SuppressWarnings("OptionalIsPresent")
     public void createEditTransactionDialog(final TransactionBean transaction) {
         View editView = super.createView(R.id.dialog_write_transaction_root_view, R.layout.dialog_write_transaction);
         createDialog(editView, R.string.transaction_edit_title, new EditListener(transaction), true);
@@ -467,9 +465,12 @@ public class TransactionsActivity extends AbstractActivity {
         double d = transaction.getAmount();
         textAmountInputField.setText(String.valueOf(d));
 
-        spinnerGroups.setSelection(
-            spinnerGroupMap.entrySet().stream().filter(e -> e.getValue() == transaction.getGroupId()).findFirst().get().getKey()
-        );
+        Set<Map.Entry<Integer, Long>> entrySet = spinnerGroupMap.entrySet();
+        Stream<Map.Entry<Integer, Long>> st = entrySet.stream().filter(e -> e.getValue() == transaction.getGroupId());
+        Optional<Map.Entry<Integer, Long>> op =  st.findFirst();
+        if(op.isPresent()) {
+            spinnerGroups.setSelection(op.get().getKey());
+        }
 
         textViewUniqueDate.setText(getFormattedDateAsString(new Date().getTime()));
 
