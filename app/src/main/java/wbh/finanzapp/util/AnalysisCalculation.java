@@ -55,6 +55,9 @@ public class AnalysisCalculation {
                 Log.d(LOG_TAG, "--> addYearlyTransaction.");
                 addYearlyTransaction(analysisBean, transactionBean);
             }
+            analysisBean.setEndCalendar(initCalendar(endDate));
+            analysisBean.setStartCalendar(initCalendar(startDate));
+
         });
 
         Log.d(LOG_TAG, "<-- analysis finished: " + analysisBean);

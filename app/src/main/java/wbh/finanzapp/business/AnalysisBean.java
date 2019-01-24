@@ -27,6 +27,14 @@ public class AnalysisBean {
     private Calendar startCalendar;
     private Calendar endCalendar;
 
+    public void setEndCalendar(Calendar endCalendar) {
+        this.endCalendar = endCalendar;
+    }
+
+    public void setStartCalendar(Calendar startCalendar) {
+        this.startCalendar = startCalendar;
+    }
+
     public Calendar getEndCalendar() {
         return endCalendar;
     }
