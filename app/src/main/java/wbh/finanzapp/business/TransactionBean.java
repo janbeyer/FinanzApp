@@ -81,19 +81,19 @@ public class TransactionBean extends AbstractBean {
         // 1=unique;2=daily;3=weekly;4=monthly;5=yearly.
         if(state == 1) {
             return super.toString() +
-                    "\n" + amount + " Euro, on " + date;
+                    "\n" + amount + " Euro" + ", am " + date;
         } else if(state == 2) {
             return super.toString() +
-                    "\n" + amount + " Euro, daily";
+                    "\n" + amount + " Euro" + ", täglich";
         } else if(state == 3) {
             return super.toString() +
-                    "\n" + amount + " Euro, weekly on " + (dayOfWeek-1);
+                    "\n" + amount + " Euro" + ", wöchentlich am " + (dayOfWeek-1);
         } else if(state == 4) {
             return super.toString() +
-                    "\n" + amount + " Euro, monthly on " + monthlyDay;
+                    "\n" + amount + " Euro" + ", monatlich am " + monthlyDay;
         } else if(state == 5) {
             return super.toString() +
-                    "\n" + amount + " Euro, yearly on " + yearlyMonth + "." + yearlyDay;
+                    "\n" + amount + " Euro" + ", jährlich am " + yearlyMonth + "." + yearlyDay;
         }
         return super.toString();
     }
