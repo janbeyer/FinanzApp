@@ -22,7 +22,8 @@ public class AnalysisCalculation {
     public static AnalysisBean createAnalysisBean(
             Date startDate,
             Date endDate,
-            List<AbstractBean> transactions) {
+            List<AbstractBean> transactions,
+            double startVal) {
         Log.d(LOG_TAG, "--> createAnalysisBean() Date is between: " +
                 AnalysisActivity.getFormattedDateAsString(startDate) + " to "
                 + AnalysisActivity.getFormattedDateAsString(endDate));
@@ -59,6 +60,12 @@ public class AnalysisCalculation {
             analysisBean.setStartCalendar(initCalendar(startDate));
 
         });
+
+        AnalysisBean.CashFlow cash = analysisBean.getTotal();
+        cash.getIncome().addToSum(startVal);
+        Log.d(LOG_TAG, "<-- Start value: " + startVal);
+        Log.d(LOG_TAG, "<-- CashFlow income: " + cash.getIncome());
+        Log.d(LOG_TAG, "<-- CashFlow expense: " + cash.getExpenses());
 
         Log.d(LOG_TAG, "<-- analysis finished: " + analysisBean);
         return analysisBean;

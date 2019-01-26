@@ -94,8 +94,15 @@ public class AnalysisActivity extends AbstractActivity {
             hideKeyboard(this);
 
             List<AbstractBean> transactions = transactionsDataSource.getBeans();
+            double startVal = 0.0;
+            try {
+                startVal = Double.valueOf(textStartValue.getText().toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             AnalysisBean analysisBean =
-            AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions);
+            AnalysisCalculation.createAnalysisBean(startDate, endDate, transactions, startVal);
 
             // Build tables and diagrams here with the input of the analysis bean ...
             createPieChart(analysisBean);

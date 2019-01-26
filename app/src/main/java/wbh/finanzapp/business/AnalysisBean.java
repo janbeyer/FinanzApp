@@ -139,6 +139,10 @@ public class AnalysisBean {
             this.sum = sum;
         }
 
+        public void addToSum(double addSum) {
+            this.sum += addSum;
+        }
+
         public double getAverage() {
             if (count == 0) {
                 return 0.0;
